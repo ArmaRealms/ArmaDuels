@@ -1,6 +1,11 @@
 name: Build and Upload
 
-on: [push]
+on:
+  workflow_dispatch:
+  push:
+    branches: [ '**' ]
+  pull_request:
+    branches: [ '**' ]
 
 jobs:
   build:
