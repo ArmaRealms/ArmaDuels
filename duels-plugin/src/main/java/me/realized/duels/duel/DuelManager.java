@@ -37,6 +37,7 @@ import me.realized.duels.util.compat.CompatUtil;
 import me.realized.duels.util.compat.Titles;
 import me.realized.duels.util.function.Pair;
 import me.realized.duels.util.inventory.InventoryUtil;
+import net.ess3.api.events.teleport.PreTeleportEvent;
 import net.md_5.bungee.api.chat.ClickEvent.Action;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -63,6 +64,7 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -380,8 +382,8 @@ public class DuelManager implements Loadable {
 
     private boolean isTagged(final Player player) {
         return (combatTagPlus != null && combatTagPlus.isTagged(player))
-                || (pvpManager != null && pvpManager.isTagged(player))
-                || (combatLogX != null && combatLogX.isTagged(player));
+               || (pvpManager != null && pvpManager.isTagged(player))
+               || (combatLogX != null && combatLogX.isTagged(player));
     }
 
     private boolean notInLoc(final Player player, final Location location) {
@@ -391,9 +393,9 @@ public class DuelManager implements Loadable {
 
         final Location source = player.getLocation();
         return !source.getWorld().equals(location.getWorld())
-                || source.getBlockX() != location.getBlockX()
-                || source.getBlockY() != location.getBlockY()
-                || source.getBlockZ() != location.getBlockZ();
+               || source.getBlockX() != location.getBlockX()
+               || source.getBlockY() != location.getBlockY()
+               || source.getBlockZ() != location.getBlockZ();
     }
 
     private boolean notInDz(final Player player, final String duelzone) {
@@ -667,7 +669,7 @@ public class DuelManager implements Loadable {
             final String command = event.getMessage().substring(1).split(" ")[0].toLowerCase();
 
             if (!arenaManager.isInMatch(event.getPlayer())
-                    || (config.isBlockAllCommands() ? config.getWhitelistedCommands().contains(command) : !config.getBlacklistedCommands().contains(command))) {
+                || (config.isBlockAllCommands() ? config.getWhitelistedCommands().contains(command) : !config.getBlacklistedCommands().contains(command))) {
                 return;
             }
 
@@ -681,9 +683,9 @@ public class DuelManager implements Loadable {
             final Location to = event.getTo();
 
             if (!config.isLimitTeleportEnabled()
-                    || event.getCause() == TeleportCause.ENDER_PEARL
-                    || event.getCause() == TeleportCause.SPECTATE
-                    || !arenaManager.isInMatch(player)) {
+                || event.getCause() == TeleportCause.ENDER_PEARL
+                || event.getCause() == TeleportCause.SPECTATE
+                || !arenaManager.isInMatch(player)) {
                 return;
             }
 
@@ -711,6 +713,18 @@ public class DuelManager implements Loadable {
 
             event.setCancelled(true);
             lang.sendMessage(player, "DUEL.prevent.inventory-open");
+        }
+
+        @EventHandler(ignoreCancelled = true)
+        public void on(final @NotNull PreTeleportEvent event) {
+            final Player teleportee = event.getTeleportee().getBase();
+            final Player teleporter = event.getTeleporter().getBase();
+            if (teleportee == null || teleporter == null) {
+                return;
+            }
+            if (arenaManager.isInMatch(teleportee) || arenaManager.isInMatch(teleporter)) {
+                event.setCancelled(true);
+            }
         }
     }
 }
