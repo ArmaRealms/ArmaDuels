@@ -305,10 +305,10 @@ public class DuelCommand extends BaseCommand {
                     }
                 }
             } else {
-                return Collections.emptyList();
+                return List.of();
             }
         } else {
-            return Collections.emptyList();
+            return List.of();
         }
     }
 }

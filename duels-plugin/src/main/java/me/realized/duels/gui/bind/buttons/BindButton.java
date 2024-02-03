@@ -31,7 +31,7 @@ public class BindButton extends BaseButton {
         final boolean state = arena.isBound(kit);
         setGlow(state);
 
-        String kits = StringUtil.join(arena.getKits().stream().map(KitImpl::getName).collect(Collectors.toList()), ", ");
+        String kits = StringUtil.join(arena.getKits().stream().map(KitImpl::getName).toList(), ", ");
         kits = kits.isEmpty() ? lang.getMessage("GENERAL.none") : kits;
         setLore(lang.getMessage("GUI.bind.buttons.arena.lore-" + (state ? "bound" : "not-bound"), "kits", kits).split("\n"));
     }

@@ -127,7 +127,7 @@ public class MatchImpl implements Match {
     }
 
     public List<ItemStack> getItems() {
-        return items != null ? items.values().stream().flatMap(Collection::stream).toList() : Collections.emptyList();
+        return items != null ? items.values().stream().flatMap(Collection::stream).toList() : List.of();
     }
 
     void setFinished() {
@@ -144,11 +144,11 @@ public class MatchImpl implements Match {
         Objects.requireNonNull(player, "player");
 
         if (this.items == null) {
-            return Collections.emptyList();
+            return List.of();
         }
 
         final List<ItemStack> items = this.items.get(player.getUniqueId());
-        return items != null ? items : Collections.emptyList();
+        return items != null ? items : List.of();
     }
 
     @NotNull

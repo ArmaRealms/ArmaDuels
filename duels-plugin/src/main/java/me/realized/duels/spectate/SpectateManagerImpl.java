@@ -292,7 +292,7 @@ public class SpectateManagerImpl implements Loadable, SpectateManager {
     public Collection<Player> getAllSpectators() {
         return spectators.values().stream()
                 .map(spectator -> Bukkit.getPlayer(spectator.getUuid()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private class SpectateListener implements Listener {

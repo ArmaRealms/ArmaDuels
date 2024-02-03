@@ -68,13 +68,13 @@ public class EditCommand extends BaseCommand {
         if (args.length == 3) {
             return actions.keySet().stream()
                 .filter(type -> type.toLowerCase().startsWith(args[2].toLowerCase()))
-                .collect(Collectors.toList());
+                .toList();
         }
 
         if (args.length == 4) {
             return setters.keySet().stream()
                 .filter(type -> type.toLowerCase().startsWith(args[3].toLowerCase()))
-                .collect(Collectors.toList());
+                .toList();
         }
 
         if (args.length > 4) {

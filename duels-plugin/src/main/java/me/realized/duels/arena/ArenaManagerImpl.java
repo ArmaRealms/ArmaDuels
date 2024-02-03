@@ -221,12 +221,12 @@ public class ArenaManagerImpl implements Loadable, ArenaManager {
     }
 
     public ArenaImpl randomArena(final KitImpl kit) {
-        final List<ArenaImpl> available = arenas.stream().filter(arena -> isSelectable(kit, arena)).collect(Collectors.toList());
+        final List<ArenaImpl> available = arenas.stream().filter(arena -> isSelectable(kit, arena)).toList();
         return !available.isEmpty() ? available.get(ThreadLocalRandom.current().nextInt(available.size())) : null;
     }
 
     public List<String> getNames() {
-        return arenas.stream().map(ArenaImpl::getName).collect(Collectors.toList());
+        return arenas.stream().map(ArenaImpl::getName).toList();
     }
 
     // Called on kit removal
