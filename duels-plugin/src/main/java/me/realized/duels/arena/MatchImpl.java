@@ -1,8 +1,19 @@
 package me.realized.duels.arena;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
+
 import lombok.Getter;
 import me.realized.duels.api.match.Match;
 import me.realized.duels.kit.KitImpl;
@@ -67,7 +78,10 @@ public class MatchImpl implements Match {
     }
 
     Set<Player> getAlivePlayers() {
-        return players.entrySet().stream().filter(entry -> !entry.getValue().isDead).map(Entry::getKey).collect(Collectors.toSet());
+        return players.entrySet().stream()
+                .filter(entry -> !entry.getValue().isDead)
+                .map(Entry::getKey)
+                .collect(Collectors.toSet());
     }
 
     public void addDamageToPlayer(Player player, double damage) {
@@ -81,23 +95,19 @@ public class MatchImpl implements Match {
     }
 
     public Player getWinnerOfDamage() {
-        Player winner = players.entrySet()
+        return players.entrySet()
                 .stream()
                 .max(Comparator.comparingDouble(entry -> entry.getValue().damageCount))
-                .map(Map.Entry::getKey)
+                .map(Entry::getKey)
                 .orElse(null);
-
-        return winner;
     }
 
     public Player getLooserOfDamage() {
-        Player looser = players.entrySet()
+        return players.entrySet()
                 .stream()
                 .min(Comparator.comparingDouble(entry -> entry.getValue().damageCount))
-                .map(Map.Entry::getKey)
+                .map(Entry::getKey)
                 .orElse(null);
-
-        return looser;
     }
 
     public Set<Player> getAllPlayers() {
@@ -115,7 +125,7 @@ public class MatchImpl implements Match {
     public boolean isOwnInventory() {
         return kit == null;
     }
-    
+
     public List<ItemStack> getItems() {
         return items != null ? items.values().stream().flatMap(Collection::stream).toList() : Collections.emptyList();
     }

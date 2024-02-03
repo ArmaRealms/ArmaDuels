@@ -142,8 +142,7 @@ public class SpectateManagerImpl implements Loadable, SpectateManager {
 
         // Hide from players in match
         if (match != null && !(essentials != null && essentials.isVanished(player))) {
-            match.getAllPlayers()
-                    .stream()
+            match.getAllPlayers().stream()
                     .filter(arenaPlayer -> arenaPlayer.isOnline() && arenaPlayer.canSee(player))
                     .forEach(arenaPlayer -> {
                         if (CompatUtil.hasHidePlayer()) {
@@ -229,8 +228,7 @@ public class SpectateManagerImpl implements Loadable, SpectateManager {
 
         // Show to players in match
         if (match != null && !(essentials != null && essentials.isVanished(player))) {
-            match.getAllPlayers()
-                    .stream()
+            match.getAllPlayers().stream()
                     .filter(Player::isOnline)
                     .forEach(arenaPlayer -> {
                         if (CompatUtil.hasHidePlayer()) {
@@ -292,8 +290,7 @@ public class SpectateManagerImpl implements Loadable, SpectateManager {
     }
 
     public Collection<Player> getAllSpectators() {
-        return spectators.values()
-                .stream()
+        return spectators.values().stream()
                 .map(spectator -> Bukkit.getPlayer(spectator.getUuid()))
                 .collect(Collectors.toList());
     }

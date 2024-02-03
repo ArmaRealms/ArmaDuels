@@ -47,8 +47,10 @@ public class DamageListener implements Listener {
             return;
         }
 
-        KitImpl.Characteristic characteristic = arena.getMatch().getKit().getCharacteristics().stream().filter(
-                c -> c == KitImpl.Characteristic.BOXING).findFirst().orElse(null);
+        KitImpl.Characteristic characteristic = arena.getMatch().getKit().getCharacteristics().stream()
+                .filter(c -> c == KitImpl.Characteristic.BOXING)
+                .findFirst()
+                .orElse(null);
 
         if (characteristic != null) {
             if (arena.getMatch().getHits(damager) >= 100) {

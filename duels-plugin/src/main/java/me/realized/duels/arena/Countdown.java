@@ -10,6 +10,7 @@ import me.realized.duels.util.StringUtil;
 import me.realized.duels.util.compat.Titles;
 import me.realized.duels.util.function.Pair;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 class Countdown extends BukkitRunnable {
 
@@ -22,7 +23,7 @@ class Countdown extends BukkitRunnable {
 
     private boolean finished;
 
-    Countdown(final DuelsPlugin plugin, final ArenaImpl arena, final String kit, final Map<UUID,  Pair<String, Integer>> info, final List<String> messages, final List<String> titles) {
+    Countdown(final @NotNull DuelsPlugin plugin, final ArenaImpl arena, final String kit, final Map<UUID,  Pair<String, Integer>> info, final List<String> messages, final List<String> titles) {
         this.config = plugin.getConfiguration();
         this.arena = arena;
         this.kit = kit;
@@ -33,7 +34,9 @@ class Countdown extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (finished) return;
+        if (finished) {
+            return;
+        }
 
         final String rawMessage = messages.remove(0);
         final String message = StringUtil.color(rawMessage);

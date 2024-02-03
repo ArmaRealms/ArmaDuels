@@ -78,7 +78,7 @@ public class KitOptionsListener implements Listener {
             return;
         }
 
-        if(arena.getMatch().getDurationInMillis() < 5000) {
+        if (arena.getMatch().getDurationInMillis() < 5000) {
             event.setCancelled(true);
             return;
         }

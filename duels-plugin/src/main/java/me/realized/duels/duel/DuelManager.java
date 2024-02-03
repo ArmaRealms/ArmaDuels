@@ -140,7 +140,7 @@ public class DuelManager implements Loadable {
                     Player winner = match.getWinnerOfDamage(),
                             looser = match.getLooserOfDamage();
 
-                    if(winner != looser) {
+                    if (winner != looser) {
                         looser.damage(1000);
                         return;
                     }
@@ -419,8 +419,8 @@ public class DuelManager implements Loadable {
 
     private boolean isTagged(final Player player) {
         return (combatTagPlus != null && combatTagPlus.isTagged(player))
-               || (pvpManager != null && pvpManager.isTagged(player))
-               || (combatLogX != null && combatLogX.isTagged(player));
+                || (pvpManager != null && pvpManager.isTagged(player))
+                || (combatLogX != null && combatLogX.isTagged(player));
     }
 
     private boolean notInLoc(final Player player, final Location location) {
@@ -430,9 +430,9 @@ public class DuelManager implements Loadable {
 
         final Location source = player.getLocation();
         return !source.getWorld().equals(location.getWorld())
-               || source.getBlockX() != location.getBlockX()
-               || source.getBlockY() != location.getBlockY()
-               || source.getBlockZ() != location.getBlockZ();
+                || source.getBlockX() != location.getBlockX()
+                || source.getBlockY() != location.getBlockY()
+                || source.getBlockZ() != location.getBlockZ();
     }
 
     private boolean notInDz(final Player player, final String duelzone) {
@@ -684,10 +684,10 @@ public class DuelManager implements Loadable {
                 return;
             }
 
-            if(config.isPreventItemDrop()) {
+            if (config.isPreventItemDrop()) {
                 event.setCancelled(true);
                 lang.sendMessage(event.getPlayer(), "DUEL.prevent.item-drop");
-            } else if(config.isClearItemsAfterMatch()) {
+            } else if (config.isClearItemsAfterMatch()) {
                 arenaManager.get(player).getMatch().droppedItems.add(event.getItemDrop());
             }
 
@@ -712,7 +712,7 @@ public class DuelManager implements Loadable {
             final String command = event.getMessage().substring(1).split(" ")[0].toLowerCase();
 
             if (!arenaManager.isInMatch(event.getPlayer())
-                || (config.isBlockAllCommands() ? config.getWhitelistedCommands().contains(command) : !config.getBlacklistedCommands().contains(command))) {
+                    || (config.isBlockAllCommands() ? config.getWhitelistedCommands().contains(command) : !config.getBlacklistedCommands().contains(command))) {
                 return;
             }
 
@@ -726,9 +726,9 @@ public class DuelManager implements Loadable {
             final Location to = event.getTo();
 
             if (!config.isLimitTeleportEnabled()
-                || event.getCause() == TeleportCause.ENDER_PEARL
-                || event.getCause() == TeleportCause.SPECTATE
-                || !arenaManager.isInMatch(player)) {
+                    || event.getCause() == TeleportCause.ENDER_PEARL
+                    || event.getCause() == TeleportCause.SPECTATE
+                    || !arenaManager.isInMatch(player)) {
                 return;
             }
 

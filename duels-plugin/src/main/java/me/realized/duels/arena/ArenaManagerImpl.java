@@ -135,14 +135,20 @@ public class ArenaManagerImpl implements Loadable, ArenaManager {
     @Override
     public ArenaImpl get(@NotNull final String name) {
         Objects.requireNonNull(name, "name");
-        return arenas.stream().filter(arena -> arena.getName().equals(name)).findFirst().orElse(null);
+        return arenas.stream()
+                .filter(arena -> arena.getName().equals(name))
+                .findFirst()
+                .orElse(null);
     }
 
     @Nullable
     @Override
     public ArenaImpl get(@NotNull final Player player) {
         Objects.requireNonNull(player, "player");
-        return arenas.stream().filter(arena -> arena.has(player)).findFirst().orElse(null);
+        return arenas.stream()
+                .filter(arena -> arena.has(player))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override

@@ -263,8 +263,7 @@ public class DuelsPlugin extends JavaPlugin implements Duels, LogSource {
         registeredListeners.forEach(HandlerList::unregisterAll);
         registeredListeners.clear();
         // Unregister all extension listeners that isn't using the method Duels#registerListener
-        HandlerList.getRegisteredListeners(this)
-            .stream()
+        HandlerList.getRegisteredListeners(this).stream()
             .filter(listener -> listener.getListener().getClass().getClassLoader().getClass().isAssignableFrom(ExtensionClassLoader.class))
             .forEach(listener -> HandlerList.unregisterAll(listener.getListener()));
         commands.clear();
