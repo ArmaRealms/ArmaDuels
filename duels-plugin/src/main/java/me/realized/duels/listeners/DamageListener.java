@@ -1,8 +1,10 @@
 package me.realized.duels.listeners;
 
 import me.realized.duels.DuelsPlugin;
+import me.realized.duels.api.event.match.MatchEndEvent;
 import me.realized.duels.arena.ArenaImpl;
 import me.realized.duels.arena.ArenaManagerImpl;
+import me.realized.duels.kit.KitImpl;
 import me.realized.duels.util.EventUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -27,7 +29,7 @@ public class DamageListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void on(final EntityDamageByEntityEvent event) {
+    public void onDamage(final EntityDamageByEntityEvent event) {
         if (!event.isCancelled() || !(event.getEntity() instanceof Player player)) {
             return;
         }
@@ -45,6 +47,24 @@ public class DamageListener implements Listener {
             return;
         }
 
+        KitImpl.Characteristic characteristic = arena.getMatch().getKit().getCharacteristics().stream().filter(
+                c -> c == KitImpl.Characteristic.BOXING).findFirst().orElse(null);
+
+        if (characteristic != null) {
+            if (arena.getMatch().getHits(damager) >= 100) {
+                player.damage(99999);
+                return;
+            }
+            event.setDamage(0);
+            return;
+        }
+
+        arena.getMatch().addDamageToPlayer(damager, event.getFinalDamage());
+
+        if (!event.isCancelled()) {
+            return;
+        }
         event.setCancelled(false);
     }
+
 }
