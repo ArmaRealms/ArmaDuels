@@ -1,8 +1,9 @@
 package me.realized.duels.util.compat;
 
+import org.bukkit.Material;
+
 import java.util.HashMap;
 import java.util.Map;
-import org.bukkit.Material;
 
 public final class Panes {
 

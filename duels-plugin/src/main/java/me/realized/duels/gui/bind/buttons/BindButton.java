@@ -1,6 +1,5 @@
 package me.realized.duels.gui.bind.buttons;
 
-import java.util.stream.Collectors;
 import lombok.Setter;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.arena.ArenaImpl;

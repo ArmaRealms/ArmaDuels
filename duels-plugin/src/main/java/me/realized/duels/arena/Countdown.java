@@ -1,9 +1,6 @@
 package me.realized.duels.arena;
 
 import com.google.common.collect.Lists;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.config.Config;
 import me.realized.duels.util.StringUtil;
@@ -11,6 +8,10 @@ import me.realized.duels.util.compat.Titles;
 import me.realized.duels.util.function.Pair;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 class Countdown extends BukkitRunnable {
 

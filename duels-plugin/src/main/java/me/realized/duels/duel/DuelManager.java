@@ -45,13 +45,13 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -591,6 +591,8 @@ public class DuelManager implements Loadable {
             inventoryManager.create(player, true);
             arena.remove(player);
 
+            boolean isDead = player.isDead();
+
             // Call end task only on the first death
             if (arena.size() <= 0) {
                 return;
@@ -629,6 +631,14 @@ public class DuelManager implements Loadable {
                 handleStats(match, userDataManager.get(winner), userDataManager.get(player), matchData);
                 plugin.doSyncAfter(() -> handleInventories(match), 1L);
                 plugin.doSyncAfter(() -> {
+                    if (!isDead) {
+                        PlayerInfo info = playerManager.get(player);
+                        if (info != null) {
+                            teleport.tryTeleport(player, info.getLocation());
+                            info.restore(player);
+                        }
+                    }
+
                     handleWin(winner, player, arena, match);
 
                     if (config.isEndCommandsEnabled() && !(!match.isFromQueue() && config.isEndCommandsQueueOnly())) {
@@ -638,7 +648,7 @@ public class DuelManager implements Loadable {
                                         .replace("%winner%", winner.getName()).replace("%loser%", player.getName())
                                         .replace("%kit%", kitName).replace("%arena%", arena.getName())
                                         .replace("%bet_amount%", String.valueOf(match.getBet())
-                                                .replace("%mcmmo_skills%", match.isMcmmoSkills() ? lang.getMessage("GENERAL.enabled") : lang.getMessage("GENERAL.disabled")))
+                                        .replace("%mcmmo_skills%", match.isMcmmoSkills() ? lang.getMessage("GENERAL.enabled") : lang.getMessage("GENERAL.disabled")))
                                 );
                             }
                         } catch (Exception ex) {
@@ -658,6 +668,21 @@ public class DuelManager implements Loadable {
             }
 
             final ArenaImpl arena = arenaManager.get(player);
+
+            if (arena == null || !arena.isEndGame()) {
+                return;
+            }
+
+            event.setCancelled(true);
+        }
+
+        @EventHandler(ignoreCancelled = true)
+        public void on(final EntityDamageByEntityEvent event) {
+            if (!(event.getEntity() instanceof Player) || (!(event.getDamager() instanceof Player killer))) {
+                return;
+            }
+
+            final ArenaImpl arena = arenaManager.get(killer);
 
             if (arena == null || !arena.isEndGame()) {
                 return;

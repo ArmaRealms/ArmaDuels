@@ -4,9 +4,10 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import java.util.Collection;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+
+import java.util.Collection;
 
 public class WorldGuard7Handler implements WorldGuardHandler {
 

@@ -1,8 +1,5 @@
 package me.realized.duels.command.commands.duels.subcommands;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.api.kit.Kit;
 import me.realized.duels.api.queue.DQueue;
@@ -11,6 +8,9 @@ import me.realized.duels.command.BaseCommand;
 import me.realized.duels.queue.sign.QueueSignImpl;
 import me.realized.duels.util.StringUtil;
 import org.bukkit.command.CommandSender;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListCommand extends BaseCommand {
 

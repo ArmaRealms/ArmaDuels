@@ -1,6 +1,9 @@
 package me.realized.duels.extension;
 
 import com.google.common.io.ByteStreams;
+import lombok.Getter;
+import me.realized.duels.api.extension.DuelsExtension;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,8 +17,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
-import lombok.Getter;
-import me.realized.duels.api.extension.DuelsExtension;
 
 public class ExtensionClassLoader extends URLClassLoader {
 

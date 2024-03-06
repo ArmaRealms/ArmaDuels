@@ -1,12 +1,13 @@
 package me.realized.duels.api.event.queue;
 
-import java.util.Objects;
 import me.realized.duels.api.queue.DQueue;
 import me.realized.duels.api.queue.DQueueManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * Called when a player is joining a {@link DQueue}.

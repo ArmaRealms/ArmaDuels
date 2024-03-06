@@ -1,6 +1,5 @@
 package me.realized.duels.gui.bind;
 
-import java.util.stream.Collectors;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.config.Config;
 import me.realized.duels.config.Lang;
@@ -10,6 +9,8 @@ import me.realized.duels.util.compat.Items;
 import me.realized.duels.util.gui.MultiPageGui;
 import me.realized.duels.util.inventory.ItemBuilder;
 import org.bukkit.Material;
+
+import java.util.stream.Collectors;
 
 public class BindGui extends MultiPageGui<DuelsPlugin> {
 

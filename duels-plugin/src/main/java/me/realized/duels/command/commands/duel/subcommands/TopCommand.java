@@ -1,6 +1,5 @@
 package me.realized.duels.command.commands.duel.subcommands;
 
-import java.util.List;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.Permissions;
 import me.realized.duels.api.user.UserManager.TopData;
@@ -9,6 +8,8 @@ import me.realized.duels.command.BaseCommand;
 import me.realized.duels.kit.KitImpl;
 import me.realized.duels.util.StringUtil;
 import org.bukkit.command.CommandSender;
+
+import java.util.List;
 
 public class TopCommand extends BaseCommand {
 

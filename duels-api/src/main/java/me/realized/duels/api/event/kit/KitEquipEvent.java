@@ -1,11 +1,12 @@
 package me.realized.duels.api.event.kit;
 
-import java.util.Objects;
 import me.realized.duels.api.kit.Kit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * Called when a {@link Player} equips a {@link Kit}.

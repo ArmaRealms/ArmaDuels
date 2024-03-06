@@ -1,11 +1,12 @@
 package me.realized.duels.util.reflect;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import me.realized.duels.util.Log;
 import me.realized.duels.util.NumberUtil;
 import org.bukkit.Bukkit;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 public final class ReflectionUtil {
 

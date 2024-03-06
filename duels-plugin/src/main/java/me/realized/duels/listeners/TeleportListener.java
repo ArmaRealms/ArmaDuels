@@ -1,6 +1,5 @@
 package me.realized.duels.listeners;
 
-import java.util.Set;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.Permissions;
 import me.realized.duels.arena.ArenaManagerImpl;
@@ -14,6 +13,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
+
+import java.util.Set;
 
 /**
  * Prevents players teleporting to players in a match or in spectator mode.

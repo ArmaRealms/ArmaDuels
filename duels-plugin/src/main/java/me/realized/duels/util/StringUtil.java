@@ -1,12 +1,13 @@
 package me.realized.duels.util;
 
+import me.realized.duels.util.reflect.ReflectionUtil;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
-import me.realized.duels.util.reflect.ReflectionUtil;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
 
 public final class StringUtil {
 

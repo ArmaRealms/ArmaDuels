@@ -1,11 +1,12 @@
 package me.realized.duels.util;
 
+import org.bukkit.plugin.Plugin;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.function.BiConsumer;
-import org.bukkit.plugin.Plugin;
 
 public final class UpdateChecker {
 

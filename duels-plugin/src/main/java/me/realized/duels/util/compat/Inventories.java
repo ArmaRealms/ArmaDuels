@@ -1,10 +1,11 @@
 package me.realized.duels.util.compat;
 
+import me.realized.duels.util.reflect.ReflectionUtil;
+import org.bukkit.inventory.Inventory;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import me.realized.duels.util.reflect.ReflectionUtil;
-import org.bukkit.inventory.Inventory;
 
 public final class Inventories {
 

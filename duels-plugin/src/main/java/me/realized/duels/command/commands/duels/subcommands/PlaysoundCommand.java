@@ -1,13 +1,13 @@
 package me.realized.duels.command.commands.duels.subcommands;
 
-import java.util.List;
-import java.util.stream.Collectors;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.command.BaseCommand;
 import me.realized.duels.config.Config.MessageSound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class PlaysoundCommand extends BaseCommand {
 

@@ -1,10 +1,11 @@
 package me.realized.duels.queue;
 
-import java.util.Objects;
 import lombok.Getter;
 import me.realized.duels.setting.CachedInfo;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+
+import java.util.Objects;
 
 public class QueueEntry {
 

@@ -1,7 +1,5 @@
 package me.realized.duels.gui.settings;
 
-import java.util.ArrayList;
-import java.util.List;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.config.Config;
 import me.realized.duels.gui.BaseButton;
@@ -17,6 +15,9 @@ import me.realized.duels.util.compat.Items;
 import me.realized.duels.util.gui.SinglePageGui;
 import me.realized.duels.util.inventory.Slots;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SettingsGui extends SinglePageGui<DuelsPlugin> {
 
