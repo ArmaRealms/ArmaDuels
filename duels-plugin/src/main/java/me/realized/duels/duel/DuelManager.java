@@ -678,11 +678,9 @@ public class DuelManager implements Loadable {
 
         @EventHandler(ignoreCancelled = true)
         public void on(final EntityDamageByEntityEvent event) {
-            if (!(event.getEntity() instanceof Player) || (!(event.getDamager() instanceof Player))) {
+            if (!(event.getEntity() instanceof Player) || (!(event.getDamager() instanceof Player killer))) {
                 return;
             }
-
-            final Player killer = (Player) event.getDamager();
 
             final ArenaImpl arena = arenaManager.get(killer);
 

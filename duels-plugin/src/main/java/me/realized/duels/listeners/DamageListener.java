@@ -1,11 +1,9 @@
 package me.realized.duels.listeners;
 
 import me.realized.duels.DuelsPlugin;
-import me.realized.duels.api.event.match.MatchEndEvent;
 import me.realized.duels.arena.ArenaImpl;
 import me.realized.duels.arena.ArenaManagerImpl;
 import me.realized.duels.kit.KitImpl;
-import me.realized.duels.player.PlayerInfo;
 import me.realized.duels.util.EventUtil;
 import me.realized.duels.util.PlayerUtil;
 import org.bukkit.Bukkit;
@@ -17,7 +15,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Overrides damage cancellation by other plugins for players in a duel.
@@ -58,14 +55,12 @@ public class DamageListener implements Listener {
                 .findFirst()
                 .orElse(null);
 
-        if(characteristic != null) {
-            if(arena.getMatch().getHits(damager) >= 99) {
-                player.getInventory().clear();
-                PlayerDeathEvent customEvent = new PlayerDeathEvent(player, new ArrayList<>(), 0, "Morreu para " + damager.getDisplayName() + " numa luta de boxe!");
-                PlayerUtil.reset(player);
-                Bukkit.getPluginManager().callEvent(customEvent);
-                return;
-            }
+        if (characteristic != null && arena.getMatch().getHits(damager) >= 99) {
+            player.getInventory().clear();
+            PlayerDeathEvent customEvent = new PlayerDeathEvent(player, new ArrayList<>(), 0, "Morreu para " + damager.getDisplayName() + " numa luta de boxe!");
+            PlayerUtil.reset(player);
+            Bukkit.getPluginManager().callEvent(customEvent);
+            return;
         }
 
         arena.getMatch().addDamageToPlayer(damager, event.getFinalDamage());

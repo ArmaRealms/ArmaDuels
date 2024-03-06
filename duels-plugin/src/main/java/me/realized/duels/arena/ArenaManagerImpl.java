@@ -240,7 +240,7 @@ public class ArenaManagerImpl implements Loadable, ArenaManager {
 
         @EventHandler
         public void on(final PlayerInteractEvent event) {
-            if(event.getAction() != Action.RIGHT_CLICK_AIR && event.isCancelled() || !config.isPreventInteract()) {
+            if (event.getAction() != Action.RIGHT_CLICK_AIR && event.isCancelled() || !config.isPreventInteract()) {
                 return;
             }
 
@@ -279,11 +279,11 @@ public class ArenaManagerImpl implements Loadable, ArenaManager {
 
             final ProjectileSource shooter = event.getEntity().getShooter();
 
-            if (!(shooter instanceof Player)) {
+            if (!(shooter instanceof Player player)) {
                 return;
             }
 
-            final ArenaImpl arena = get((Player) shooter);
+            final ArenaImpl arena = get(player);
 
             if (arena == null || !arena.isCounting() || event.getEntity().getClass().getName().contains("Potion")) {
                 return;
@@ -295,6 +295,10 @@ public class ArenaManagerImpl implements Loadable, ArenaManager {
         @EventHandler(ignoreCancelled = true)
         public void on(final PlayerMoveEvent event) {
             final Location to = event.getTo();
+            if (to == null) {
+                return;
+            }
+
             if(to.getBlockY() < config.getMinY()) {
                 event.getPlayer().damage(99999);
             }
