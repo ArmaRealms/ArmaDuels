@@ -263,8 +263,7 @@ public class DuelsPlugin extends JavaPlugin implements Duels, LogSource {
         registeredListeners.forEach(HandlerList::unregisterAll);
         registeredListeners.clear();
         // Unregister all extension listeners that isn't using the method Duels#registerListener
-        HandlerList.getRegisteredListeners(this)
-            .stream()
+        HandlerList.getRegisteredListeners(this).stream()
             .filter(listener -> listener.getListener().getClass().getClassLoader().getClass().isAssignableFrom(ExtensionClassLoader.class))
             .forEach(listener -> HandlerList.unregisterAll(listener.getListener()));
         commands.clear();
@@ -428,14 +427,17 @@ public class DuelsPlugin extends JavaPlugin implements Duels, LogSource {
     }
 
     public Loadable find(final String name) {
-        return loadables.stream().filter(loadable -> loadable.getClass().getSimpleName().equalsIgnoreCase(name)).findFirst().orElse(null);
+        return loadables.stream()
+                .filter(loadable -> loadable.getClass().getSimpleName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null);
     }
 
     public List<String> getReloadables() {
         return loadables.stream()
-            .filter(loadable -> loadable instanceof Reloadable)
+            .filter(Reloadable.class::isInstance)
             .map(loadable -> loadable.getClass().getSimpleName())
-            .collect(Collectors.toList());
+            .toList();
     }
 
     @Override

@@ -139,14 +139,20 @@ public class ArenaManagerImpl implements Loadable, ArenaManager {
     @Override
     public ArenaImpl get(@NotNull final String name) {
         Objects.requireNonNull(name, "name");
-        return arenas.stream().filter(arena -> arena.getName().equals(name)).findFirst().orElse(null);
+        return arenas.stream()
+                .filter(arena -> arena.getName().equals(name))
+                .findFirst()
+                .orElse(null);
     }
 
     @Nullable
     @Override
     public ArenaImpl get(@NotNull final Player player) {
         Objects.requireNonNull(player, "player");
-        return arenas.stream().filter(arena -> arena.has(player)).findFirst().orElse(null);
+        return arenas.stream()
+                .filter(arena -> arena.has(player))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -219,12 +225,12 @@ public class ArenaManagerImpl implements Loadable, ArenaManager {
     }
 
     public ArenaImpl randomArena(final KitImpl kit) {
-        final List<ArenaImpl> available = arenas.stream().filter(arena -> isSelectable(kit, arena)).collect(Collectors.toList());
+        final List<ArenaImpl> available = arenas.stream().filter(arena -> isSelectable(kit, arena)).toList();
         return !available.isEmpty() ? available.get(ThreadLocalRandom.current().nextInt(available.size())) : null;
     }
 
     public List<String> getNames() {
-        return arenas.stream().map(ArenaImpl::getName).collect(Collectors.toList());
+        return arenas.stream().map(ArenaImpl::getName).toList();
     }
 
     // Called on kit removal

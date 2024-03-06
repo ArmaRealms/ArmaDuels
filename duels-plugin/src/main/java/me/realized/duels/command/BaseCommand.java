@@ -102,6 +102,6 @@ public abstract class BaseCommand extends AbstractCommand<DuelsPlugin> {
         return collection.stream()
             .filter(value -> value.toLowerCase().startsWith(argument.toLowerCase()))
             .map(value -> value.replace(" ", "-"))
-            .collect(Collectors.toList());
+            .toList();
     }
 }

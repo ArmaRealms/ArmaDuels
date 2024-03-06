@@ -41,8 +41,7 @@ public class KitData {
 
         for (final Map.Entry<String, Map<Integer, ItemStack>> entry : kit.getItems().entrySet()) {
             final Map<Integer, ItemData> data = new HashMap<>();
-            entry.getValue().entrySet()
-                .stream()
+            entry.getValue().entrySet().stream()
                 .filter(value -> Objects.nonNull(value.getValue()))
                 .forEach(value -> data.put(value.getKey(), ItemData.fromItemStack(value.getValue())));
             items.put(entry.getKey(), data);

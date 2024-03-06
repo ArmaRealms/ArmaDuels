@@ -172,7 +172,7 @@ public abstract class AbstractCommand<P extends JavaPlugin> implements TabComple
                 .filter(childName -> childName.startsWith(args[0].toLowerCase()))
                 .distinct()
                 .sorted(String::compareTo)
-                .collect(Collectors.toList());
+                .toList();
         }
 
         return null;

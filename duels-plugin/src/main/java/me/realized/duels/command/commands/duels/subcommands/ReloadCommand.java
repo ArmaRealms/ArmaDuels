@@ -50,7 +50,7 @@ public class ReloadCommand extends BaseCommand {
         if (args.length == 2) {
             return plugin.getReloadables().stream()
                 .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
-                .collect(Collectors.toList());
+                .toList();
         }
 
         return null;

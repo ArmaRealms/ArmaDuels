@@ -36,11 +36,10 @@ public class DamageListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamage(final EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
+        if (!event.isCancelled() || !(event.getEntity() instanceof Player player)) {
             return;
         }
 
-        final Player player = (Player) event.getEntity();
         final Player damager = EventUtil.getDamager(event);
 
         if (damager == null) {
@@ -54,15 +53,15 @@ public class DamageListener implements Listener {
             return;
         }
 
-        KitImpl.Characteristic characteristic = arena.getMatch().getKit().getCharacteristics().stream().filter(
-                c -> c == KitImpl.Characteristic.BOXING).findFirst().orElse(null);
+        KitImpl.Characteristic characteristic = arena.getMatch().getKit().getCharacteristics().stream()
+                .filter(c -> c == KitImpl.Characteristic.BOXING)
+                .findFirst()
+                .orElse(null);
 
         if(characteristic != null) {
             if(arena.getMatch().getHits(damager) >= 99) {
                 player.getInventory().clear();
-                PlayerDeathEvent customEvent = new PlayerDeathEvent(player,
-                        new ArrayList<>(), 0,
-                        "Suck " + damager.getDisplayName() + " on boxing fight!");
+                PlayerDeathEvent customEvent = new PlayerDeathEvent(player, new ArrayList<>(), 0, "Morreu para " + damager.getDisplayName() + " numa luta de boxe!");
                 PlayerUtil.reset(player);
                 Bukkit.getPluginManager().callEvent(customEvent);
                 return;
@@ -71,8 +70,9 @@ public class DamageListener implements Listener {
 
         arena.getMatch().addDamageToPlayer(damager, event.getFinalDamage());
 
-        if(!event.isCancelled()) return;
-
+        if (!event.isCancelled()) {
+            return;
+        }
         event.setCancelled(false);
     }
 

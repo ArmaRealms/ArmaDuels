@@ -243,7 +243,7 @@ public class UserManagerImpl implements Loadable, Listener, UserManager {
         return users.values().stream()
             .map(data -> new TopData(data.getUuid(), data.getName(), function.apply(data)))
             .sorted(Comparator.reverseOrder())
-            .collect(Collectors.toList());
+            .toList();
     }
 
     private UserData tryLoad(final Player player) {

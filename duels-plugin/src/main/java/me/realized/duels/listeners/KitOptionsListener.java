@@ -81,8 +81,7 @@ public class KitOptionsListener implements Listener {
 
         final Location to = event.getTo(), from = event.getFrom();
 
-        if (from.getBlockX() !=
-                to.getBlockX() && from.getBlockY() != to.getBlockY() && from.getBlockZ() != to.getBlockZ()
+        if (from.getBlockX() != to.getBlockX() && from.getBlockY() != to.getBlockY() && from.getBlockZ() != to.getBlockZ()
              && arena.getMatch().getDurationInMillis() < 5000) {
             from.setPitch(player.getLocation().getPitch());
             from.setYaw(player.getLocation().getYaw());
