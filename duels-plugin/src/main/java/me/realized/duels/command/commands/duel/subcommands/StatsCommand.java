@@ -1,7 +1,5 @@
 package me.realized.duels.command.commands.duel.subcommands;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.Permissions;
 import me.realized.duels.command.BaseCommand;
@@ -11,6 +9,9 @@ import me.realized.duels.util.TextBuilder;
 import net.md_5.bungee.api.chat.HoverEvent.Action;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class StatsCommand extends BaseCommand {
 

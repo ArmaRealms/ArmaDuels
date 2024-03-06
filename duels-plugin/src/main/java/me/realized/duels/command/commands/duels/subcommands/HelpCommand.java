@@ -1,12 +1,12 @@
 package me.realized.duels.command.commands.duels.subcommands;
 
 import com.google.common.collect.Lists;
-import java.util.List;
-import java.util.stream.Collectors;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.command.BaseCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+
+import java.util.List;
 
 public class HelpCommand extends BaseCommand {
 

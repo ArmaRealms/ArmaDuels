@@ -1,12 +1,13 @@
 package me.realized.duels.gui.betting.buttons;
 
-import java.util.UUID;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.gui.BaseButton;
 import me.realized.duels.gui.betting.BettingGui;
 import me.realized.duels.util.compat.Items;
 import me.realized.duels.util.inventory.ItemBuilder;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 public class StateButton extends BaseButton {
 

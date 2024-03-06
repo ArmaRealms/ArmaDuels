@@ -1,8 +1,5 @@
 package me.realized.duels.command;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.arena.ArenaManagerImpl;
 import me.realized.duels.betting.BettingManager;
@@ -21,6 +18,9 @@ import me.realized.duels.setting.SettingsManager;
 import me.realized.duels.spectate.SpectateManagerImpl;
 import me.realized.duels.util.command.AbstractCommand;
 import org.bukkit.command.CommandSender;
+
+import java.util.Collection;
+import java.util.List;
 
 public abstract class BaseCommand extends AbstractCommand<DuelsPlugin> {
 

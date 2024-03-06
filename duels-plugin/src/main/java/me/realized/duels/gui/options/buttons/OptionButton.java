@@ -1,8 +1,5 @@
 package me.realized.duels.gui.options.buttons;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.gui.BaseButton;
 import me.realized.duels.gui.options.OptionsGui;
@@ -10,6 +7,10 @@ import me.realized.duels.gui.options.OptionsGui.Option;
 import me.realized.duels.kit.KitImpl;
 import me.realized.duels.util.inventory.ItemBuilder;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class OptionButton extends BaseButton {
 

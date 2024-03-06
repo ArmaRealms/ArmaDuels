@@ -1,10 +1,11 @@
 package me.realized.duels.api.command;
 
-import java.util.Objects;
 import me.realized.duels.api.Duels;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 /**
  * An abstract SubCommand class that hooks into commands registered by Duels.

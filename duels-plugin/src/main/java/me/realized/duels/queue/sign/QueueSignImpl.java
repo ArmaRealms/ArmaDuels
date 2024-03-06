@@ -1,6 +1,5 @@
 package me.realized.duels.queue.sign;
 
-import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +10,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+
+import java.util.Objects;
 
 public class QueueSignImpl implements QueueSign {
 

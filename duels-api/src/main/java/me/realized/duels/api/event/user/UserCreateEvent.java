@@ -1,10 +1,11 @@
 package me.realized.duels.api.event.user;
 
-import java.util.Objects;
 import me.realized.duels.api.user.User;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * Called when a new {@link User} is created.

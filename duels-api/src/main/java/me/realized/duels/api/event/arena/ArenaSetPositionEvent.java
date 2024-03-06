@@ -1,6 +1,5 @@
 package me.realized.duels.api.event.arena;
 
-import java.util.Objects;
 import me.realized.duels.api.arena.Arena;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -9,6 +8,8 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 /**
  * Called when a new spawnpoint is set for an {@link Arena}.

@@ -1,14 +1,15 @@
 package me.realized.duels.data;
 
+import me.realized.duels.player.PlayerInfo;
+import me.realized.duels.util.Log;
+import org.bukkit.inventory.ItemStack;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import me.realized.duels.player.PlayerInfo;
-import me.realized.duels.util.Log;
-import org.bukkit.inventory.ItemStack;
 
 public class PlayerData {
 

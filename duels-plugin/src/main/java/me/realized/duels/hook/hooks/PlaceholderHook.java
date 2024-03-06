@@ -2,7 +2,6 @@ package me.realized.duels.hook.hooks;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.realized.duels.DuelsPlugin;
-import me.realized.duels.api.arena.ArenaManager;
 import me.realized.duels.arena.ArenaImpl;
 import me.realized.duels.arena.ArenaManagerImpl;
 import me.realized.duels.data.UserData;

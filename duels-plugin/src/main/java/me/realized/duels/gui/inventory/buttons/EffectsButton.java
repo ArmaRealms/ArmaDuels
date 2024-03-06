@@ -1,6 +1,5 @@
 package me.realized.duels.gui.inventory.buttons;
 
-import java.util.stream.Collectors;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.gui.BaseButton;
 import me.realized.duels.util.StringUtil;
@@ -9,6 +8,8 @@ import me.realized.duels.util.compat.Items;
 import me.realized.duels.util.inventory.ItemBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
+
+import java.util.stream.Collectors;
 
 public class EffectsButton extends BaseButton {
 

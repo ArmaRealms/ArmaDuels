@@ -1,10 +1,5 @@
 package me.realized.duels.data;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.kit.KitImpl;
 import me.realized.duels.kit.KitImpl.Characteristic;
@@ -12,6 +7,12 @@ import me.realized.duels.util.Log;
 import me.realized.duels.util.inventory.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 public class KitData {
 

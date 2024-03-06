@@ -1,13 +1,14 @@
 package me.realized.duels.data;
 
+import lombok.Getter;
+import me.realized.duels.DuelsPlugin;
+import me.realized.duels.arena.ArenaImpl;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import lombok.Getter;
-import me.realized.duels.DuelsPlugin;
-import me.realized.duels.arena.ArenaImpl;
 
 public class ArenaData {
 
