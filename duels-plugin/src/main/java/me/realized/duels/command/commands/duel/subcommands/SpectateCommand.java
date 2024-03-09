@@ -1,4 +1,4 @@
-package me.realized.duels.command.commands;
+package me.realized.duels.command.commands.duel.subcommands;
 
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.Permissions;
@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 public class SpectateCommand extends BaseCommand {
 
     public SpectateCommand(final DuelsPlugin plugin) {
-        super(plugin, "spectate", Permissions.SPECTATE, true);
+        super(plugin, "spectate", null, null, Permissions.SPECTATE,1, true, "spec");
     }
 
     @Override
@@ -30,7 +30,7 @@ public class SpectateCommand extends BaseCommand {
             return;
         }
 
-        if (args.length == 0) {
+        if (args.length < 2) {
             lang.sendMessage(sender, "COMMAND.spectate.usage", "command", label);
             return;
         }
@@ -40,24 +40,20 @@ public class SpectateCommand extends BaseCommand {
             return;
         }
 
-        final Player target = Bukkit.getPlayerExact(args[0]);
+        final Player target = Bukkit.getPlayerExact(args[1]);
 
         if (target == null) {
-            lang.sendMessage(sender, "ERROR.player.not-found", "name", args[0]);
+            lang.sendMessage(sender, "ERROR.player.not-found", "name", args[1]);
             return;
         }
 
         final Result result = spectateManager.startSpectating(player, target);
 
         switch (result) {
-            case IN_MATCH
-                    -> lang.sendMessage(player, "ERROR.spectate.already-spectating.sender");
-            case IN_QUEUE
-                    -> lang.sendMessage(player, "ERROR.duel.already-in-queue");
-            case ALREADY_SPECTATING
-                    -> lang.sendMessage(player, "ERROR.duel.already-in-match.sender");
-            case TARGET_NOT_IN_MATCH, EVENT_CANCELLED
-                    -> lang.sendMessage(player, "ERROR.spectate.not-in-match", "name", target.getName());
+            case IN_MATCH -> lang.sendMessage(player, "ERROR.spectate.already-spectating.sender");
+            case IN_QUEUE -> lang.sendMessage(player, "ERROR.duel.already-in-queue");
+            case ALREADY_SPECTATING -> lang.sendMessage(player, "ERROR.duel.already-in-match.sender");
+            case TARGET_NOT_IN_MATCH, EVENT_CANCELLED -> lang.sendMessage(player, "ERROR.spectate.not-in-match", "name", target.getName());
             case SUCCESS -> {
                 final ArenaImpl arena = arenaManager.get(target);
 

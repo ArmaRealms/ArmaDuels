@@ -83,18 +83,10 @@ public abstract class BaseCommand extends AbstractCommand<DuelsPlugin> {
     @Override
     protected void handleMessage(final CommandSender sender, final MessageType type, final String... args) {
         switch (type) {
-            case PLAYER_ONLY:
-                super.handleMessage(sender, type, args);
-                break;
-            case NO_PERMISSION:
-                lang.sendMessage(sender, "ERROR.no-permission", "permission", args[0]);
-                break;
-            case SUB_COMMAND_INVALID:
-                lang.sendMessage(sender, "ERROR.command.invalid-sub-command", "command", args[0], "argument", args[1]);
-                break;
-            case SUB_COMMAND_USAGE:
-                lang.sendMessage(sender, "COMMAND.sub-command-usage", "command", args[0], "usage", args[1], "description", args[2]);
-                break;
+            case PLAYER_ONLY -> super.handleMessage(sender, type, args);
+            case NO_PERMISSION -> lang.sendMessage(sender, "ERROR.no-permission", "permission", args[0]);
+            case SUB_COMMAND_INVALID -> lang.sendMessage(sender, "ERROR.command.invalid-sub-command", "command", args[0], "argument", args[1]);
+            case SUB_COMMAND_USAGE -> lang.sendMessage(sender, "COMMAND.sub-command-usage", "command", args[0], "usage", args[1], "description", args[2]);
         }
     }
 
