@@ -17,9 +17,6 @@ commands:
    queue:
     description: Join or leave a queue.
     aliases: [q]
-   spectate:
-     description: Spectate a duel.
-     aliases: [spec, x1spec]
    duels:
      description: Administrative command of Duels.
      aliases: [ds]

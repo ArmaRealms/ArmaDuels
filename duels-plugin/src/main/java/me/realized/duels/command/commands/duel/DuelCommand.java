@@ -7,6 +7,7 @@ import me.realized.duels.command.BaseCommand;
 import me.realized.duels.command.commands.duel.subcommands.AcceptCommand;
 import me.realized.duels.command.commands.duel.subcommands.DenyCommand;
 import me.realized.duels.command.commands.duel.subcommands.InventoryCommand;
+import me.realized.duels.command.commands.duel.subcommands.SpectateCommand;
 import me.realized.duels.command.commands.duel.subcommands.StatsCommand;
 import me.realized.duels.command.commands.duel.subcommands.ToggleCommand;
 import me.realized.duels.command.commands.duel.subcommands.TopCommand;
@@ -48,7 +49,8 @@ public class DuelCommand extends BaseCommand {
                 new ToggleCommand(plugin),
                 new TopCommand(plugin),
                 new InventoryCommand(plugin),
-                new VersionCommand(plugin)
+                new VersionCommand(plugin),
+                new SpectateCommand(plugin)
         );
         this.combatTagPlus = hookManager.getHook(CombatTagPlusHook.class);
         this.pvpManager = hookManager.getHook(PvPManagerHook.class);
@@ -95,9 +97,9 @@ public class DuelCommand extends BaseCommand {
             return true;
         }
 
-        if ((combatTagPlus != null && combatTagPlus.isTagged(player))
+        if ((combatLogX != null && combatLogX.isTagged(player))
                 || (pvpManager != null && pvpManager.isTagged(player))
-                || (combatLogX != null && combatLogX.isTagged(player))) {
+                || (combatTagPlus != null && combatTagPlus.isTagged(player))) {
             lang.sendMessage(sender, "ERROR.duel.is-tagged");
             return true;
         }
@@ -282,13 +284,13 @@ public class DuelCommand extends BaseCommand {
                     .toList();
 
             if (args.length == 1) {
-                Iterable<String> stringIterable = new ArrayList<>(List.of("aceitar", "negar", "stats", "alternar", "top"));
+                Iterable<String> stringIterable = new ArrayList<>(List.of("aceitar", "negar", "stats", "alternar", "top", "spec"));
                 stringIterable = Iterables.concat(stringIterable, players);
                 org.bukkit.util.StringUtil.copyPartialMatches(args[0], stringIterable, completions);
                 return completions;
             } else if (args.length == 2) {
                 switch (args[0]) {
-                    case "aceitar", "negar", "accept", "deny", "stats" -> {
+                    case "aceitar", "negar", "accept", "deny", "stats", "spec", "spectate" -> {
                         org.bukkit.util.StringUtil.copyPartialMatches(args[1], players, completions);
                         return completions;
                     }

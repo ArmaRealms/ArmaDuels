@@ -6,7 +6,6 @@ import me.realized.duels.api.Duels;
 import me.realized.duels.api.command.SubCommand;
 import me.realized.duels.arena.ArenaManagerImpl;
 import me.realized.duels.betting.BettingManager;
-import me.realized.duels.command.commands.SpectateCommand;
 import me.realized.duels.command.commands.duel.DuelCommand;
 import me.realized.duels.command.commands.duels.DuelsCommand;
 import me.realized.duels.command.commands.queue.QueueCommand;
@@ -229,7 +228,6 @@ public class DuelsPlugin extends JavaPlugin implements Duels, LogSource {
         registerCommands(
             new DuelCommand(this),
             new QueueCommand(this),
-            new SpectateCommand(this),
             new DuelsCommand(this)
         );
 
@@ -308,7 +306,7 @@ public class DuelsPlugin extends JavaPlugin implements Duels, LogSource {
             return false;
         }
 
-        result.child(new AbstractCommand<DuelsPlugin>(this, subCommand) {
+        result.child(new AbstractCommand<>(this, subCommand) {
             @Override
             protected void execute(final CommandSender sender, final String label, final String[] args) {
                 subCommand.execute(sender, label, args);
