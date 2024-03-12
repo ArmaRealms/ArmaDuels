@@ -45,6 +45,7 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
@@ -97,6 +98,7 @@ public class DuelManager implements Loadable {
     private McMMOHook mcMMO;
     private WorldGuardHook worldGuard;
     private MyPetHook myPet;
+    private ConsoleCommandSender console;
 
     private int durationCheckTask;
 
@@ -108,6 +110,7 @@ public class DuelManager implements Loadable {
         this.arenaManager = plugin.getArenaManager();
         this.playerManager = plugin.getPlayerManager();
         this.inventoryManager = plugin.getInventoryManager();
+        this.console = Bukkit.getConsoleSender();
 
         plugin.doSyncAfter(() -> Bukkit.getPluginManager().registerEvents(new DuelListener(), plugin), 1L);
     }
@@ -220,7 +223,7 @@ public class DuelManager implements Loadable {
         if (config.isTieCommandsEnabled() && !(!match.isFromQueue() && config.isTieCommandsQueueOnly())) {
             try {
                 for (final String command : config.getTieCommands()) {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command
+                    Bukkit.dispatchCommand(console, command
                             .replace("%player%", player.getName())
                             .replace("%kit%", match.getKit().getName())
                             .replace("%arena%", arena.getName())
@@ -396,6 +399,19 @@ public class DuelManager implements Loadable {
         final MatchImpl match = arena.startMatch(kit, items, settings.getBet(), settings.isMcmmoSkills(), source);
         addPlayers(match, arena, kit, arena.getPositions(), first, second);
 
+        if (config.isStartCommandsEnabled() && !(match.getSource() == null && config.isStartCommandsQueueOnly())) {
+            try {
+                for (final String command : config.getStartCommands()) {
+                    Bukkit.dispatchCommand(console, command
+                            .replace("%first_player%", first.getName())
+                            .replace("%second_player%", second.getName())
+                    );
+                }
+            } catch (Exception ex) {
+                Log.warn(this, "Error while running match start commands: " + ex.getMessage());
+            }
+        }
+
         if (config.isCdEnabled()) {
             final Map<UUID, Pair<String, Integer>> info = new HashMap<>();
             info.put(first.getUniqueId(), new Pair<>(second.getName(), getRating(kit, userDataManager.get(second))));
@@ -463,16 +479,6 @@ public class DuelManager implements Loadable {
             if (kit != null) {
                 PlayerUtil.reset(player);
                 kit.equip(player);
-            }
-
-            if (config.isStartCommandsEnabled() && !(match.getSource() == null && config.isStartCommandsQueueOnly())) {
-                try {
-                    for (final String command : config.getStartCommands()) {
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName()));
-                    }
-                } catch (Exception ex) {
-                    Log.warn(this, "Error while running match start commands: " + ex.getMessage());
-                }
             }
 
             if (myPet != null) {
@@ -644,11 +650,13 @@ public class DuelManager implements Loadable {
                     if (config.isEndCommandsEnabled() && !(!match.isFromQueue() && config.isEndCommandsQueueOnly())) {
                         try {
                             for (final String command : config.getEndCommands()) {
-                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command
-                                        .replace("%winner%", winner.getName()).replace("%loser%", player.getName())
-                                        .replace("%kit%", kitName).replace("%arena%", arena.getName())
-                                        .replace("%bet_amount%", String.valueOf(match.getBet())
-                                        .replace("%mcmmo_skills%", match.isMcmmoSkills() ? lang.getMessage("GENERAL.enabled") : lang.getMessage("GENERAL.disabled")))
+                                Bukkit.dispatchCommand(console, command
+                                        .replace("%winner%", winner.getName())
+                                        .replace("%loser%", player.getName())
+                                        .replace("%kit%", kitName)
+                                        .replace("%arena%", arena.getName())
+                                        .replace("%bet_amount%", String.valueOf(match.getBet()))
+                                        .replace("%mcmmo_skills%", match.isMcmmoSkills() ? lang.getMessage("GENERAL.enabled") : lang.getMessage("GENERAL.disabled"))
                                 );
                             }
                         } catch (Exception ex) {
