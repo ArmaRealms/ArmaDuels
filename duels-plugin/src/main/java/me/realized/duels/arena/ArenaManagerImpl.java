@@ -299,10 +299,6 @@ public class ArenaManagerImpl implements Loadable, ArenaManager {
                 return;
             }
 
-            if(to.getBlockY() < config.getMinY()) {
-                event.getPlayer().damage(99999);
-            }
-
             if (!config.isPreventMovement()) {
                 return;
             }
@@ -317,6 +313,10 @@ public class ArenaManagerImpl implements Loadable, ArenaManager {
 
             if (arena == null || !arena.isCounting()) {
                 return;
+            }
+
+            if (to.getBlockY() < config.getMinY()) {
+                event.getPlayer().damage(99999);
             }
 
             event.setTo(event.getFrom());
