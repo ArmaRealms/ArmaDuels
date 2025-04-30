@@ -16,7 +16,12 @@ public final class ReflectionUtil {
     static {
         final String packageName = Bukkit.getServer().getClass().getPackage().getName();
         PACKAGE_VERSION = packageName.substring(packageName.lastIndexOf('.') + 1);
-        MAJOR_VERSION = NumberUtil.parseInt(PACKAGE_VERSION.split("_")[1]).orElse(0);
+        if (PACKAGE_VERSION.equalsIgnoreCase("craftbukkit")) {
+            String bukkitVersion = Bukkit.getBukkitVersion();
+            MAJOR_VERSION = NumberUtil.parseInt(bukkitVersion.split("-")[0].split("\\.")[1]).orElse(0);
+        } else {
+            MAJOR_VERSION = NumberUtil.parseInt(PACKAGE_VERSION.split("_")[1]).orElse(0);
+        }
     }
 
     public static int getMajorVersion() {
@@ -57,6 +62,9 @@ public final class ReflectionUtil {
 
     public static Class<?> getCBClass(final String path, final boolean logError) {
         try {
+        	if (getMajorVersion() >= 21) {
+        		return Class.forName("org.bukkit.craftbukkit." + path);
+        	}
             return Class.forName("org.bukkit.craftbukkit." + PACKAGE_VERSION + "." + path);
         } catch (ClassNotFoundException ex) {
             if (logError) {
