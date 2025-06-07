@@ -50,11 +50,6 @@ subprojects {
             url 'https://repo.essentialsx.net/releases/'
         }
 
-        maven {
-            name 'sirblobman-repo'
-            url 'https://nexus.sirblobman.xyz/public/'
-        }
-
         flatDir {
             dirs "$rootDir/libs/"
         }
