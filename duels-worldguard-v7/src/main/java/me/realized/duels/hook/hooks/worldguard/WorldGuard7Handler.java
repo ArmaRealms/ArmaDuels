@@ -17,7 +17,7 @@ public class WorldGuard7Handler implements WorldGuardHandler {
         final BlockVector3 vector = BlockVector3.at(location.getBlockX(), location.getBlockY(), location.getBlockZ());
 
         for (final ProtectedRegion region : WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(player.getWorld()))
-            .getApplicableRegions(vector)) {
+                .getApplicableRegions(vector)) {
             if (regions.contains(region.getId())) {
                 return region.getId();
             }

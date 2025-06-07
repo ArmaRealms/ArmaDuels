@@ -24,6 +24,9 @@ public final class ReflectionUtil {
         }
     }
 
+    private ReflectionUtil() {
+    }
+
     public static int getMajorVersion() {
         return MAJOR_VERSION;
     }
@@ -62,9 +65,9 @@ public final class ReflectionUtil {
 
     public static Class<?> getCBClass(final String path, final boolean logError) {
         try {
-        	if (getMajorVersion() >= 21) {
-        		return Class.forName("org.bukkit.craftbukkit." + path);
-        	}
+            if (getMajorVersion() >= 21) {
+                return Class.forName("org.bukkit.craftbukkit." + path);
+            }
             return Class.forName("org.bukkit.craftbukkit." + PACKAGE_VERSION + "." + path);
         } catch (ClassNotFoundException ex) {
             if (logError) {
@@ -139,6 +142,4 @@ public final class ReflectionUtil {
             return null;
         }
     }
-
-    private ReflectionUtil() {}
 }

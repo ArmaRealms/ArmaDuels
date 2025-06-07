@@ -13,10 +13,10 @@ import org.bukkit.entity.Player;
 
 public class BindButton extends BaseButton {
 
-    @Setter
-    private BindGui gui;
     private final KitImpl kit;
     private final ArenaImpl arena;
+    @Setter
+    private BindGui gui;
 
     public BindButton(final DuelsPlugin plugin, final KitImpl kit, final ArenaImpl arena) {
         super(plugin, ItemBuilder.of(Items.EMPTY_MAP).build());

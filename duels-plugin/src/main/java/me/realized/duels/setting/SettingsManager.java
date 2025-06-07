@@ -23,7 +23,8 @@ public class SettingsManager implements Loadable, Listener {
     }
 
     @Override
-    public void handleLoad() {}
+    public void handleLoad() {
+    }
 
     @Override
     public void handleUnload() {

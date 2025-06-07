@@ -30,8 +30,8 @@ public class HelpCommand extends BaseCommand {
     public List<String> onTabComplete(final CommandSender sender, final Command command, final String alias, final String[] args) {
         if (args.length == 2) {
             return categories.stream()
-                .filter(category -> category.toLowerCase().startsWith(args[1].toLowerCase()))
-                .toList();
+                    .filter(category -> category.toLowerCase().startsWith(args[1].toLowerCase()))
+                    .toList();
         }
 
         return null;

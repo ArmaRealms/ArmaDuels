@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 public class SpectateCommand extends BaseCommand {
 
     public SpectateCommand(final DuelsPlugin plugin) {
-        super(plugin, "spectate", null, null, Permissions.SPECTATE,1, true, "spec");
+        super(plugin, "spectate", null, null, Permissions.SPECTATE, 1, true, "spec");
     }
 
     @Override

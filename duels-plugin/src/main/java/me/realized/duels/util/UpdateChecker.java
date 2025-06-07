@@ -33,7 +33,8 @@ public final class UpdateChecker {
 
                 final boolean updateAvailable = NumberUtil.isLower(currentVersion, latestVersion);
                 callback.accept(updateAvailable, updateAvailable ? latestVersion : currentVersion);
-            } catch (IOException ignored) {}
+            } catch (IOException ignored) {
+            }
         });
     }
 }

@@ -17,11 +17,11 @@ import java.util.Set;
 
 public class Config extends AbstractConfiguration<DuelsPlugin> {
 
+    private final Map<String, MessageSound> sounds = new HashMap<>();
     @Getter
     private int version;
     @Getter
     private boolean checkForUpdates;
-
     @Getter
     private boolean ctpPreventDuel;
     @Getter
@@ -62,7 +62,6 @@ public class Config extends AbstractConfiguration<DuelsPlugin> {
     private String lhLossesCmd;
     @Getter
     private String lhLossesTitle;
-
     @Getter
     private boolean requiresClearedInventory;
     @Getter
@@ -99,7 +98,6 @@ public class Config extends AbstractConfiguration<DuelsPlugin> {
     private boolean moneyBettingUsePermission;
     @Getter
     private int expiration;
-
     @Getter
     private int maxDuration;
     @Getter
@@ -166,10 +164,8 @@ public class Config extends AbstractConfiguration<DuelsPlugin> {
     private List<String> whitelistedCommands;
     @Getter
     private List<String> blacklistedCommands;
-
     @Getter
     private List<String> queueBlacklistedCommands;
-
     @Getter
     private boolean ratingEnabled;
     @Getter
@@ -178,7 +174,6 @@ public class Config extends AbstractConfiguration<DuelsPlugin> {
     private int defaultRating;
     @Getter
     private boolean ratingQueueOnly;
-
     @Getter
     private boolean specRequiresClearedInventory;
     @Getter
@@ -187,7 +182,6 @@ public class Config extends AbstractConfiguration<DuelsPlugin> {
     private boolean specAddInvisibilityEffect;
     @Getter
     private List<String> specWhitelistedCommands;
-
     @Getter
     private boolean cdEnabled;
     @Getter
@@ -202,7 +196,6 @@ public class Config extends AbstractConfiguration<DuelsPlugin> {
     private boolean preventPvp;
     @Getter
     private boolean preventInteract;
-
     @Getter
     private boolean displayKitRatings;
     @Getter
@@ -211,7 +204,6 @@ public class Config extends AbstractConfiguration<DuelsPlugin> {
     private boolean displayPastMatches;
     @Getter
     private int matchesToDisplay;
-
     @Getter
     private long topUpdateInterval;
     @Getter
@@ -230,7 +222,6 @@ public class Config extends AbstractConfiguration<DuelsPlugin> {
     private String topNoKitType;
     @Getter
     private String topNoKitIdentifier;
-
     @Getter
     private int kitSelectorRows;
     @Getter
@@ -255,15 +246,12 @@ public class Config extends AbstractConfiguration<DuelsPlugin> {
     private short queuesFillerData;
     @Getter
     private boolean inheritKitItemType;
-
     @Getter
     private double soupHeartsToRegen;
     @Getter
     private boolean soupRemoveEmptyBowl;
     @Getter
     private boolean soupCancelIfAlreadyFull;
-
-    private final Map<String, MessageSound> sounds = new HashMap<>();
 
     public Config(final DuelsPlugin plugin) {
         super(plugin, "config");
@@ -426,8 +414,8 @@ public class Config extends AbstractConfiguration<DuelsPlugin> {
 
     public void playSound(final Player player, final String message) {
         sounds.values().stream()
-            .filter(sound -> sound.getMessages().contains(message))
-            .forEach(sound -> player.playSound(player.getLocation(), sound.getType(), sound.getVolume(), sound.getPitch()));
+                .filter(sound -> sound.getMessages().contains(message))
+                .forEach(sound -> player.playSound(player.getLocation(), sound.getType(), sound.getVolume(), sound.getPitch()));
     }
 
     public MessageSound getSound(final String name) {

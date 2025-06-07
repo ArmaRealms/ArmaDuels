@@ -33,8 +33,8 @@ public class InfoCommand extends BaseCommand {
         final String positions = StringUtil.join(arena.getPositions().values().stream().map(StringUtil::parse).toList(), ", ");
         final String players = StringUtil.join(arena.getPlayers().stream().map(Player::getName).toList(), ", ");
         lang.sendMessage(sender, "COMMAND.duels.info", "name", name, "in_use", inUse, "disabled", disabled, "kits",
-            !kits.isEmpty() ? kits : lang.getMessage("GENERAL.none"), "positions", !positions.isEmpty() ? positions : lang.getMessage("GENERAL.none"), "players",
-            !players.isEmpty() ? players : lang.getMessage("GENERAL.none"));
+                !kits.isEmpty() ? kits : lang.getMessage("GENERAL.none"), "positions", !positions.isEmpty() ? positions : lang.getMessage("GENERAL.none"), "players",
+                !players.isEmpty() ? players : lang.getMessage("GENERAL.none"));
     }
 
     @Override

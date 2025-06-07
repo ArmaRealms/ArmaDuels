@@ -22,11 +22,11 @@ import java.util.List;
 public class SettingsGui extends SinglePageGui<DuelsPlugin> {
 
     private static final int[][] PATTERNS = {
-        {13},
-        {12, 14},
-        {12, 13, 14},
-        {12, 13, 14, 22},
-        {11, 12, 14, 15, 22}
+            {13},
+            {12, 14},
+            {12, 13, 14},
+            {12, 13, 14, 22},
+            {11, 12, 14, 15, 22}
     };
 
     public SettingsGui(final DuelsPlugin plugin) {

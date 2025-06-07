@@ -77,7 +77,8 @@ public class KitManagerImpl implements Loadable, KitManager {
 
         if (FileUtil.checkNonEmpty(file, true)) {
             try (final Reader reader = new InputStreamReader(new FileInputStream(file), Charsets.UTF_8)) {
-                final Map<String, KitData> data = JsonUtil.getObjectMapper().readValue(reader, new TypeReference<LinkedHashMap<String, KitData>>() {});
+                final Map<String, KitData> data = JsonUtil.getObjectMapper().readValue(reader, new TypeReference<LinkedHashMap<String, KitData>>() {
+                });
 
                 if (data != null) {
                     for (final Map.Entry<String, KitData> entry : data.entrySet()) {

@@ -36,6 +36,9 @@ public final class NBT {
         HAS_KEY = ReflectionUtil.getMethod(TAG_COMPOUND, "hasKey", String.class);
     }
 
+    private NBT() {
+    }
+
     public static ItemStack setItemString(final ItemStack item, final String key, final Object value) {
         try {
             final Object nmsItem = AS_NMS_COPY.invoke(null, item);
@@ -87,6 +90,4 @@ public final class NBT {
             return false;
         }
     }
-
-    private NBT() {}
 }

@@ -125,9 +125,9 @@ public class MultiPageGui<P extends JavaPlugin> extends AbstractGui<P> {
 
     private PageNode createPage(final int page, final int total) {
         return new PageNode(InventoryBuilder
-            .of(title + " (" + page + "/" + total + ")", size)
-            .fillRange(prevPageSlot, nextPageSlot + 1, getSpaceFiller())
-            .build());
+                .of(title + " (" + page + "/" + total + ")", size)
+                .fillRange(prevPageSlot, nextPageSlot + 1, getSpaceFiller())
+                .build());
     }
 
     private ItemStack getSpaceFiller() {

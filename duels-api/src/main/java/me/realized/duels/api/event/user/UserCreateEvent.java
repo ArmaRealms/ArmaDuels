@@ -21,6 +21,10 @@ public class UserCreateEvent extends Event {
         this.user = user;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     /**
      * The {@link User} that was created.
      *
@@ -29,10 +33,6 @@ public class UserCreateEvent extends Event {
     @NotNull
     public User getUser() {
         return user;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 
     @Override

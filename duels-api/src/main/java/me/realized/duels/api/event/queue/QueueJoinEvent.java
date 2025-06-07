@@ -28,6 +28,10 @@ public class QueueJoinEvent extends QueueEvent implements Cancellable {
         this.source = source;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     /**
      * {@link Player} who is joining the {@link DQueue}.
      *
@@ -47,10 +51,6 @@ public class QueueJoinEvent extends QueueEvent implements Cancellable {
     @Override
     public void setCancelled(final boolean cancelled) {
         this.cancelled = cancelled;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 
     @Override

@@ -32,7 +32,7 @@ public class PlaysoundCommand extends BaseCommand {
     public List<String> onTabComplete(final CommandSender sender, final Command command, final String alias, final String[] args) {
         if (args.length == 2) {
             return config.getSounds().stream()
-                .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
+                    .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
                     .toList();
         }
 

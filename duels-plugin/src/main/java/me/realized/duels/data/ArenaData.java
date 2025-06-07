@@ -18,14 +18,15 @@ public class ArenaData {
     private Set<String> kits = new HashSet<>();
     private Map<Integer, LocationData> positions = new HashMap<>();
 
-    private ArenaData() {}
+    private ArenaData() {
+    }
 
     public ArenaData(final ArenaImpl arena) {
         this.name = arena.getName();
         this.disabled = arena.isDisabled();
         arena.getKits().forEach(kit -> this.kits.add(kit.getName()));
         arena.getPositions().entrySet()
-            .stream().filter(entry -> entry.getValue().getWorld() != null).forEach(entry -> positions.put(entry.getKey(), LocationData.fromLocation(entry.getValue())));
+                .stream().filter(entry -> entry.getValue().getWorld() != null).forEach(entry -> positions.put(entry.getKey(), LocationData.fromLocation(entry.getValue())));
     }
 
     public ArenaImpl toArena(final DuelsPlugin plugin) {

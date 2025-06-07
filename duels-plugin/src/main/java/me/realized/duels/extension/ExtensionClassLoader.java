@@ -28,7 +28,7 @@ public class ExtensionClassLoader extends URLClassLoader {
     private final DuelsExtension extension;
 
     ExtensionClassLoader(final File file, final ExtensionInfo info, final ClassLoader parent) throws Exception {
-        super(new URL[] {file.toURI().toURL()}, parent);
+        super(new URL[]{file.toURI().toURL()}, parent);
         this.jar = new JarFile(file);
         this.manifest = jar.getManifest();
         this.url = file.toURI().toURL();
@@ -52,9 +52,9 @@ public class ExtensionClassLoader extends URLClassLoader {
             if (entry != null) {
                 final byte[] classBytes;
 
-                try (InputStream inputStream = jar.getInputStream(entry)) {
+                try (final InputStream inputStream = jar.getInputStream(entry)) {
                     classBytes = ByteStreams.toByteArray(inputStream);
-                } catch (IOException ex) {
+                } catch (final IOException ex) {
                     throw new ClassNotFoundException(name, ex);
                 }
 
@@ -70,7 +70,7 @@ public class ExtensionClassLoader extends URLClassLoader {
                             } else {
                                 definePackage(pkgName, null, null, null, null, null, null, null);
                             }
-                        } catch (IllegalArgumentException ex) {
+                        } catch (final IllegalArgumentException ex) {
                             if (getPackage(pkgName) == null) {
                                 throw new IllegalStateException("Cannot find package " + pkgName);
                             }

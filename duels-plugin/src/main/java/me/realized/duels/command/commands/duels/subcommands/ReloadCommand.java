@@ -49,8 +49,8 @@ public class ReloadCommand extends BaseCommand {
     public List<String> onTabComplete(final CommandSender sender, final Command command, final String alias, final String[] args) {
         if (args.length == 2) {
             return plugin.getReloadables().stream()
-                .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
-                .toList();
+                    .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
+                    .toList();
         }
 
         return null;

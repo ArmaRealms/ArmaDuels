@@ -19,6 +19,9 @@ public final class Inventories {
         CHAT_SERIALIZER_A = CompatUtil.is1_13() ? ReflectionUtil.getMethod(ReflectionUtil.getNMSClass("IChatBaseComponent$ChatSerializer"), "a", String.class) : null;
     }
 
+    private Inventories() {
+    }
+
     public static void setTitle(final Inventory inventory, final String title) {
         try {
             Object value = title;
@@ -33,6 +36,4 @@ public final class Inventories {
             ex.printStackTrace();
         }
     }
-
-    private Inventories() {}
 }

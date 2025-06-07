@@ -45,8 +45,8 @@ public class AcceptCommand extends BaseCommand {
         }
 
         if ((combatTagPlus != null && combatTagPlus.isTagged(player))
-            || (pvpManager != null && pvpManager.isTagged(player))
-            || (combatLogX != null && combatLogX.isTagged(player))) {
+                || (pvpManager != null && pvpManager.isTagged(player))
+                || (combatLogX != null && combatLogX.isTagged(player))) {
             lang.sendMessage(sender, "ERROR.duel.is-tagged");
             return;
         }
@@ -108,9 +108,9 @@ public class AcceptCommand extends BaseCommand {
         final String itemBetting = settings.isItemBetting() ? lang.getMessage("GENERAL.enabled") : lang.getMessage("GENERAL.disabled");
         final String mcmmoSkills = settings.isMcmmoSkills() ? lang.getMessage("GENERAL.enabled") : lang.getMessage("GENERAL.disabled");
         lang.sendMessage(player, "COMMAND.duel.request.accept.receiver",
-            "name", target.getName(), "kit", kit, "arena", arena, "bet_amount", bet, "item_betting", itemBetting, "mcmmo_skills", mcmmoSkills);
+                "name", target.getName(), "kit", kit, "arena", arena, "bet_amount", bet, "item_betting", itemBetting, "mcmmo_skills", mcmmoSkills);
         lang.sendMessage(target, "COMMAND.duel.request.accept.sender",
-            "name", player.getName(), "kit", kit, "arena", arena, "bet_amount", bet, "item_betting", itemBetting, "mcmmo_skills", mcmmoSkills);
+                "name", player.getName(), "kit", kit, "arena", arena, "bet_amount", bet, "item_betting", itemBetting, "mcmmo_skills", mcmmoSkills);
 
         if (settings.isItemBetting()) {
             settings.setBaseLoc(player);

@@ -36,8 +36,8 @@ import java.util.UUID;
 public class BettingGui extends AbstractGui<DuelsPlugin> {
 
     private final Section[] sections = {
-        new Section(9, 13, 4),
-        new Section(14, 18, 4)
+            new Section(9, 13, 4),
+            new Section(14, 18, 4)
     };
     private final GuiListener<DuelsPlugin> guiListener;
     private final DuelManager duelManager;

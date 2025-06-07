@@ -10,7 +10,7 @@ import java.util.UUID;
 
 /**
  * Called when a {@link Match} is ending.
- *
+ * <p>
  * Note: {@link Match#isFinished()} will return true only after this event is called.
  */
 public class MatchEndEvent extends MatchEvent {
@@ -26,6 +26,10 @@ public class MatchEndEvent extends MatchEvent {
         this.winner = winner;
         this.loser = loser;
         this.reason = reason;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 
     /**
@@ -56,10 +60,6 @@ public class MatchEndEvent extends MatchEvent {
     @NotNull
     public Reason getReason() {
         return reason;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 
     @Override

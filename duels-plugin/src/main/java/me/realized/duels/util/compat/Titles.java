@@ -47,7 +47,8 @@ public final class Titles {
         }
     }
 
-    private Titles() {}
+    private Titles() {
+    }
 
     public static void send(final Player player, final String title, final String subtitle, final int fadeIn, final int stay, final int fadeOut) {
         if (CompatUtil.hasSendTitle()) {

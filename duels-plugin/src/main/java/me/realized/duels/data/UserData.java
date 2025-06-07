@@ -20,14 +20,18 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class UserData implements User {
 
     private static transient final String ERROR_USER_SAVE = "An error occured while saving userdata of %s!";
-
+    transient File folder;
+    transient int defaultRating;
+    transient int matchesToDisplay;
     @Getter
     private UUID uuid;
     @Getter
@@ -38,15 +42,12 @@ public class UserData implements User {
     @Getter
     private volatile int losses;
     private boolean requests = true;
-
+    private Set<UUID> ignoredPlayers = new HashSet<>();
     private ConcurrentHashMap<String, Integer> rating;
     private List<MatchData> matches = new ArrayList<>();
 
-    transient File folder;
-    transient int defaultRating;
-    transient int matchesToDisplay;
-
-    private UserData() {}
+    private UserData() {
+    }
 
     public UserData(final File folder, final int defaultRating, final int matchesToDisplay, final Player player) {
         this.folder = folder;
@@ -194,13 +195,35 @@ public class UserData implements User {
     @Override
     public String toString() {
         return "UserData{" +
-            "uuid=" + uuid +
-            ", name='" + name + '\'' +
-            ", wins=" + wins +
-            ", losses=" + losses +
-            ", requests=" + requests +
-            ", matches=" + matches +
-            ", rating=" + rating +
-            '}';
+                "uuid=" + uuid +
+                ", name='" + name + '\'' +
+                ", wins=" + wins +
+                ", losses=" + losses +
+                ", requests=" + requests +
+                ", matches=" + matches +
+                ", rating=" + rating +
+                '}';
+    }
+
+    public boolean isIgnoring(UUID playerUuid) {
+        return ignoredPlayers.contains(playerUuid);
+    }
+
+    public void addIgnoredPlayer(UUID playerUuid) {
+        ignoredPlayers.add(playerUuid);
+        if (!isOnline()) {
+            trySave();
+        }
+    }
+
+    public void removeIgnoredPlayer(UUID playerUuid) {
+        ignoredPlayers.remove(playerUuid);
+        if (!isOnline()) {
+            trySave();
+        }
+    }
+
+    public Set<UUID> getIgnoredPlayers() {
+        return Collections.unmodifiableSet(ignoredPlayers);
     }
 }

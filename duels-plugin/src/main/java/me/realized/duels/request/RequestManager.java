@@ -32,7 +32,8 @@ public class RequestManager implements Loadable, Listener {
     }
 
     @Override
-    public void handleLoad() {}
+    public void handleLoad() {
+    }
 
     @Override
     public void handleUnload() {
@@ -68,21 +69,21 @@ public class RequestManager implements Loadable, Listener {
         final String mcmmoSkills = settings.isMcmmoSkills() ? lang.getMessage("GENERAL.enabled") : lang.getMessage("GENERAL.disabled");
 
         lang.sendMessage(sender, "COMMAND.duel.request.send.sender",
-            "name", target.getName(), "kit", kit, "own_inventory", ownInventory, "arena", arena, "bet_amount", betAmount, "item_betting", itemBetting, "mcmmo_skills", mcmmoSkills);
+                "name", target.getName(), "kit", kit, "own_inventory", ownInventory, "arena", arena, "bet_amount", betAmount, "item_betting", itemBetting, "mcmmo_skills", mcmmoSkills);
         lang.sendMessage(target, "COMMAND.duel.request.send.receiver",
-            "name", sender.getName(), "kit", kit, "own_inventory", ownInventory, "arena", arena, "bet_amount", betAmount, "item_betting", itemBetting, "mcmmo_skills", mcmmoSkills);
+                "name", sender.getName(), "kit", kit, "own_inventory", ownInventory, "arena", arena, "bet_amount", betAmount, "item_betting", itemBetting, "mcmmo_skills", mcmmoSkills);
 
         final String path = "COMMAND.duel.request.send.clickable-text.";
 
         TextBuilder
-            .of(lang.getMessage(path + "info.text"), null, null, Action.SHOW_TEXT, lang.getMessage(path + "info.hover-text"))
-            .add(lang.getMessage(path + "accept.text"),
-                ClickEvent.Action.RUN_COMMAND, "/duel accept " + sender.getName(),
-                Action.SHOW_TEXT, lang.getMessage(path + "accept.hover-text"))
-            .add(lang.getMessage(path + "deny.text"),
-                ClickEvent.Action.RUN_COMMAND, "/duel deny " + sender.getName(),
-                Action.SHOW_TEXT, lang.getMessage(path + "deny.hover-text"))
-            .send(target);
+                .of(lang.getMessage(path + "info.text"), null, null, Action.SHOW_TEXT, lang.getMessage(path + "info.hover-text"))
+                .add(lang.getMessage(path + "accept.text"),
+                        ClickEvent.Action.RUN_COMMAND, "/duel accept " + sender.getName(),
+                        Action.SHOW_TEXT, lang.getMessage(path + "accept.hover-text"))
+                .add(lang.getMessage(path + "deny.text"),
+                        ClickEvent.Action.RUN_COMMAND, "/duel deny " + sender.getName(),
+                        Action.SHOW_TEXT, lang.getMessage(path + "deny.hover-text"))
+                .send(target);
         TextBuilder.of(lang.getMessage(path + "extra.text"), null, null, Action.SHOW_TEXT, lang.getMessage(path + "extra.hover-text")).send(target);
     }
 
