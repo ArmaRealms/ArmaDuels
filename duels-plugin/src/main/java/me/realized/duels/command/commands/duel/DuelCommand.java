@@ -6,6 +6,7 @@ import me.realized.duels.Permissions;
 import me.realized.duels.command.BaseCommand;
 import me.realized.duels.command.commands.duel.subcommands.AcceptCommand;
 import me.realized.duels.command.commands.duel.subcommands.DenyCommand;
+import me.realized.duels.command.commands.duel.subcommands.IgnoreCommand;
 import me.realized.duels.command.commands.duel.subcommands.InventoryCommand;
 import me.realized.duels.command.commands.duel.subcommands.SpectateCommand;
 import me.realized.duels.command.commands.duel.subcommands.StatsCommand;
@@ -45,6 +46,7 @@ public class DuelCommand extends BaseCommand {
         child(
                 new AcceptCommand(plugin),
                 new DenyCommand(plugin),
+                new IgnoreCommand(plugin),
                 new StatsCommand(plugin),
                 new ToggleCommand(plugin),
                 new TopCommand(plugin),
@@ -142,6 +144,11 @@ public class DuelCommand extends BaseCommand {
 
         if (!sender.hasPermission(Permissions.ADMIN) && !user.canRequest()) {
             lang.sendMessage(sender, "ERROR.duel.requests-disabled", "name", target.getName());
+            return true;
+        }
+
+        if (user.isIgnoring(player.getUniqueId())) {
+            lang.sendMessage(sender, "ERROR.duel.player-ignoring", "name", target.getName());
             return true;
         }
 
@@ -273,11 +280,11 @@ public class DuelCommand extends BaseCommand {
     // Disables default TabCompleter
     @Override
     public List<String> onTabComplete(final CommandSender sender, final Command command, final String alias, final String[] args) {
-        if (sender instanceof Player player) {
+        if (sender instanceof final Player player) {
 
-            List<String> completions = new ArrayList<>();
+            final List<String> completions = new ArrayList<>();
 
-            Iterable<String> players = Bukkit.getOnlinePlayers().stream()
+            final Iterable<String> players = Bukkit.getOnlinePlayers().stream()
                     .filter(player::canSee)
                     .filter(p -> p != player)
                     .map(Player::getName)

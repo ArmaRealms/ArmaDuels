@@ -42,14 +42,14 @@ public class UserData implements User {
     @Getter
     private volatile int losses;
     private boolean requests = true;
-    private Set<UUID> ignoredPlayers = new HashSet<>();
+    private final Set<UUID> ignoredPlayers = new HashSet<>();
     private ConcurrentHashMap<String, Integer> rating;
-    private List<MatchData> matches = new ArrayList<>();
+    private final List<MatchData> matches = new ArrayList<>();
 
     private UserData() {
     }
 
-    public UserData(final File folder, final int defaultRating, final int matchesToDisplay, final Player player) {
+    public UserData(final File folder, final int defaultRating, final int matchesToDisplay, @NotNull final Player player) {
         this.folder = folder;
         this.defaultRating = defaultRating;
         this.matchesToDisplay = matchesToDisplay;
@@ -127,6 +127,33 @@ public class UserData implements User {
         }
     }
 
+    @Override
+    public boolean isIgnoring(final UUID playerUuid) {
+        return this.ignoredPlayers.contains(playerUuid);
+    }
+
+    @Override
+    public void addIgnoredPlayer(final UUID playerUuid) {
+        this.ignoredPlayers.add(playerUuid);
+        if (!isOnline()) {
+            trySave();
+        }
+    }
+
+    @Override
+    public void removeIgnoredPlayer(final UUID playerUuid) {
+        this.ignoredPlayers.remove(playerUuid);
+        if (!isOnline()) {
+            trySave();
+        }
+    }
+
+    @NotNull
+    @Override
+    public Set<UUID> getIgnoredPlayers() {
+        return Collections.unmodifiableSet(this.ignoredPlayers);
+    }
+
     private int getRatingUnsafe(final Kit kit) {
         return this.rating != null ? this.rating.getOrDefault(kit == null ? "-" : kit.getName(), defaultRating) : defaultRating;
     }
@@ -187,7 +214,7 @@ public class UserData implements User {
                 JsonUtil.getObjectWriter().writeValue(writer, this);
                 writer.flush();
             }
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             Log.error(String.format(ERROR_USER_SAVE, name), ex);
         }
     }
@@ -203,27 +230,5 @@ public class UserData implements User {
                 ", matches=" + matches +
                 ", rating=" + rating +
                 '}';
-    }
-
-    public boolean isIgnoring(UUID playerUuid) {
-        return ignoredPlayers.contains(playerUuid);
-    }
-
-    public void addIgnoredPlayer(UUID playerUuid) {
-        ignoredPlayers.add(playerUuid);
-        if (!isOnline()) {
-            trySave();
-        }
-    }
-
-    public void removeIgnoredPlayer(UUID playerUuid) {
-        ignoredPlayers.remove(playerUuid);
-        if (!isOnline()) {
-            trySave();
-        }
-    }
-
-    public Set<UUID> getIgnoredPlayers() {
-        return Collections.unmodifiableSet(ignoredPlayers);
     }
 }
