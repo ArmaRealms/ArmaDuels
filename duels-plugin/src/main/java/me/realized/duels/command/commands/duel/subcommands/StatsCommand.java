@@ -16,7 +16,7 @@ import java.util.GregorianCalendar;
 public class StatsCommand extends BaseCommand {
 
     public StatsCommand(final DuelsPlugin plugin) {
-        super(plugin, "stats", null, null, Permissions.STATS, 1, true);
+        super(plugin, "status", null, null, Permissions.STATS, 1, true, "stats");
     }
 
     @Override
