@@ -63,6 +63,7 @@ ERROR:
     prevent-teleportation: '{PREFIX} &cCannot teleport to a player in a duel.'
     mode-unselected: '{PREFIX} &cYou must either choose a kit or enable own inventory mode.'
     mode-fixed: '{PREFIX} &cYou are not allowed to disable own inventory mode.'
+    ignore-self: '{PREFIX} &cYou cannot ignore yourself.'
     player-ignoring: '{PREFIX} &c%name% is ignoring your duel requests!'
   spectate:
     already-spectating:

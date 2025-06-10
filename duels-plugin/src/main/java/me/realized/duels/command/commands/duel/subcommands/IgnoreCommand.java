@@ -16,7 +16,7 @@ import java.util.UUID;
 public class IgnoreCommand extends BaseCommand {
 
     public IgnoreCommand(final DuelsPlugin plugin) {
-        super(plugin, "ignore", "ignore [player]", "Ignore or unignore duel requests from a player.", 1, false);
+        super(plugin, "ignorar", "ignore [player]", "Ignore or unignore duel requests from a player.", 1, false, "ignore");
     }
 
     @Override
@@ -63,7 +63,7 @@ public class IgnoreCommand extends BaseCommand {
         }
 
         if (player.equals(target)) {
-            lang.sendMessage(sender, "ERROR.duel.is-self");
+            lang.sendMessage(sender, "ERROR.duel.ignore-self");
             return;
         }
 

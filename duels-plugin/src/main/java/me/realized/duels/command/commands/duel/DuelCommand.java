@@ -291,13 +291,13 @@ public class DuelCommand extends BaseCommand {
                     .toList();
 
             if (args.length == 1) {
-                Iterable<String> stringIterable = new ArrayList<>(List.of("aceitar", "negar", "stats", "alternar", "top", "spec"));
+                Iterable<String> stringIterable = new ArrayList<>(List.of("aceitar", "negar", "stats", "alternar", "top", "spec", "ignorar"));
                 stringIterable = Iterables.concat(stringIterable, players);
                 org.bukkit.util.StringUtil.copyPartialMatches(args[0], stringIterable, completions);
                 return completions;
             } else if (args.length == 2) {
                 switch (args[0]) {
-                    case "aceitar", "negar", "accept", "deny", "stats", "spec", "spectate" -> {
+                    case "aceitar", "negar", "accept", "deny", "stats", "spec", "spectate", "ignore", "ignorar" -> {
                         org.bukkit.util.StringUtil.copyPartialMatches(args[1], players, completions);
                         return completions;
                     }
