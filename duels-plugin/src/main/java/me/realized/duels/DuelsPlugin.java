@@ -71,8 +71,9 @@ public class DuelsPlugin extends JavaPlugin implements Duels, LogSource {
     private static DuelsPlugin instance;
 
     private final List<Loadable> loadables = new ArrayList<>();
+    private final Map<String, AbstractCommand<DuelsPlugin>> commands = new HashMap<>();
+    private final List<Listener> registeredListeners = new ArrayList<>();
     private int lastLoad;
-
     @Getter
     private LogManager logManager;
     @Getter
@@ -111,10 +112,6 @@ public class DuelsPlugin extends JavaPlugin implements Duels, LogSource {
     private Teleport teleport;
     @Getter
     private ExtensionManager extensionManager;
-
-    private final Map<String, AbstractCommand<DuelsPlugin>> commands = new HashMap<>();
-    private final List<Listener> registeredListeners = new ArrayList<>();
-
     @Getter
     private volatile boolean updateAvailable;
     @Getter
@@ -128,7 +125,7 @@ public class DuelsPlugin extends JavaPlugin implements Duels, LogSource {
 
         try {
             logManager = new LogManager(this);
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             Log.error("Could not load LogManager. Please contact the developer.");
 
             // Manually print the stacktrace since Log#error only prints errors to non-plugin log sources.
@@ -142,7 +139,7 @@ public class DuelsPlugin extends JavaPlugin implements Duels, LogSource {
 
         try {
             Class.forName("org.spigotmc.SpigotConfig");
-        } catch (ClassNotFoundException ex) {
+        } catch (final ClassNotFoundException ex) {
             Log.error("================= *** DUELS LOAD FAILURE *** =================");
             Log.error("Duels requires a spigot server to run, but this server was not running on spigot!");
             Log.error("To run your server on spigot, follow this guide: " + SPIGOT_INSTALLATION_URL);
@@ -226,9 +223,9 @@ public class DuelsPlugin extends JavaPlugin implements Duels, LogSource {
      */
     private boolean load() {
         registerCommands(
-            new DuelCommand(this),
-            new QueueCommand(this),
-            new DuelsCommand(this)
+                new DuelCommand(this),
+                new QueueCommand(this),
+                new DuelsCommand(this)
         );
 
         for (final Loadable loadable : loadables) {
@@ -240,7 +237,7 @@ public class DuelsPlugin extends JavaPlugin implements Duels, LogSource {
                 loadable.handleLoad();
                 logManager.debug(name + " has been loaded. (took " + (System.currentTimeMillis() - now) + "ms)");
                 lastLoad = loadables.indexOf(loadable);
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 // Handles the case of exceptions from LogManager not being logged in file
                 if (loadable instanceof LogSource) {
                     ex.printStackTrace();
@@ -262,8 +259,8 @@ public class DuelsPlugin extends JavaPlugin implements Duels, LogSource {
         registeredListeners.clear();
         // Unregister all extension listeners that isn't using the method Duels#registerListener
         HandlerList.getRegisteredListeners(this).stream()
-            .filter(listener -> listener.getListener().getClass().getClassLoader().getClass().isAssignableFrom(ExtensionClassLoader.class))
-            .forEach(listener -> HandlerList.unregisterAll(listener.getListener()));
+                .filter(listener -> listener.getListener().getClass().getClassLoader().getClass().isAssignableFrom(ExtensionClassLoader.class))
+                .forEach(listener -> HandlerList.unregisterAll(listener.getListener()));
         commands.clear();
 
         for (final Loadable loadable : Lists.reverse(loadables)) {
@@ -278,7 +275,7 @@ public class DuelsPlugin extends JavaPlugin implements Duels, LogSource {
                 logManager.debug("Starting unload of " + name + " at " + now);
                 loadable.handleUnload();
                 logManager.debug(name + " has been unloaded. (took " + (System.currentTimeMillis() - now) + "ms)");
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 Log.error("There was an error while unloading " + name + "! If you believe this is an issue from the plugin, please contact the developer.", ex);
                 return false;
             }
@@ -344,10 +341,10 @@ public class DuelsPlugin extends JavaPlugin implements Duels, LogSource {
             unloaded = true;
             loadable.handleLoad();
             return true;
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             Log.error("There was an error while " + (unloaded ? "loading " : "unloading ")
-                + loadable.getClass().getSimpleName()
-                + "! If you believe this is an issue from the plugin, please contact the developer.", ex);
+                    + loadable.getClass().getSimpleName()
+                    + "! If you believe this is an issue from the plugin, please contact the developer.", ex);
             return false;
         }
     }
@@ -433,9 +430,9 @@ public class DuelsPlugin extends JavaPlugin implements Duels, LogSource {
 
     public List<String> getReloadables() {
         return loadables.stream()
-            .filter(Reloadable.class::isInstance)
-            .map(loadable -> loadable.getClass().getSimpleName())
-            .toList();
+                .filter(Reloadable.class::isInstance)
+                .map(loadable -> loadable.getClass().getSimpleName())
+                .toList();
     }
 
     @Override

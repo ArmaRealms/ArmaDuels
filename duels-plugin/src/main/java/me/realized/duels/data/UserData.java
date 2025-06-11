@@ -20,14 +20,18 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class UserData implements User {
 
     private static transient final String ERROR_USER_SAVE = "An error occured while saving userdata of %s!";
-
+    transient File folder;
+    transient int defaultRating;
+    transient int matchesToDisplay;
     @Getter
     private UUID uuid;
     @Getter
@@ -38,17 +42,14 @@ public class UserData implements User {
     @Getter
     private volatile int losses;
     private boolean requests = true;
-
+    private final Set<UUID> ignoredPlayers = new HashSet<>();
     private ConcurrentHashMap<String, Integer> rating;
-    private List<MatchData> matches = new ArrayList<>();
+    private final List<MatchData> matches = new ArrayList<>();
 
-    transient File folder;
-    transient int defaultRating;
-    transient int matchesToDisplay;
+    private UserData() {
+    }
 
-    private UserData() {}
-
-    public UserData(final File folder, final int defaultRating, final int matchesToDisplay, final Player player) {
+    public UserData(final File folder, final int defaultRating, final int matchesToDisplay, @NotNull final Player player) {
         this.folder = folder;
         this.defaultRating = defaultRating;
         this.matchesToDisplay = matchesToDisplay;
@@ -126,6 +127,33 @@ public class UserData implements User {
         }
     }
 
+    @Override
+    public boolean isIgnoring(final UUID playerUuid) {
+        return this.ignoredPlayers.contains(playerUuid);
+    }
+
+    @Override
+    public void addIgnoredPlayer(final UUID playerUuid) {
+        this.ignoredPlayers.add(playerUuid);
+        if (!isOnline()) {
+            trySave();
+        }
+    }
+
+    @Override
+    public void removeIgnoredPlayer(final UUID playerUuid) {
+        this.ignoredPlayers.remove(playerUuid);
+        if (!isOnline()) {
+            trySave();
+        }
+    }
+
+    @NotNull
+    @Override
+    public Set<UUID> getIgnoredPlayers() {
+        return Collections.unmodifiableSet(this.ignoredPlayers);
+    }
+
     private int getRatingUnsafe(final Kit kit) {
         return this.rating != null ? this.rating.getOrDefault(kit == null ? "-" : kit.getName(), defaultRating) : defaultRating;
     }
@@ -186,7 +214,7 @@ public class UserData implements User {
                 JsonUtil.getObjectWriter().writeValue(writer, this);
                 writer.flush();
             }
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             Log.error(String.format(ERROR_USER_SAVE, name), ex);
         }
     }
@@ -194,13 +222,13 @@ public class UserData implements User {
     @Override
     public String toString() {
         return "UserData{" +
-            "uuid=" + uuid +
-            ", name='" + name + '\'' +
-            ", wins=" + wins +
-            ", losses=" + losses +
-            ", requests=" + requests +
-            ", matches=" + matches +
-            ", rating=" + rating +
-            '}';
+                "uuid=" + uuid +
+                ", name='" + name + '\'' +
+                ", wins=" + wins +
+                ", losses=" + losses +
+                ", requests=" + requests +
+                ", matches=" + matches +
+                ", rating=" + rating +
+                '}';
     }
 }

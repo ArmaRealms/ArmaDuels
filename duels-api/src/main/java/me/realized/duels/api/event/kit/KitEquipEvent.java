@@ -26,6 +26,10 @@ public class KitEquipEvent extends KitEvent implements Cancellable {
         this.source = source;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     /**
      * {@link Player} who is equipping the {@link Kit}.
      *
@@ -45,10 +49,6 @@ public class KitEquipEvent extends KitEvent implements Cancellable {
     @Override
     public void setCancelled(final boolean cancelled) {
         this.cancelled = cancelled;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 
     @Override

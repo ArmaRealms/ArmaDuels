@@ -9,6 +9,9 @@ import java.io.IOException;
 
 public final class ItemUtil {
 
+    private ItemUtil() {
+    }
+
     public static ItemStack itemFrom64(final String data) {
         try {
             final ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
@@ -20,6 +23,4 @@ public final class ItemUtil {
             return null;
         }
     }
-
-    private ItemUtil() {}
 }

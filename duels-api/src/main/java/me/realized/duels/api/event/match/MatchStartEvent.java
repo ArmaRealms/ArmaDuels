@@ -22,6 +22,10 @@ public class MatchStartEvent extends MatchEvent {
         this.players = players;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     /**
      * The starters of the {@link Match}.
      *
@@ -30,10 +34,6 @@ public class MatchStartEvent extends MatchEvent {
     @NotNull
     public Player[] getPlayers() {
         return players;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 
     @Override

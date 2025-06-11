@@ -16,6 +16,9 @@ public final class PlayerUtil {
     private static final float DEFAULT_SATURATION = 5.0F;
     private static final int DEFAULT_MAX_FOOD_LEVEL = 20;
 
+    private PlayerUtil() {
+    }
+
     public static double getMaxHealth(final Player player) {
         if (CompatUtil.isPre1_9()) {
             return player.getMaxHealth();
@@ -52,8 +55,5 @@ public final class PlayerUtil {
         player.getInventory().setArmorContents(new ItemStack[4]);
         player.getInventory().clear();
         player.updateInventory();
-    }
-
-    private PlayerUtil() {
     }
 }

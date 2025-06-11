@@ -73,7 +73,8 @@ public class QueueSignManagerImpl implements Loadable, QueueSignManager, Listene
     public void handleLoad() throws IOException {
         if (FileUtil.checkNonEmpty(file, true)) {
             try (final Reader reader = new InputStreamReader(new FileInputStream(file), Charsets.UTF_8)) {
-                final List<QueueSignData> data = JsonUtil.getObjectMapper().readValue(reader, new TypeReference<List<QueueSignData>>() {});
+                final List<QueueSignData> data = JsonUtil.getObjectMapper().readValue(reader, new TypeReference<List<QueueSignData>>() {
+                });
 
                 if (data != null) {
                     data.forEach(queueSignData -> {

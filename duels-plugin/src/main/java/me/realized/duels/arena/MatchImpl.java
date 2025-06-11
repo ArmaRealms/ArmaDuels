@@ -24,21 +24,6 @@ import java.util.stream.Collectors;
 
 public class MatchImpl implements Match {
 
-    public static class PlayerStatus {
-
-        public PlayerStatus(boolean isDead) {
-            this.isDead = isDead;
-        }
-
-        // Player is dead value
-        public boolean isDead;
-        // How much damage to your opponent.
-        public double damageCount;
-
-        public int hits;
-
-    }
-
     @Getter
     private final ArenaImpl arena;
     @Getter
@@ -52,15 +37,12 @@ public class MatchImpl implements Match {
     private final boolean mcmmoSkills;
     @Getter
     private final Queue source;
-
-    @Getter
-    private boolean finished;
-
-    @Getter
-    public List<Item> droppedItems = new ArrayList<>();
-
     // Default value for players is false, which is set to true if player is killed in the match.
     private final Map<Player, PlayerStatus> players = new HashMap<>();
+    @Getter
+    public List<Item> droppedItems = new ArrayList<>();
+    @Getter
+    private boolean finished;
 
     MatchImpl(final ArenaImpl arena, final KitImpl kit, final Map<UUID, List<ItemStack>> items, final int bet, final boolean mcmmoSkills, final Queue source) {
         this.arena = arena;
@@ -160,5 +142,19 @@ public class MatchImpl implements Match {
     @Override
     public Set<Player> getStartingPlayers() {
         return Collections.unmodifiableSet(getAllPlayers());
+    }
+
+    public static class PlayerStatus {
+
+        // Player is dead value
+        public boolean isDead;
+        // How much damage to your opponent.
+        public double damageCount;
+        public int hits;
+
+        public PlayerStatus(boolean isDead) {
+            this.isDead = isDead;
+        }
+
     }
 }

@@ -97,7 +97,7 @@ public interface DQueueManager {
      * Note: Calls {@link QueueJoinEvent}.
      *
      * @param player {@link Player} to add to {@link DQueue}.
-     * @param queue {@link DQueue} to add the {@link Player}.
+     * @param queue  {@link DQueue} to add the {@link Player}.
      * @return True if {@link Player} was successfully queued. False otherwise.
      */
     boolean addToQueue(@NotNull final Player player, @NotNull final DQueue queue);

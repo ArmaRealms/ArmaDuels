@@ -29,6 +29,17 @@ import java.util.stream.Collectors;
 
 public class ItemData {
 
+    private Map<String, Object> item;
+
+    private ItemData() {
+    }
+
+    private ItemData(ItemStack item) {
+        item = Identifiers.removeIdentifier(item);
+        final String dumped = YamlUtil.bukkitYamlDump(item);
+        this.item = YamlUtil.yamlLoad(dumped);
+    }
+
     public static ItemData fromItemStack(final ItemStack item) {
         return new ItemData(item);
     }
@@ -45,16 +56,6 @@ public class ItemData {
                 metaAsMap.put("ItemFlags", StreamUtil.asStream((Iterable<?>) itemFlags).map(Object::toString).collect(Collectors.toSet()));
             }
         }
-    }
-
-    private Map<String, Object> item;
-
-    private ItemData() {}
-
-    private ItemData(ItemStack item) {
-        item = Identifiers.removeIdentifier(item);
-        final String dumped = YamlUtil.bukkitYamlDump(item);
-        this.item = YamlUtil.yamlLoad(dumped);
     }
 
     public ItemStack toItemStack(final boolean kitItem) {
@@ -199,10 +200,10 @@ public class ItemData {
                 if (node.has("attributeModifiers") && CompatUtil.hasAttributes()) {
                     final JsonNode attributes = node.get("attributeModifiers");
                     StreamUtil.asStream(attributes).forEach(attributeNode -> builder.attribute(
-                        attributeNode.get("name").textValue(),
-                        attributeNode.get("operation").intValue(),
-                        attributeNode.get("amount").doubleValue(),
-                        attributeNode.has("slot") ? attributeNode.get("slot").textValue() : null
+                            attributeNode.get("name").textValue(),
+                            attributeNode.get("operation").intValue(),
+                            attributeNode.get("amount").doubleValue(),
+                            attributeNode.has("slot") ? attributeNode.get("slot").textValue() : null
                     ));
                 }
 

@@ -39,6 +39,9 @@ public final class JsonUtil {
         OBJECT_WRITER = OBJECT_MAPPER.writer(buildDefaultPrettyPrinter());
     }
 
+    private JsonUtil() {
+    }
+
     public static ObjectMapper getObjectMapper() {
         return OBJECT_MAPPER;
     }
@@ -89,6 +92,4 @@ public final class JsonUtil {
         printer.indentObjectsWith(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE);
         return printer;
     }
-
-    private JsonUtil() {}
 }

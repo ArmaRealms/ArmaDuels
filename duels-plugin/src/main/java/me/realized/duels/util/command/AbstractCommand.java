@@ -39,7 +39,7 @@ public abstract class AbstractCommand<P extends JavaPlugin> implements TabComple
     private Map<String, AbstractCommand<P>> children;
 
     protected AbstractCommand(final P plugin, final String name, final String usage, final String description, final String permission, final int length,
-        final boolean playerOnly, final String... aliases) {
+                              final boolean playerOnly, final String... aliases) {
         this.plugin = plugin;
         this.name = name;
         this.usage = usage;
@@ -168,11 +168,11 @@ public abstract class AbstractCommand<P extends JavaPlugin> implements TabComple
 
         if (args.length == 1 && children != null) {
             return children.values().stream()
-                .map(AbstractCommand::getName)
-                .filter(childName -> childName.startsWith(args[0].toLowerCase()))
-                .distinct()
-                .sorted(String::compareTo)
-                .toList();
+                    .map(AbstractCommand::getName)
+                    .filter(childName -> childName.startsWith(args[0].toLowerCase()))
+                    .distinct()
+                    .sorted(String::compareTo)
+                    .toList();
         }
 
         return null;

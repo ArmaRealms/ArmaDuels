@@ -33,7 +33,8 @@ public abstract class AbstractGui<P extends JavaPlugin> {
 
     public abstract void on(final Player player, final Inventory top, final InventoryClickEvent event);
 
-    public void on(final Player player, final Inventory inventory, final InventoryCloseEvent event) {}
+    public void on(final Player player, final Inventory inventory, final InventoryCloseEvent event) {
+    }
 
     public void on(final Player player, final Set<Integer> rawSlots, final InventoryDragEvent event) {
         event.setCancelled(true);

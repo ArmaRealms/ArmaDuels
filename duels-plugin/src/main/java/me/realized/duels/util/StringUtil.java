@@ -32,7 +32,8 @@ public final class StringUtil {
         COMMONS_LANG3 = ReflectionUtil.getClassUnsafe(" org.apache.commons.lang3.StringUtils") != null;
     }
 
-    private StringUtil() {}
+    private StringUtil() {
+    }
 
     // Source: https://stackoverflow.com/questions/12967896/converting-integers-to-roman-numerals-java
     public static String toRoman(final int number) {

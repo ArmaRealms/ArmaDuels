@@ -67,14 +67,14 @@ public class EditCommand extends BaseCommand {
     public List<String> onTabComplete(final CommandSender sender, final Command command, final String alias, final String[] args) {
         if (args.length == 3) {
             return actions.keySet().stream()
-                .filter(type -> type.toLowerCase().startsWith(args[2].toLowerCase()))
-                .toList();
+                    .filter(type -> type.toLowerCase().startsWith(args[2].toLowerCase()))
+                    .toList();
         }
 
         if (args.length == 4) {
             return setters.keySet().stream()
-                .filter(type -> type.toLowerCase().startsWith(args[3].toLowerCase()))
-                .toList();
+                    .filter(type -> type.toLowerCase().startsWith(args[3].toLowerCase()))
+                    .toList();
         }
 
         if (args.length > 4) {

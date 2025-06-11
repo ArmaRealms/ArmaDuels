@@ -50,7 +50,7 @@ public class UserManagerImpl implements Loadable, Listener, UserManager {
     private final File folder;
     private final Map<UUID, UserData> users = new ConcurrentHashMap<>();
     private final Map<String, UUID> names = new ConcurrentHashMap<>();
-
+    private final Map<Kit, TopEntry> topRatings = new ConcurrentHashMap<>();
     private volatile int defaultRating;
     private volatile int matchesToDisplay;
     @Getter
@@ -61,8 +61,6 @@ public class UserManagerImpl implements Loadable, Listener, UserManager {
     private volatile TopEntry losses;
     @Getter
     private volatile TopEntry noKit;
-    private final Map<Kit, TopEntry> topRatings = new ConcurrentHashMap<>();
-
     private int topTask;
 
     public UserManagerImpl(final DuelsPlugin plugin) {
@@ -158,7 +156,7 @@ public class UserManagerImpl implements Loadable, Listener, UserManager {
                     final TopEntry entry = topRatings.get(kit);
 
                     if ((top = get(config.getTopUpdateInterval(), entry, user -> user.getRating(kit), config.getTopKitType().replace("%kit%", kit.getName()),
-                        config.getTopKitIdentifier())) != null) {
+                            config.getTopKitIdentifier())) != null) {
                         topRatings.put(kit, top);
                     }
                 }
@@ -241,9 +239,9 @@ public class UserManagerImpl implements Loadable, Listener, UserManager {
 
     private List<TopData> sorted(final Function<User, Integer> function) {
         return users.values().stream()
-            .map(data -> new TopData(data.getUuid(), data.getName(), function.apply(data)))
-            .sorted(Comparator.reverseOrder())
-            .toList();
+                .map(data -> new TopData(data.getUuid(), data.getName(), function.apply(data)))
+                .sorted(Comparator.reverseOrder())
+                .toList();
     }
 
     private UserData tryLoad(final Player player) {

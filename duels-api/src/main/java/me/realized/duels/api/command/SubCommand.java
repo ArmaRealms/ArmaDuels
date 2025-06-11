@@ -22,16 +22,16 @@ public abstract class SubCommand {
     /**
      * The constructor for a subcommand.
      *
-     * @param name Name of this subcommand. Should not be null!
-     * @param usage Usage of this subcommand. May be null.
+     * @param name        Name of this subcommand. Should not be null!
+     * @param usage       Usage of this subcommand. May be null.
      * @param description Description of this subcommand. May be null.
-     * @param permission Permission of this subcommand. May be null.
-     * @param playerOnly Whether or not this subcommand should be player only.
-     * @param length Length of this subcommand. Must be greater than or equal to 1.
-     * @param aliases Aliases of this subcommand.
+     * @param permission  Permission of this subcommand. May be null.
+     * @param playerOnly  Whether or not this subcommand should be player only.
+     * @param length      Length of this subcommand. Must be greater than or equal to 1.
+     * @param aliases     Aliases of this subcommand.
      */
     public SubCommand(@NotNull final String name, @Nullable final String usage, @Nullable final String description, @Nullable final String permission,
-        final boolean playerOnly, final int length, final String... aliases) {
+                      final boolean playerOnly, final int length, final String... aliases) {
         Objects.requireNonNull(name, "name");
         this.name = name;
         this.usage = usage;

@@ -28,9 +28,10 @@ public final class Panes {
         DATA_TO_PANE.put((short) 15, "BLACK_STAINED_GLASS_PANE");
     }
 
+    private Panes() {
+    }
+
     public static Material from(final short data) {
         return Material.getMaterial(DATA_TO_PANE.get(data));
     }
-
-    private Panes() {}
 }

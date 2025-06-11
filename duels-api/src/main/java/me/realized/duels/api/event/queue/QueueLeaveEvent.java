@@ -26,6 +26,10 @@ public class QueueLeaveEvent extends QueueEvent {
         this.source = source;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     /**
      * {@link Player} who is leaving the {@link DQueue}.
      *
@@ -35,10 +39,6 @@ public class QueueLeaveEvent extends QueueEvent {
     @Override
     public Player getSource() {
         return source;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 
     @Override

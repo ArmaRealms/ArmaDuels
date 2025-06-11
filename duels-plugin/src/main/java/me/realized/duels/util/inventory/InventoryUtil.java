@@ -15,6 +15,9 @@ public final class InventoryUtil {
     private static final String INVENTORY_IDENTIFIER = "INVENTORY";
     private static final String ARMOR_IDENTIFIER = "ARMOR";
 
+    private InventoryUtil() {
+    }
+
     public static void addToMap(final PlayerInventory inventory, final Map<String, Map<Integer, ItemStack>> items) {
         final Map<Integer, ItemStack> contents = new HashMap<>();
 
@@ -104,7 +107,5 @@ public final class InventoryUtil {
     public static ItemStack getItemInHand(final Player player) {
         return player.getInventory().getItem(player.getInventory().getHeldItemSlot());
     }
-
-    private InventoryUtil() {}
 
 }

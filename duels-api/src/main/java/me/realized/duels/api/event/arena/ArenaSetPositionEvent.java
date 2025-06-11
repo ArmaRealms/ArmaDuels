@@ -31,6 +31,10 @@ public class ArenaSetPositionEvent extends ArenaEvent implements Cancellable {
         this.location = location;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     /**
      * The position number of the spawnpoint set.
      *
@@ -75,10 +79,6 @@ public class ArenaSetPositionEvent extends ArenaEvent implements Cancellable {
     @Override
     public void setCancelled(final boolean cancelled) {
         this.cancelled = cancelled;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 
     @Override

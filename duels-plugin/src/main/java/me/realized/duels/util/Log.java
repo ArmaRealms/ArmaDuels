@@ -14,7 +14,8 @@ public final class Log {
 
     private static final List<LogSource> sources = new ArrayList<>();
 
-    private Log() {}
+    private Log() {
+    }
 
     public static void addSource(final LogSource source) {
         sources.add(source);

@@ -16,8 +16,8 @@ public final class TextBuilder {
     private final List<BaseComponent> list = new ArrayList<>();
 
     private TextBuilder(final String base,
-        final ClickEvent.Action clickAction, final String clickValue,
-        final HoverEvent.Action hoverAction, final String hoverValue
+                        final ClickEvent.Action clickAction, final String clickValue,
+                        final HoverEvent.Action hoverAction, final String hoverValue
     ) {
         if (base == null) {
             return;
@@ -37,8 +37,8 @@ public final class TextBuilder {
     }
 
     public static TextBuilder of(final String base,
-        final ClickEvent.Action clickAction, final String clickValue,
-        final HoverEvent.Action hoverAction, final String hoverValue
+                                 final ClickEvent.Action clickAction, final String clickValue,
+                                 final HoverEvent.Action hoverAction, final String hoverValue
     ) {
         return new TextBuilder(base, clickAction, clickValue, hoverAction, hoverValue);
     }
@@ -81,8 +81,8 @@ public final class TextBuilder {
     }
 
     public TextBuilder add(final String text,
-        final ClickEvent.Action clickAction, final String clickValue,
-        final HoverEvent.Action hoverAction, final String hoverValue
+                           final ClickEvent.Action clickAction, final String clickValue,
+                           final HoverEvent.Action hoverAction, final String hoverValue
     ) {
         if (text == null) {
             return this;

@@ -67,7 +67,8 @@ public abstract class AbstractConfiguration<P extends JavaPlugin> implements Loa
     }
 
     @Override
-    public void handleUnload() {}
+    public void handleUnload() {
+    }
 
     protected abstract void loadValues(final FileConfiguration configuration) throws Exception;
 
@@ -144,7 +145,8 @@ public abstract class AbstractConfiguration<P extends JavaPlugin> implements Loa
             if (method != null) {
                 try {
                     method.invoke(options, false);
-                } catch (IllegalAccessException | InvocationTargetException ignored) {}
+                } catch (IllegalAccessException | InvocationTargetException ignored) {
+                }
             }
 
             // Transfer values from the old configuration

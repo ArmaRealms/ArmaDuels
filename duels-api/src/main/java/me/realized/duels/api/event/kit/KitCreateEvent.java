@@ -25,14 +25,14 @@ public class KitCreateEvent extends KitEvent {
         this.source = source;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     @NotNull
     @Override
     public Player getSource() {
         return source;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 
     @Override

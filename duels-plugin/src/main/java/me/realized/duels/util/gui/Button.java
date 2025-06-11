@@ -83,7 +83,9 @@ public class Button<P extends JavaPlugin> {
     }
 
 
-    public void update(final Player player) {}
+    public void update(final Player player) {
+    }
 
-    public void onClick(final Player player) {}
+    public void onClick(final Player player) {
+    }
 }

@@ -38,7 +38,7 @@ public class OptionButton extends BaseButton {
         }
 
         Collections.addAll(lore,
-            lang.getMessage("GUI.options.buttons.option.lore", "state", state ? lang.getMessage("GENERAL.enabled") : lang.getMessage("GENERAL.disabled")).split("\n"));
+                lang.getMessage("GUI.options.buttons.option.lore", "state", state ? lang.getMessage("GENERAL.enabled") : lang.getMessage("GENERAL.disabled")).split("\n"));
         setLore(lore);
     }
 

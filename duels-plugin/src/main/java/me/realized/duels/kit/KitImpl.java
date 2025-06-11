@@ -43,10 +43,10 @@ public class KitImpl extends BaseButton implements Kit {
     public KitImpl(final DuelsPlugin plugin, final String name, final ItemStack displayed, final boolean usePermission,
                    final boolean arenaSpecific, final Set<Characteristic> characteristics) {
         super(plugin, displayed != null ? displayed : ItemBuilder
-            .of(Material.DIAMOND_SWORD)
-            .name("&7&l" + name)
-            .lore("&aClick to send", "&aa duel request", "&awith this kit!")
-            .build());
+                .of(Material.DIAMOND_SWORD)
+                .name("&7&l" + name)
+                .lore("&aClick to send", "&aa duel request", "&awith this kit!")
+                .build());
         this.name = name;
         this.usePermission = usePermission;
         this.arenaSpecific = arenaSpecific;

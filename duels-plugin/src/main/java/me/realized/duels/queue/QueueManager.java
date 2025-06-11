@@ -129,7 +129,8 @@ public class QueueManager implements Loadable, DQueueManager, Listener {
 
         if (FileUtil.checkNonEmpty(file, true)) {
             try (final Reader reader = new InputStreamReader(new FileInputStream(file), Charsets.UTF_8)) {
-                final List<QueueData> data = JsonUtil.getObjectMapper().readValue(reader, new TypeReference<List<QueueData>>() {});
+                final List<QueueData> data = JsonUtil.getObjectMapper().readValue(reader, new TypeReference<List<QueueData>>() {
+                });
 
                 if (data != null) {
                     data.forEach(queueData -> {
