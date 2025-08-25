@@ -19,6 +19,11 @@ subprojects {
         }
 
         maven {
+            name 'papermc'
+            url 'https://repo.papermc.io/repository/maven-public/'
+        }
+
+        maven {
             name 'bungeecord-repo'
             url 'https://oss.sonatype.org/content/repositories/snapshots/'
         }
