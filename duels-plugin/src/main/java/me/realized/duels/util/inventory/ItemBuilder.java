@@ -110,8 +110,8 @@ public final class ItemBuilder {
     }
 
     public ItemBuilder potion(final PotionType type, final boolean extended, final boolean upgraded) {
-        PotionMeta meta = (PotionMeta) result.getItemMeta();
-        meta.setBasePotionData(new PotionData(type, extended, upgraded));
+        final PotionMeta meta = (PotionMeta) result.getItemMeta();
+        meta.setBasePotionType(type);
         result.setItemMeta(meta);
         return this;
     }
@@ -142,7 +142,7 @@ public final class ItemBuilder {
     }
 
     private String attributeNameToEnum(String name) {
-        int len = name.length();
+        final int len = name.length();
         int capitalLetterIndex = -1;
 
         for (int i = 0; i < len; i++) {
