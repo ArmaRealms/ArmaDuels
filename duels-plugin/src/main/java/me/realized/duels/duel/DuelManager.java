@@ -622,7 +622,7 @@ public class DuelManager implements Loadable {
                 PlayerUtil.reset(player);
 
                 if (config.isSpawnFirework()) {
-                    final Firework firework = (Firework) winner.getWorld().spawnEntity(winner.getEyeLocation(), EntityType.FIREWORK);
+                    final Firework firework = (Firework) winner.getWorld().spawnEntity(winner.getEyeLocation(), EntityType.FIREWORK_ROCKET);
                     final FireworkMeta meta = firework.getFireworkMeta();
                     meta.setPower(0);
                     meta.addEffect(FireworkEffect.builder().withColor(Color.RED).with(FireworkEffect.Type.BALL_LARGE).withTrail().build());

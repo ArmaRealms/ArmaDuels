@@ -68,7 +68,7 @@ public class ItemData {
         }
 
         final String dumped = YamlUtil.yamlDump(item);
-        ItemStack item = YamlUtil.bukkitYamlLoadAs(dumped, ItemStack.class);
+        final ItemStack item = YamlUtil.bukkitYamlLoadAs(dumped, ItemStack.class);
         return kitItem ? Identifiers.addIdentifier(item) : item;
     }
 
@@ -96,7 +96,7 @@ public class ItemData {
                 actual.nextToken();
             }
 
-            ItemData data = (ItemData) defaultDeserializer.deserialize(actual, context);
+            final ItemData data = (ItemData) defaultDeserializer.deserialize(actual, context);
 
             if (data.item != null) {
                 // If an item was successfully parsed to new json, disable old json check (assume kit file is in new json format) to reduce overhead.
@@ -190,7 +190,7 @@ public class ItemData {
 
                 if (node.has("itemData") && !CompatUtil.isPre1_9()) {
                     final List<String> args = Arrays.asList(node.get("itemData").textValue().split("-"));
-                    final PotionType potionType = EnumUtil.getByName(args.get(0), PotionType.class);
+                    final PotionType potionType = EnumUtil.getByName(args.getFirst(), PotionType.class);
 
                     if (potionType != null) {
                         builder.potion(potionType, args.contains("extended"), args.contains("strong"));

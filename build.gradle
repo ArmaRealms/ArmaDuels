@@ -9,8 +9,6 @@ allprojects {
 }
 
 subprojects {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
 
     repositories {
         mavenCentral()
@@ -18,6 +16,11 @@ subprojects {
         maven {
             name 'spigot-repo'
             url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+        }
+
+        maven {
+            name 'papermc'
+            url 'https://repo.papermc.io/repository/maven-public/'
         }
 
         maven {

@@ -3,11 +3,9 @@ package me.realized.duels.gui.inventory.buttons;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.gui.BaseButton;
 import me.realized.duels.util.StringUtil;
-import me.realized.duels.util.compat.CompatUtil;
 import me.realized.duels.util.compat.Items;
 import me.realized.duels.util.inventory.ItemBuilder;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 
 import java.util.stream.Collectors;
 
@@ -23,10 +21,6 @@ public class EffectsButton extends BaseButton {
                                 "amplifier", StringUtil.toRoman(effect.getAmplifier() + 1),
                                 "duration", (effect.getDuration() / 20))).collect(Collectors.toList()))
                 .build());
-        editMeta(meta -> {
-            if (CompatUtil.hasItemFlag()) {
-                meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-            }
-        });
+        editMeta(meta -> meta.setHideTooltip(true));
     }
 }

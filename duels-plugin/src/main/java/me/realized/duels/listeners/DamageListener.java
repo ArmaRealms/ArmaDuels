@@ -7,6 +7,8 @@ import me.realized.duels.kit.KitImpl;
 import me.realized.duels.util.EventUtil;
 import me.realized.duels.util.PlayerUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.damage.DamageSource;
+import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -57,7 +59,7 @@ public class DamageListener implements Listener {
 
         if (characteristic != null && arena.getMatch().getHits(damager) >= 99) {
             player.getInventory().clear();
-            PlayerDeathEvent customEvent = new PlayerDeathEvent(player, new ArrayList<>(), 0, "Morreu para " + damager.getDisplayName() + " numa luta de boxe!");
+            PlayerDeathEvent customEvent = new PlayerDeathEvent(player, DamageSource.builder(DamageType.GENERIC).withCausingEntity(damager).build(), new ArrayList<>(), 0, "Morreu para " + damager.getDisplayName() + " numa luta de boxe!");
             PlayerUtil.reset(player);
             Bukkit.getPluginManager().callEvent(customEvent);
             return;

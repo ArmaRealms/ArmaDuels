@@ -65,21 +65,7 @@ public class Button<P extends JavaPlugin> {
             return;
         }
 
-        editMeta(meta -> {
-            if (glow) {
-                meta.addEnchant(Enchantment.DURABILITY, 1, false);
-
-                if (CompatUtil.hasItemFlag()) {
-                    meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                }
-            } else {
-                meta.removeEnchant(Enchantment.DURABILITY);
-
-                if (CompatUtil.hasItemFlag()) {
-                    meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-                }
-            }
-        });
+        editMeta(meta -> meta.setEnchantmentGlintOverride(glow));
     }
 
 
