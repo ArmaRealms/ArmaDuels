@@ -22,6 +22,8 @@ processResources {
 dependencies {
     compileOnly 'org.jetbrains:annotations-java5:22.0.0'
     compileOnly 'org.projectlombok:lombok:1.18.36'
+    compileOnly 'com.github.sirblobman.api:core:2.9-SNAPSHOT'
+    compileOnly 'com.github.sirblobman.combatlogx:api:11.6-SNAPSHOT'
     annotationProcessor 'org.projectlombok:lombok:1.18.36'
     implementation 'io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT'
     implementation 'com.mojang:authlib:1.5.21'
@@ -42,8 +44,6 @@ dependencies {
     implementation name: 'BountyHunters-2.2.6'
     implementation name: 'SimpleClans-2.18.1'
     implementation name: 'LeaderHeadsAPI'
-    implementation name: 'BlueSlimeCore'
-    implementation name: 'CombatLogX'
 
     implementation project(':duels-api')
     implementation project(':duels-worldguard')
