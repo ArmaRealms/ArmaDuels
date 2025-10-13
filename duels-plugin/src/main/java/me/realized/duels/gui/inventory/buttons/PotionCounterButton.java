@@ -13,6 +13,6 @@ public class PotionCounterButton extends BaseButton {
                 .name(plugin.getLang().getMessage("GUI.inventory-view.buttons.potion-counter.name", "potions", count))
                 .build()
         );
-        editMeta(meta -> meta.setHideTooltip(true));
+        getDisplayed().editMeta(meta -> meta.setHideTooltip(true));
     }
 }
