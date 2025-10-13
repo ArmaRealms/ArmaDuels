@@ -32,9 +32,6 @@ dependencies {
     compileOnly('net.essentialsx:EssentialsX:2.21.2') {
         transitive = false
     }
-    implementation(name: 'MVdWPlaceholderAPI-3.1.1') {
-        transitive = false
-    }
     implementation name: 'CombatTagPlus'
     implementation name: 'PvPManager-3.7.16'
     implementation name: 'Factions-1.6.9.5-U0.1.14'
@@ -44,6 +41,7 @@ dependencies {
     implementation name: 'BountyHunters-2.2.6'
     implementation name: 'SimpleClans-2.18.1'
     implementation name: 'LeaderHeadsAPI'
+    compileOnly 'com.intellectualsites.mvdwplaceholderapi:MVdWPlaceholderAPI:3.1.1'
 
     implementation project(':duels-api')
     implementation project(':duels-worldguard')
