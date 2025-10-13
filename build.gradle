@@ -63,6 +63,11 @@ subprojects {
             url 'https://nexus.sirblobman.xyz/public/'
         }
 
+        maven {
+            name 'roinujnosde-repo'
+            url 'https://repo.roinujnosde.me/releases/'
+        }
+
         flatDir {
             dirs "$rootDir/libs/"
         }

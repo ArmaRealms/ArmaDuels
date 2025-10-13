@@ -34,6 +34,7 @@ dependencies {
     compileOnly 'net.essentialsx:EssentialsX:2.21.2'
     compileOnly 'me.clip:placeholderapi:2.11.6'
     compileOnly 'com.intellectualsites.mvdwplaceholderapi:MVdWPlaceholderAPI:3.1.1'
+    compileOnly 'net.sacredlabyrinth.phaed.simpleclans:SimpleClans:2.19.2'
 
     // Dependencies with zip files
     compileOnly name: 'CombatTagPlus'
@@ -43,7 +44,6 @@ dependencies {
     compileOnly name: 'Factions'
     compileOnly name: 'MyPet-2.3.4'
     compileOnly name: 'BountyHunters-2.2.6'
-    compileOnly name: 'SimpleClans-2.18.1'
     compileOnly name: 'LeaderHeadsAPI'
 
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
