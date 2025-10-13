@@ -54,6 +54,11 @@ subprojects {
         }
 
         maven {
+            name 'jitpack.io'
+            url 'https://jitpack.io'
+        }
+
+        maven {
             name 'sirblobman-public'
             url 'https://nexus.sirblobman.xyz/public/'
         }
