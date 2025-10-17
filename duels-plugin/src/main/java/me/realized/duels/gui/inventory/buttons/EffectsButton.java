@@ -21,6 +21,6 @@ public class EffectsButton extends BaseButton {
                                 "amplifier", StringUtil.toRoman(effect.getAmplifier() + 1),
                                 "duration", (effect.getDuration() / 20))).collect(Collectors.toList()))
                 .build());
-        editMeta(meta -> meta.setHideTooltip(true));
+        getDisplayed().editMeta(meta -> meta.setHideTooltip(true));
     }
 }
