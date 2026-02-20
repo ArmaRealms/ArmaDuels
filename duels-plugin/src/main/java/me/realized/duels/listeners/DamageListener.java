@@ -59,7 +59,7 @@ public class DamageListener implements Listener {
 
         if (characteristic != null && arena.getMatch().getHits(damager) >= 99) {
             player.getInventory().clear();
-            PlayerDeathEvent customEvent = new PlayerDeathEvent(player, DamageSource.builder(DamageType.GENERIC).withCausingEntity(damager).build(), new ArrayList<>(), 0, "Morreu para " + damager.getDisplayName() + " numa luta de boxe!");
+            PlayerDeathEvent customEvent = new PlayerDeathEvent(player, DamageSource.builder(DamageType.GENERIC).withCausingEntity(damager).withDirectEntity(damager).build(), new ArrayList<>(), 0, "Morreu para " + damager.getDisplayName() + " numa luta de boxe!");
             PlayerUtil.reset(player);
             Bukkit.getPluginManager().callEvent(customEvent);
             return;
