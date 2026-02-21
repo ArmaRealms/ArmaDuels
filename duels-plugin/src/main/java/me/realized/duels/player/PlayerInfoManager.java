@@ -230,9 +230,6 @@ public class PlayerInfoManager implements Loadable {
             final PlayerInfo info = get(player);
             if (info == null) return;
 
-            final ArenaImpl arena = DuelsPlugin.getInstance().getArenaManager().get(player);
-            if (arena == null) return;
-
             event.setRespawnLocation(info.getLocation());
 
             if (essentials != null) {
