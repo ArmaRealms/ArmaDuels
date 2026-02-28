@@ -597,8 +597,6 @@ public class DuelManager implements Loadable {
             inventoryManager.create(player, true);
             arena.remove(player);
 
-            boolean isDead = player.isDead();
-
             // Call end task only on the first death
             if (arena.size() <= 0) {
                 return;
@@ -619,7 +617,10 @@ public class DuelManager implements Loadable {
                 inventoryManager.create(winner, false);
 
                 PlayerUtil.reset(winner);
-                PlayerUtil.reset(player);
+
+                if (!player.isDead()) {
+                    PlayerUtil.reset(player);
+                }
 
                 if (config.isSpawnFirework()) {
                     final Firework firework = (Firework) winner.getWorld().spawnEntity(winner.getEyeLocation(), EntityType.FIREWORK_ROCKET);
@@ -637,7 +638,7 @@ public class DuelManager implements Loadable {
                 handleStats(match, userDataManager.get(winner), userDataManager.get(player), matchData);
                 plugin.doSyncAfter(() -> handleInventories(match), 1L);
                 plugin.doSyncAfter(() -> {
-                    if (!isDead) {
+                    if (!player.isDead()) {
                         PlayerInfo info = playerManager.get(player);
                         if (info != null) {
                             teleport.tryTeleport(player, info.getLocation());
