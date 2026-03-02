@@ -5,18 +5,12 @@ import me.realized.duels.arena.ArenaImpl;
 import me.realized.duels.arena.ArenaManagerImpl;
 import me.realized.duels.kit.KitImpl;
 import me.realized.duels.util.EventUtil;
-import me.realized.duels.util.PlayerUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.damage.DamageSource;
-import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-
-import java.util.ArrayList;
 
 /**
  * Overrides damage cancellation by other plugins for players in a duel.
@@ -52,16 +46,8 @@ public class DamageListener implements Listener {
             return;
         }
 
-        KitImpl.Characteristic characteristic = arena.getMatch().getKit().getCharacteristics().stream()
-                .filter(c -> c == KitImpl.Characteristic.BOXING)
-                .findFirst()
-                .orElse(null);
-
-        if (characteristic != null && arena.getMatch().getHits(damager) >= 99) {
-            player.getInventory().clear();
-            PlayerDeathEvent customEvent = new PlayerDeathEvent(player, DamageSource.builder(DamageType.GENERIC).withCausingEntity(damager).withDirectEntity(damager).build(), new ArrayList<>(), 0, "Morreu para " + damager.getDisplayName() + " numa luta de boxe!");
-            PlayerUtil.reset(player);
-            Bukkit.getPluginManager().callEvent(customEvent);
+        // BOXING hit counting and win condition are handled in KitOptionsListener
+        if (arena.getMatch().getKit() != null && arena.getMatch().getKit().hasCharacteristic(KitImpl.Characteristic.BOXING)) {
             return;
         }
 
