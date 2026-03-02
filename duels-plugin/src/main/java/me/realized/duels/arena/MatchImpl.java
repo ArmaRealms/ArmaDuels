@@ -1,7 +1,6 @@
 package me.realized.duels.arena;
 
 import lombok.Getter;
-import lombok.Setter;
 import me.realized.duels.api.match.Match;
 import me.realized.duels.kit.KitImpl;
 import me.realized.duels.queue.Queue;
@@ -146,7 +145,6 @@ public class MatchImpl implements Match {
     }
 
     @Getter
-    @Setter
     public static class PlayerStatus {
 
         // Player is dead value
