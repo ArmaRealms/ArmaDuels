@@ -199,7 +199,7 @@ public class ArenaImpl extends BaseButton implements Arena {
     @Override
     public boolean has(@NotNull final Player player) {
         Objects.requireNonNull(player, "player");
-        return isUsed() && !match.getPlayerMap().getOrDefault(player, new MatchImpl.PlayerStatus(true)).isDead;
+        return isUsed() && !match.getPlayerMap().getOrDefault(player, new MatchImpl.PlayerStatus(true)).isDead();
     }
 
     public void add(final Player player) {
