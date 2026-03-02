@@ -29,7 +29,7 @@ public class DamageListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamage(final EntityDamageByEntityEvent event) {
-        if (!event.isCancelled() || !(event.getEntity() instanceof Player player)) {
+        if (!event.isCancelled() || !(event.getEntity() instanceof final Player player)) {
             return;
         }
 
@@ -42,7 +42,7 @@ public class DamageListener implements Listener {
         final ArenaImpl arena = arenaManager.get(player);
 
         // Only activate when winner is undeclared
-        if (arena == null || !arenaManager.isInMatch(damager) || arena.isEndGame()) {
+        if (arena == null || !arenaManager.isInMatch(damager) || arena.isEndGame() || arena.getMatch() == null) {
             return;
         }
 

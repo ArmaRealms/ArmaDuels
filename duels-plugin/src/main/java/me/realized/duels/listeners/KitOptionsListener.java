@@ -66,11 +66,10 @@ public class KitOptionsListener implements Listener {
 
     @EventHandler
     public void on(final EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
+        if (!(event.getEntity() instanceof final Player player)) {
             return;
         }
 
-        final Player player = (Player) event.getEntity();
         final ArenaImpl arena = arenaManager.get(player);
 
         if (arena == null || !isEnabled(arena, Characteristic.SUMO) && !isEnabled(arena, Characteristic.BOXING)) {
@@ -81,8 +80,8 @@ public class KitOptionsListener implements Listener {
     }
 
     @EventHandler
-    public void onBoxingDamage(final EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof Player player)) {
+    public void on(final EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof final Player player)) {
             return;
         }
 
@@ -99,6 +98,9 @@ public class KitOptionsListener implements Listener {
         }
 
         final MatchImpl match = arena.getMatch();
+        if (match == null) {
+            return;
+        }
         match.addDamageToPlayer(damager, event.getFinalDamage());
 
         final int damagerHits = match.getHits(damager);
@@ -111,7 +113,7 @@ public class KitOptionsListener implements Listener {
             player.getInventory().clear();
             final PlayerDeathEvent customEvent = new PlayerDeathEvent(player,
                     DamageSource.builder(DamageType.GENERIC).withCausingEntity(damager).withDirectEntity(damager).build(),
-                    new ArrayList<>(), 0, "Morreu para " + damager.getDisplayName() + " numa luta de boxe!");
+                    new ArrayList<>(), 0, "Morreu para " + damager.getName() + " numa luta de boxe!");
             PlayerUtil.reset(player);
             Bukkit.getPluginManager().callEvent(customEvent);
         }
@@ -119,7 +121,7 @@ public class KitOptionsListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void on(final FoodLevelChangeEvent event) {
-        if (!(event.getEntity() instanceof Player player)) {
+        if (!(event.getEntity() instanceof final Player player)) {
             return;
         }
 
@@ -137,7 +139,7 @@ public class KitOptionsListener implements Listener {
         final Player player = event.getPlayer();
         final ArenaImpl arena = arenaManager.get(player);
 
-        if (player.isDead() || arena == null || !isEnabled(arena, Characteristic.SUMO) || arena.isEndGame()) {
+        if (player.isDead() || arena == null || !isEnabled(arena, Characteristic.SUMO) || arena.isEndGame() || arena.getMatch() == null) {
             return;
         }
 
@@ -205,11 +207,10 @@ public class KitOptionsListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void on(final EntityRegainHealthEvent event) {
-        if (!(event.getEntity() instanceof Player) || !(event.getRegainReason() == RegainReason.SATIATED || event.getRegainReason() == RegainReason.REGEN)) {
+        if (!(event.getEntity() instanceof final Player player) || !(event.getRegainReason() == RegainReason.SATIATED || event.getRegainReason() == RegainReason.REGEN)) {
             return;
         }
 
-        final Player player = (Player) event.getEntity();
         final ArenaImpl arena = arenaManager.get(player);
 
         if (arena == null || !isEnabled(arena, Characteristic.UHC)) {
@@ -272,11 +273,10 @@ public class KitOptionsListener implements Listener {
 
         @EventHandler
         public void on(final EntityDamageByEntityEvent event) {
-            if (!(event.getEntity() instanceof Player)) {
+            if (!(event.getEntity() instanceof final Player player)) {
                 return;
             }
 
-            final Player player = (Player) event.getEntity();
             final ArenaImpl arena = arenaManager.get(player);
 
             if (arena == null || !isEnabled(arena, Characteristic.COMBO)) {
