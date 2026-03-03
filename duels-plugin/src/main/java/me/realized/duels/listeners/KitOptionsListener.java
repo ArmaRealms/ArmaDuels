@@ -109,6 +109,8 @@ public class KitOptionsListener implements Listener {
         sendBoxingActionBar(damager, damagerHits, playerHits);
         sendBoxingActionBar(player, playerHits, damagerHits);
 
+        event.setDamage(0);
+
         if (damagerHits >= BOXING_WIN_HITS) {
             player.getInventory().clear();
             final PlayerDeathEvent customEvent = new PlayerDeathEvent(player,
