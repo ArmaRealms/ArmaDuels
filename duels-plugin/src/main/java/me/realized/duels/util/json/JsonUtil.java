@@ -17,8 +17,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import java.lang.reflect.InvocationTargetException;
 import org.jetbrains.annotations.NotNull;
+
+import java.lang.reflect.InvocationTargetException;
 
 public final class JsonUtil {
 
@@ -36,6 +37,9 @@ public final class JsonUtil {
         OBJECT_MAPPER.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
 
         OBJECT_WRITER = OBJECT_MAPPER.writer(buildDefaultPrettyPrinter());
+    }
+
+    private JsonUtil() {
     }
 
     public static ObjectMapper getObjectMapper() {
@@ -88,6 +92,4 @@ public final class JsonUtil {
         printer.indentObjectsWith(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE);
         return printer;
     }
-
-    private JsonUtil() {}
 }

@@ -3,20 +3,6 @@ package me.realized.duels.queue.sign;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.Permissions;
 import me.realized.duels.api.event.queue.sign.QueueSignCreateEvent;
@@ -43,6 +29,21 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class QueueSignManagerImpl implements Loadable, QueueSignManager, Listener {
 
@@ -72,7 +73,8 @@ public class QueueSignManagerImpl implements Loadable, QueueSignManager, Listene
     public void handleLoad() throws IOException {
         if (FileUtil.checkNonEmpty(file, true)) {
             try (final Reader reader = new InputStreamReader(new FileInputStream(file), Charsets.UTF_8)) {
-                final List<QueueSignData> data = JsonUtil.getObjectMapper().readValue(reader, new TypeReference<List<QueueSignData>>() {});
+                final List<QueueSignData> data = JsonUtil.getObjectMapper().readValue(reader, new TypeReference<List<QueueSignData>>() {
+                });
 
                 if (data != null) {
                     data.forEach(queueSignData -> {

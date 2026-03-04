@@ -1,9 +1,5 @@
 package me.realized.duels.extension;
 
-import java.io.File;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.api.Duels;
 import me.realized.duels.api.extension.DuelsExtension;
@@ -11,6 +7,11 @@ import me.realized.duels.util.Loadable;
 import me.realized.duels.util.Log;
 import me.realized.duels.util.NumberUtil;
 import org.bukkit.Bukkit;
+
+import java.io.File;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ExtensionManager implements Loadable {
 
@@ -20,7 +21,8 @@ public class ExtensionManager implements Loadable {
         try {
             INIT_EXTENSION = DuelsExtension.class.getDeclaredMethod("init", Duels.class, String.class, File.class, File.class);
             INIT_EXTENSION.setAccessible(true);
-        } catch (NoSuchMethodException ignored) {}
+        } catch (final NoSuchMethodException ignored) {
+        }
     }
 
     private final Map<String, DuelsExtension> extensions = new HashMap<>();
@@ -85,7 +87,7 @@ public class ExtensionManager implements Loadable {
                 Log.info(this, "Extension '" + extension.getName() + " v" + info.getVersion() + "' is now enabled.");
                 extensions.put(extension.getName(), extension);
                 this.info.put(extension, info);
-            } catch (Throwable thrown) {
+            } catch (final Throwable thrown) {
                 Log.error(this, "Could not enable extension " + file.getName() + "!", thrown);
             }
         }
@@ -103,7 +105,7 @@ public class ExtensionManager implements Loadable {
                 }
 
                 Log.info(this, "Extension '" + extension.getName() + " v" + info.get(extension).getVersion() + "' is now disabled.");
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 Log.error(this, "Could not disable extension " + extension.getName() + "!", ex);
             }
         });

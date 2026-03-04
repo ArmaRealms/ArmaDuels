@@ -4,11 +4,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import me.realized.duels.util.EnumUtil;
 import me.realized.duels.util.collection.StreamUtil;
 import me.realized.duels.util.compat.CompatUtil;
@@ -26,7 +21,24 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 public class ItemData {
+
+    private Map<String, Object> item;
+
+    private ItemData() {
+    }
+
+    private ItemData(ItemStack item) {
+        item = Identifiers.removeIdentifier(item);
+        final String dumped = YamlUtil.bukkitYamlDump(item);
+        this.item = YamlUtil.yamlLoad(dumped);
+    }
 
     public static ItemData fromItemStack(final ItemStack item) {
         return new ItemData(item);
@@ -46,16 +58,6 @@ public class ItemData {
         }
     }
 
-    private Map<String, Object> item;
-
-    private ItemData() {}
-
-    private ItemData(ItemStack item) {
-        item = Identifiers.removeIdentifier(item);
-        final String dumped = YamlUtil.bukkitYamlDump(item);
-        this.item = YamlUtil.yamlLoad(dumped);
-    }
-
     public ItemStack toItemStack(final boolean kitItem) {
         if (item == null || item.isEmpty()) {
             return null;
@@ -66,7 +68,7 @@ public class ItemData {
         }
 
         final String dumped = YamlUtil.yamlDump(item);
-        ItemStack item = YamlUtil.bukkitYamlLoadAs(dumped, ItemStack.class);
+        final ItemStack item = YamlUtil.bukkitYamlLoadAs(dumped, ItemStack.class);
         return kitItem ? Identifiers.addIdentifier(item) : item;
     }
 
@@ -94,7 +96,7 @@ public class ItemData {
                 actual.nextToken();
             }
 
-            ItemData data = (ItemData) defaultDeserializer.deserialize(actual, context);
+            final ItemData data = (ItemData) defaultDeserializer.deserialize(actual, context);
 
             if (data.item != null) {
                 // If an item was successfully parsed to new json, disable old json check (assume kit file is in new json format) to reduce overhead.
@@ -188,7 +190,7 @@ public class ItemData {
 
                 if (node.has("itemData") && !CompatUtil.isPre1_9()) {
                     final List<String> args = Arrays.asList(node.get("itemData").textValue().split("-"));
-                    final PotionType potionType = EnumUtil.getByName(args.get(0), PotionType.class);
+                    final PotionType potionType = EnumUtil.getByName(args.getFirst(), PotionType.class);
 
                     if (potionType != null) {
                         builder.potion(potionType, args.contains("extended"), args.contains("strong"));
@@ -198,10 +200,10 @@ public class ItemData {
                 if (node.has("attributeModifiers") && CompatUtil.hasAttributes()) {
                     final JsonNode attributes = node.get("attributeModifiers");
                     StreamUtil.asStream(attributes).forEach(attributeNode -> builder.attribute(
-                        attributeNode.get("name").textValue(),
-                        attributeNode.get("operation").intValue(),
-                        attributeNode.get("amount").doubleValue(),
-                        attributeNode.has("slot") ? attributeNode.get("slot").textValue() : null
+                            attributeNode.get("name").textValue(),
+                            attributeNode.get("operation").intValue(),
+                            attributeNode.get("amount").doubleValue(),
+                            attributeNode.has("slot") ? attributeNode.get("slot").textValue() : null
                     ));
                 }
 

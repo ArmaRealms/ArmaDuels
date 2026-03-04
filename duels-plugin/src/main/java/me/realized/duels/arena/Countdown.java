@@ -1,15 +1,17 @@
 package me.realized.duels.arena;
 
 import com.google.common.collect.Lists;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.config.Config;
 import me.realized.duels.util.StringUtil;
 import me.realized.duels.util.compat.Titles;
 import me.realized.duels.util.function.Pair;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 class Countdown extends BukkitRunnable {
 
@@ -22,7 +24,7 @@ class Countdown extends BukkitRunnable {
 
     private boolean finished;
 
-    Countdown(final DuelsPlugin plugin, final ArenaImpl arena, final String kit, final Map<UUID,  Pair<String, Integer>> info, final List<String> messages, final List<String> titles) {
+    Countdown(final @NotNull DuelsPlugin plugin, final ArenaImpl arena, final String kit, final Map<UUID, Pair<String, Integer>> info, final List<String> messages, final List<String> titles) {
         this.config = plugin.getConfiguration();
         this.arena = arena;
         this.kit = kit;
@@ -44,14 +46,14 @@ class Countdown extends BukkitRunnable {
         arena.getPlayers().forEach(player -> {
             config.playSound(player, rawMessage);
 
-            final  Pair<String, Integer> info = this.info.get(player.getUniqueId());
+            final Pair<String, Integer> info = this.info.get(player.getUniqueId());
 
             if (info != null) {
                 player.sendMessage(message
-                    .replace("%opponent%", info.getKey())
-                    .replace("%opponent_rating%", String.valueOf(info.getValue()))
-                    .replace("%kit%", kit)
-                    .replace("%arena%", arena.getName())
+                        .replace("%opponent%", info.getKey())
+                        .replace("%opponent_rating%", String.valueOf(info.getValue()))
+                        .replace("%kit%", kit)
+                        .replace("%arena%", arena.getName())
                 );
             } else {
                 player.sendMessage(message);

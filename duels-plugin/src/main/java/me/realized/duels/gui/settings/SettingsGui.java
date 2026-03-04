@@ -1,7 +1,5 @@
 package me.realized.duels.gui.settings;
 
-import java.util.ArrayList;
-import java.util.List;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.config.Config;
 import me.realized.duels.gui.BaseButton;
@@ -9,6 +7,7 @@ import me.realized.duels.gui.settings.buttons.ArenaSelectButton;
 import me.realized.duels.gui.settings.buttons.CancelButton;
 import me.realized.duels.gui.settings.buttons.ItemBettingButton;
 import me.realized.duels.gui.settings.buttons.KitSelectButton;
+import me.realized.duels.gui.settings.buttons.McmmoSkillButton;
 import me.realized.duels.gui.settings.buttons.OwnInventoryButton;
 import me.realized.duels.gui.settings.buttons.RequestDetailsButton;
 import me.realized.duels.gui.settings.buttons.RequestSendButton;
@@ -17,13 +16,17 @@ import me.realized.duels.util.gui.SinglePageGui;
 import me.realized.duels.util.inventory.Slots;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SettingsGui extends SinglePageGui<DuelsPlugin> {
 
     private static final int[][] PATTERNS = {
-        {13},
-        {12, 14},
-        {12, 13, 14},
-        {12, 13, 14, 22}
+            {13},
+            {12, 14},
+            {12, 13, 14},
+            {12, 13, 14, 22},
+            {11, 12, 14, 15, 22}
     };
 
     public SettingsGui(final DuelsPlugin plugin) {
@@ -47,6 +50,10 @@ public class SettingsGui extends SinglePageGui<DuelsPlugin> {
 
         if (config.isArenaSelectingEnabled()) {
             buttons.add(new ArenaSelectButton(plugin));
+        }
+
+        if (config.isMcmmoSkillEnabled()) {
+            buttons.add(new McmmoSkillButton(plugin));
         }
 
         if (config.isItemBettingEnabled()) {

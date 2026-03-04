@@ -3,6 +3,7 @@ package me.realized.duels.listeners;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.arena.ArenaImpl;
 import me.realized.duels.arena.ArenaManagerImpl;
+import me.realized.duels.kit.KitImpl;
 import me.realized.duels.util.EventUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -27,12 +28,11 @@ public class DamageListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void on(final EntityDamageByEntityEvent event) {
-        if (!event.isCancelled() || !(event.getEntity() instanceof Player)) {
+    public void onDamage(final EntityDamageByEntityEvent event) {
+        if (!event.isCancelled() || !(event.getEntity() instanceof final Player player)) {
             return;
         }
 
-        final Player player = (Player) event.getEntity();
         final Player damager = EventUtil.getDamager(event);
 
         if (damager == null) {
@@ -42,10 +42,21 @@ public class DamageListener implements Listener {
         final ArenaImpl arena = arenaManager.get(player);
 
         // Only activate when winner is undeclared
-        if (arena == null || !arenaManager.isInMatch(damager) || arena.isEndGame()) {
+        if (arena == null || !arenaManager.isInMatch(damager) || arena.isEndGame() || arena.getMatch() == null) {
             return;
         }
 
+        // BOXING hit counting and win condition are handled in KitOptionsListener
+        if (arena.getMatch().getKit() != null && arena.getMatch().getKit().hasCharacteristic(KitImpl.Characteristic.BOXING)) {
+            return;
+        }
+
+        arena.getMatch().addDamageToPlayer(damager, event.getFinalDamage());
+
+        if (!event.isCancelled()) {
+            return;
+        }
         event.setCancelled(false);
     }
+
 }

@@ -1,6 +1,5 @@
 package me.realized.duels.gui.bind.buttons;
 
-import java.util.stream.Collectors;
 import lombok.Setter;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.arena.ArenaImpl;
@@ -14,10 +13,10 @@ import org.bukkit.entity.Player;
 
 public class BindButton extends BaseButton {
 
-    @Setter
-    private BindGui gui;
     private final KitImpl kit;
     private final ArenaImpl arena;
+    @Setter
+    private BindGui gui;
 
     public BindButton(final DuelsPlugin plugin, final KitImpl kit, final ArenaImpl arena) {
         super(plugin, ItemBuilder.of(Items.EMPTY_MAP).build());
@@ -31,7 +30,7 @@ public class BindButton extends BaseButton {
         final boolean state = arena.isBound(kit);
         setGlow(state);
 
-        String kits = StringUtil.join(arena.getKits().stream().map(KitImpl::getName).collect(Collectors.toList()), ", ");
+        String kits = StringUtil.join(arena.getKits().stream().map(KitImpl::getName).toList(), ", ");
         kits = kits.isEmpty() ? lang.getMessage("GENERAL.none") : kits;
         setLore(lang.getMessage("GUI.bind.buttons.arena.lore-" + (state ? "bound" : "not-bound"), "kits", kits).split("\n"));
     }

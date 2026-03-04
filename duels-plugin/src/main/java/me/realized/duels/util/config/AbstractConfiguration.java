@@ -4,6 +4,15 @@ import com.google.common.base.Charsets;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import me.realized.duels.util.Loadable;
+import me.realized.duels.util.config.convert.Converter;
+import me.realized.duels.util.reflect.ReflectionUtil;
+import org.bukkit.configuration.MemorySection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.FileConfigurationOptions;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -25,14 +34,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import me.realized.duels.util.Loadable;
-import me.realized.duels.util.config.convert.Converter;
-import me.realized.duels.util.reflect.ReflectionUtil;
-import org.bukkit.configuration.MemorySection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.FileConfigurationOptions;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public abstract class AbstractConfiguration<P extends JavaPlugin> implements Loadable {
 
@@ -66,7 +67,8 @@ public abstract class AbstractConfiguration<P extends JavaPlugin> implements Loa
     }
 
     @Override
-    public void handleUnload() {}
+    public void handleUnload() {
+    }
 
     protected abstract void loadValues(final FileConfiguration configuration) throws Exception;
 
@@ -143,7 +145,8 @@ public abstract class AbstractConfiguration<P extends JavaPlugin> implements Loa
             if (method != null) {
                 try {
                     method.invoke(options, false);
-                } catch (IllegalAccessException | InvocationTargetException ignored) {}
+                } catch (IllegalAccessException | InvocationTargetException ignored) {
+                }
             }
 
             // Transfer values from the old configuration

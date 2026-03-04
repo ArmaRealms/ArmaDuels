@@ -1,6 +1,5 @@
 package me.realized.duels.command.commands.duel.subcommands;
 
-import java.util.List;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.Permissions;
 import me.realized.duels.api.user.UserManager.TopData;
@@ -10,10 +9,12 @@ import me.realized.duels.kit.KitImpl;
 import me.realized.duels.util.StringUtil;
 import org.bukkit.command.CommandSender;
 
+import java.util.List;
+
 public class TopCommand extends BaseCommand {
 
     public TopCommand(final DuelsPlugin plugin) {
-        super(plugin, "top", "top [-:kit:wins:losses]", "Displays top wins, losses, or rating for kit.", Permissions.TOP, 2, true);
+        super(plugin, "top", "top [geral:kit:vitorias:derrotas]", "Displays top wins, losses, or rating for kit.", Permissions.TOP, 2, true);
     }
 
     @Override
@@ -25,11 +26,11 @@ public class TopCommand extends BaseCommand {
 
         final TopEntry topEntry;
 
-        if (args[1].equals("-")) {
+        if (args[1].equals("-") || args[1].equalsIgnoreCase("geral")) {
             topEntry = userManager.getTopRatings();
-        } else if (args[1].equalsIgnoreCase("wins")) {
+        } else if (args[1].equalsIgnoreCase("wins") || args[1].equalsIgnoreCase("vitorias")) {
             topEntry = userManager.getWins();
-        } else if (args[1].equalsIgnoreCase("losses")) {
+        } else if (args[1].equalsIgnoreCase("losses") || args[1].equalsIgnoreCase("derrotas")) {
             topEntry = userManager.getLosses();
         } else {
             final String name = StringUtil.join(args, " ", 1, args.length);
@@ -56,7 +57,7 @@ public class TopCommand extends BaseCommand {
         for (int i = 0; i < top.size(); i++) {
             final TopData data = top.get(i);
             lang.sendMessage(sender, "COMMAND.duel.top.display-format",
-                "rank", i + 1, "name", data.getName(), "score", data.getValue(), "identifier", topEntry.getIdentifier());
+                    "rank", i + 1, "name", data.getName(), "score", data.getValue(), "identifier", topEntry.getIdentifier());
         }
 
         lang.sendMessage(sender, "COMMAND.duel.top.footer", "type", topEntry.getType());

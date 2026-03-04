@@ -1,7 +1,5 @@
 package me.realized.duels.gui.options;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
 import lombok.Getter;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.gui.options.buttons.OptionButton;
@@ -15,6 +13,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class OptionsGui extends SinglePageGui<DuelsPlugin> {
 
@@ -48,7 +49,8 @@ public class OptionsGui extends SinglePageGui<DuelsPlugin> {
         SOUP(Items.MUSHROOM_SOUP, Characteristic.SOUP, "When enabled, players will", "receive the amount of health", "defined in config when", "right-clicking a soup."),
         SUMO(Material.SLIME_BALL, Characteristic.SUMO, "When enabled, players will ", "lose health only when", "interacting with water or lava."),
         UHC(Material.GOLDEN_APPLE, Characteristic.UHC, "When enabled, player's health", "will not naturally regenerate."),
-        COMBO(Material.IRON_SWORD, Characteristic.COMBO, "When enabled, players will", "have no delay between hits.");
+        COMBO(Material.IRON_SWORD, Characteristic.COMBO, "When enabled, players will", "have no delay between hits."),
+        BOXING(Material.DIAMOND_CHESTPLATE, Characteristic.BOXING, "When enabled, players will", "need give opponent 100 hits.");
 
         @Getter
         private final Material displayed;

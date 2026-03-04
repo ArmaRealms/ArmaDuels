@@ -1,9 +1,11 @@
 package me.realized.duels.api.user;
 
-import java.util.List;
-import java.util.UUID;
 import me.realized.duels.api.kit.Kit;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * Represents a User loaded on the server.
@@ -123,4 +125,35 @@ public interface User {
      * Resets user's wins, losses, recent matches, and all rating.
      */
     void reset();
+
+
+    /**
+     * Checks if the user is ignoring the given player.
+     *
+     * @param playerUuid UUID of the player to check if this user is ignoring.
+     * @return True if this user is ignoring the given player. False otherwise.
+     */
+    boolean isIgnoring(UUID playerUuid);
+
+    /**
+     * Adds the given player to the ignore list of this user.
+     *
+     * @param playerUuid UUID of the player to add to the ignore list.
+     */
+    void addIgnoredPlayer(UUID playerUuid);
+
+    /**
+     * Removes the given player from the ignore list of this user.
+     *
+     * @param playerUuid UUID of the player to remove from the ignore list.
+     */
+    void removeIgnoredPlayer(UUID playerUuid);
+
+    /**
+     * Gets an unmodifiable set of players that this user is ignoring.
+     *
+     * @return Unmodifiable set of UUIDs of players that this user is ignoring.
+     */
+    @NotNull
+    Set<UUID> getIgnoredPlayers();
 }

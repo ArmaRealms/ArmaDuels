@@ -1,27 +1,14 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-    }
-
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
-    }
+plugins {
+    id 'java'
+    id 'maven-publish'
 }
 
 allprojects {
     group 'me.realized'
-    version '3.5.3'
+    version '3.5.5-SNAPSHOT'
 }
 
 subprojects {
-    apply plugin: 'java'
-    apply plugin: 'java-library'
-    apply plugin: 'com.github.johnrengelman.shadow'
-    apply plugin: 'maven-publish'
-
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
 
     repositories {
         mavenCentral()
@@ -29,6 +16,11 @@ subprojects {
         maven {
             name 'spigot-repo'
             url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+        }
+
+        maven {
+            name 'papermc'
+            url 'https://repo.papermc.io/repository/maven-public/'
         }
 
         maven {
@@ -59,6 +51,21 @@ subprojects {
         maven {
             name 'essentialsx-repo'
             url 'https://repo.essentialsx.net/releases/'
+        }
+
+        maven {
+            name 'jitpack.io'
+            url 'https://jitpack.io'
+        }
+
+        maven {
+            name 'sirblobman-public'
+            url 'https://nexus.sirblobman.xyz/public/'
+        }
+
+        maven {
+            name 'roinujnosde-repo'
+            url 'https://repo.roinujnosde.me/releases/'
         }
 
         flatDir {

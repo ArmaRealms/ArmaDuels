@@ -1,15 +1,12 @@
 package me.realized.duels.util.inventory;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-import java.util.function.Consumer;
 import me.realized.duels.util.EnumUtil;
 import me.realized.duels.util.StringUtil;
 import me.realized.duels.util.compat.CompatUtil;
 import me.realized.duels.util.compat.Items;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.attribute.AttributeModifier.Operation;
@@ -22,6 +19,11 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+import java.util.function.Consumer;
 
 public final class ItemBuilder {
 
@@ -85,13 +87,7 @@ public final class ItemBuilder {
     }
 
     public ItemBuilder unbreakable() {
-        return editMeta(meta -> {
-            if (CompatUtil.isPre1_12()) {
-                meta.spigot().setUnbreakable(true);
-            } else {
-                meta.setUnbreakable(true);
-            }
-        });
+        return editMeta(meta -> meta.setUnbreakable(true));
     }
 
     public ItemBuilder head(final String owner) {
@@ -114,8 +110,8 @@ public final class ItemBuilder {
     }
 
     public ItemBuilder potion(final PotionType type, final boolean extended, final boolean upgraded) {
-        PotionMeta meta = (PotionMeta) result.getItemMeta();
-        meta.setBasePotionData(new PotionData(type, extended, upgraded));
+        final PotionMeta meta = (PotionMeta) result.getItemMeta();
+        meta.setBasePotionType(type);
         result.setItemMeta(meta);
         return this;
     }
@@ -129,7 +125,6 @@ public final class ItemBuilder {
             }
 
             final AttributeModifier modifier;
-
             if (slotName != null) {
                 final EquipmentSlot slot = EnumUtil.getByName(slotName, EquipmentSlot.class);
 
@@ -147,7 +142,7 @@ public final class ItemBuilder {
     }
 
     private String attributeNameToEnum(String name) {
-        int len = name.length();
+        final int len = name.length();
         int capitalLetterIndex = -1;
 
         for (int i = 0; i < len; i++) {

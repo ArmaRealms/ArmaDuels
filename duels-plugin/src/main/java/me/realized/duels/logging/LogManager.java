@@ -1,5 +1,10 @@
 package me.realized.duels.logging;
 
+import lombok.Getter;
+import me.realized.duels.DuelsPlugin;
+import me.realized.duels.util.DateUtil;
+import me.realized.duels.util.Log.LogSource;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,10 +15,6 @@ import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import lombok.Getter;
-import me.realized.duels.DuelsPlugin;
-import me.realized.duels.util.DateUtil;
-import me.realized.duels.util.Log.LogSource;
 
 public class LogManager implements LogSource {
 

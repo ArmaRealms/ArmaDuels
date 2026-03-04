@@ -1,6 +1,7 @@
 package me.realized.duels.util;
 
 import me.realized.duels.util.compat.CompatUtil;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
@@ -15,11 +16,14 @@ public final class PlayerUtil {
     private static final float DEFAULT_SATURATION = 5.0F;
     private static final int DEFAULT_MAX_FOOD_LEVEL = 20;
 
+    private PlayerUtil() {
+    }
+
     public static double getMaxHealth(final Player player) {
         if (CompatUtil.isPre1_9()) {
             return player.getMaxHealth();
         } else {
-            final AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+            final AttributeInstance attribute = player.getAttribute(Attribute.MAX_HEALTH);
 
             if (attribute == null) {
                 return DEFAULT_MAX_HEALTH;
@@ -40,7 +44,7 @@ public final class PlayerUtil {
         player.setExhaustion(DEFAULT_EXHAUSTION);
         player.setSaturation(DEFAULT_SATURATION);
         player.setFoodLevel(DEFAULT_MAX_FOOD_LEVEL);
-        player.setItemOnCursor(null);
+        player.setItemOnCursor(new ItemStack(Material.AIR));
 
         final Inventory top = player.getOpenInventory().getTopInventory();
 
@@ -52,6 +56,4 @@ public final class PlayerUtil {
         player.getInventory().clear();
         player.updateInventory();
     }
-
-    private PlayerUtil() {}
 }

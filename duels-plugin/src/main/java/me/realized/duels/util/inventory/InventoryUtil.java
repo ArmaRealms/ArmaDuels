@@ -1,19 +1,22 @@
 package me.realized.duels.util.inventory;
 
 import com.google.common.collect.ObjectArrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-public final class InventoryUtil {
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
+public final class InventoryUtil {
     private static final String INVENTORY_IDENTIFIER = "INVENTORY";
     private static final String ARMOR_IDENTIFIER = "ARMOR";
+
+    private InventoryUtil() {
+    }
 
     public static void addToMap(final PlayerInventory inventory, final Map<String, Map<Integer, ItemStack>> items) {
         final Map<Integer, ItemStack> contents = new HashMap<>();
@@ -75,6 +78,18 @@ public final class InventoryUtil {
         return false;
     }
 
+    public static boolean wearingElytra(final Player player) {
+        final PlayerInventory inventory = player.getInventory();
+
+        if (inventory.getChestplate() == null) return false;
+
+        if (inventory.getChestplate().getType() == Material.AIR) return false;
+
+        if (inventory.getChestplate().getType() == Material.ELYTRA) return true;
+
+        return false;
+    }
+
     public static boolean addOrDrop(final Player player, final Collection<ItemStack> items) {
         if (items.isEmpty()) {
             return false;
@@ -92,7 +107,5 @@ public final class InventoryUtil {
     public static ItemStack getItemInHand(final Player player) {
         return player.getInventory().getItem(player.getInventory().getHeldItemSlot());
     }
-
-    private InventoryUtil() {}
 
 }

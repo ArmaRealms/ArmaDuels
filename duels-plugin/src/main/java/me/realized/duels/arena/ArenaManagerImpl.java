@@ -2,21 +2,6 @@ package me.realized.duels.arena;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Charsets;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.api.arena.Arena;
@@ -43,6 +28,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -50,6 +36,22 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.projectiles.ProjectileSource;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 public class ArenaManagerImpl implements Loadable, ArenaManager {
 
@@ -88,7 +90,8 @@ public class ArenaManagerImpl implements Loadable, ArenaManager {
 
         if (FileUtil.checkNonEmpty(file, true)) {
             try (final Reader reader = new InputStreamReader(new FileInputStream(file), Charsets.UTF_8)) {
-                final List<ArenaData> data = JsonUtil.getObjectMapper().readValue(reader, new TypeReference<List<ArenaData>>() {});
+                final List<ArenaData> data = JsonUtil.getObjectMapper().readValue(reader, new TypeReference<List<ArenaData>>() {
+                });
 
                 if (data != null) {
                     for (final ArenaData arenaData : data) {
@@ -135,14 +138,20 @@ public class ArenaManagerImpl implements Loadable, ArenaManager {
     @Override
     public ArenaImpl get(@NotNull final String name) {
         Objects.requireNonNull(name, "name");
-        return arenas.stream().filter(arena -> arena.getName().equals(name)).findFirst().orElse(null);
+        return arenas.stream()
+                .filter(arena -> arena.getName().equals(name))
+                .findFirst()
+                .orElse(null);
     }
 
     @Nullable
     @Override
     public ArenaImpl get(@NotNull final Player player) {
         Objects.requireNonNull(player, "player");
-        return arenas.stream().filter(arena -> arena.has(player)).findFirst().orElse(null);
+        return arenas.stream()
+                .filter(arena -> arena.has(player))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -215,12 +224,12 @@ public class ArenaManagerImpl implements Loadable, ArenaManager {
     }
 
     public ArenaImpl randomArena(final KitImpl kit) {
-        final List<ArenaImpl> available = arenas.stream().filter(arena -> isSelectable(kit, arena)).collect(Collectors.toList());
+        final List<ArenaImpl> available = arenas.stream().filter(arena -> isSelectable(kit, arena)).toList();
         return !available.isEmpty() ? available.get(ThreadLocalRandom.current().nextInt(available.size())) : null;
     }
 
     public List<String> getNames() {
-        return arenas.stream().map(ArenaImpl::getName).collect(Collectors.toList());
+        return arenas.stream().map(ArenaImpl::getName).toList();
     }
 
     // Called on kit removal
@@ -230,19 +239,22 @@ public class ArenaManagerImpl implements Loadable, ArenaManager {
 
     private class ArenaListener implements Listener {
 
-        @EventHandler(ignoreCancelled = true)
+        @EventHandler
         public void on(final PlayerInteractEvent event) {
-            if (!event.hasBlock() || !config.isPreventInteract()) {
+            if (event.getAction() != Action.RIGHT_CLICK_AIR && event.isCancelled() || !config.isPreventInteract()) {
                 return;
             }
 
-            final ArenaImpl arena = get(event.getPlayer());
+            Player player = event.getPlayer();
+
+            final ArenaImpl arena = get(player);
 
             if (arena == null || !arena.isCounting()) {
                 return;
             }
 
             event.setCancelled(true);
+            player.updateInventory();
         }
 
         @EventHandler(ignoreCancelled = true)
@@ -268,13 +280,13 @@ public class ArenaManagerImpl implements Loadable, ArenaManager {
 
             final ProjectileSource shooter = event.getEntity().getShooter();
 
-            if (!(shooter instanceof Player)) {
+            if (!(shooter instanceof Player player)) {
                 return;
             }
 
-            final ArenaImpl arena = get((Player) shooter);
+            final ArenaImpl arena = get(player);
 
-            if (arena == null || !arena.isCounting()) {
+            if (arena == null || !arena.isCounting() || event.getEntity().getClass().getName().contains("Potion")) {
                 return;
             }
 
@@ -283,12 +295,16 @@ public class ArenaManagerImpl implements Loadable, ArenaManager {
 
         @EventHandler(ignoreCancelled = true)
         public void on(final PlayerMoveEvent event) {
+            final Location to = event.getTo();
+            if (to == null) {
+                return;
+            }
+
             if (!config.isPreventMovement()) {
                 return;
             }
 
             final Location from = event.getFrom();
-            final Location to = event.getTo();
 
             if (from.getBlockX() == to.getBlockX() && from.getBlockY() == to.getBlockY() && from.getBlockZ() == to.getBlockZ()) {
                 return;
@@ -298,6 +314,10 @@ public class ArenaManagerImpl implements Loadable, ArenaManager {
 
             if (arena == null || !arena.isCounting()) {
                 return;
+            }
+
+            if (to.getBlockY() < config.getMinY()) {
+                event.getPlayer().damage(99999);
             }
 
             event.setTo(event.getFrom());

@@ -1,10 +1,5 @@
 package me.realized.duels.kit;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +18,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+
 public class KitImpl extends BaseButton implements Kit {
 
     @Getter
@@ -39,13 +40,13 @@ public class KitImpl extends BaseButton implements Kit {
     @Setter(value = AccessLevel.PACKAGE)
     private boolean removed;
 
-    public KitImpl(final DuelsPlugin plugin, final String name, final ItemStack displayed, final boolean usePermission, final boolean arenaSpecific,
-        final Set<Characteristic> characteristics) {
+    public KitImpl(final DuelsPlugin plugin, final String name, final ItemStack displayed, final boolean usePermission,
+                   final boolean arenaSpecific, final Set<Characteristic> characteristics) {
         super(plugin, displayed != null ? displayed : ItemBuilder
-            .of(Material.DIAMOND_SWORD)
-            .name("&7&l" + name)
-            .lore("&aClick to send", "&aa duel request", "&awith this kit!")
-            .build());
+                .of(Material.DIAMOND_SWORD)
+                .name("&7&l" + name)
+                .lore("&aClick to send", "&aa duel request", "&awith this kit!")
+                .build());
         this.name = name;
         this.usePermission = usePermission;
         this.arenaSpecific = arenaSpecific;
@@ -148,10 +149,10 @@ public class KitImpl extends BaseButton implements Kit {
     }
 
     public enum Characteristic {
-
         SOUP,
         SUMO,
         UHC,
-        COMBO;
+        COMBO,
+        BOXING;
     }
 }

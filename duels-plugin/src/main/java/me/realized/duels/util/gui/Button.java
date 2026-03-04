@@ -1,23 +1,18 @@
 package me.realized.duels.util.gui;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.Setter;
 import me.realized.duels.util.StringUtil;
-import me.realized.duels.util.compat.CompatUtil;
 import me.realized.duels.util.compat.Items;
-import me.realized.duels.util.compat.Skulls;
 import me.realized.duels.util.inventory.ItemBuilder;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class Button<P extends JavaPlugin> {
 
@@ -31,18 +26,12 @@ public class Button<P extends JavaPlugin> {
         this.displayed = displayed;
     }
 
-    protected void editMeta(final Consumer<ItemMeta> consumer) {
-        final ItemMeta meta = getDisplayed().getItemMeta();
-        consumer.accept(meta);
-        getDisplayed().setItemMeta(meta);
-    }
-
     protected void setDisplayName(final String name) {
-        editMeta(meta -> meta.setDisplayName(StringUtil.color(name)));
+        getDisplayed().editMeta(meta -> meta.setDisplayName(StringUtil.color(name)));
     }
 
     protected void setLore(final List<String> lore) {
-        editMeta(meta -> meta.setLore(StringUtil.color(lore)));
+        getDisplayed().editMeta(meta -> meta.setLore(StringUtil.color(lore)));
     }
 
     protected void setLore(final String... lore) {
@@ -51,7 +40,7 @@ public class Button<P extends JavaPlugin> {
 
     protected void setOwner(final Player player) {
         if (Items.equals(displayed, Items.HEAD)) {
-            editMeta(meta -> Skulls.setProfile((SkullMeta) meta, player));
+            getDisplayed().editMeta(SkullMeta.class, skullMeta -> skullMeta.setOwningPlayer(player));
         }
     }
 
@@ -64,25 +53,12 @@ public class Button<P extends JavaPlugin> {
             return;
         }
 
-        editMeta(meta -> {
-            if (glow) {
-                meta.addEnchant(Enchantment.DURABILITY, 1, false);
-
-                if (CompatUtil.hasItemFlag()) {
-                    meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                }
-            } else {
-                meta.removeEnchant(Enchantment.DURABILITY);
-
-                if (CompatUtil.hasItemFlag()) {
-                    meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-                }
-            }
-        });
+        getDisplayed().editMeta(meta -> meta.setEnchantmentGlintOverride(glow));
     }
 
+    public void update(final Player player) {
+    }
 
-    public void update(final Player player) {}
-
-    public void onClick(final Player player) {}
+    public void onClick(final Player player) {
+    }
 }

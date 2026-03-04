@@ -2,19 +2,9 @@ package me.realized.duels.player;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Charsets;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 import lombok.Getter;
 import me.realized.duels.DuelsPlugin;
+import me.realized.duels.arena.ArenaImpl;
 import me.realized.duels.config.Config;
 import me.realized.duels.data.LocationData;
 import me.realized.duels.data.PlayerData;
@@ -34,6 +24,18 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Manages:
@@ -77,7 +79,8 @@ public class PlayerInfoManager implements Loadable {
 
         if (FileUtil.checkNonEmpty(cacheFile, false)) {
             try (final Reader reader = new InputStreamReader(new FileInputStream(cacheFile), Charsets.UTF_8)) {
-                final Map<UUID, PlayerData> data = JsonUtil.getObjectMapper().readValue(reader, new TypeReference<HashMap<UUID, PlayerData>>() {});
+                final Map<UUID, PlayerData> data = JsonUtil.getObjectMapper().readValue(reader, new TypeReference<HashMap<UUID, PlayerData>>() {
+                });
 
                 if (data != null) {
                     for (final Map.Entry<UUID, PlayerData> entry : data.entrySet()) {
@@ -169,7 +172,7 @@ public class PlayerInfoManager implements Loadable {
     /**
      * Creates a cached PlayerInfo instance for given player.
      *
-     * @param player Player to create a cached PlayerInfo instance
+     * @param player           Player to create a cached PlayerInfo instance
      * @param excludeInventory true to exclude inventory contents from being stored in PlayerInfo, false otherwise
      */
     public void create(final Player player, final boolean excludeInventory) {
@@ -208,15 +211,13 @@ public class PlayerInfoManager implements Loadable {
         public void on(final PlayerJoinEvent event) {
             final Player player = event.getPlayer();
 
-            if (player.isDead()) {
-                return;
-            }
+            if (player.isDead()) return;
 
             final PlayerInfo info = remove(player);
+            if (info == null) return;
 
-            if (info == null) {
-                return;
-            }
+            final ArenaImpl arena = DuelsPlugin.getInstance().getArenaManager().get(player);
+            if (arena == null) return;
 
             teleport.tryTeleport(player, info.getLocation());
             info.restore(player);
@@ -225,11 +226,9 @@ public class PlayerInfoManager implements Loadable {
         @EventHandler(priority = EventPriority.HIGHEST)
         public void on(final PlayerRespawnEvent event) {
             final Player player = event.getPlayer();
-            final PlayerInfo info = get(player);
 
-            if (info == null) {
-                return;
-            }
+            final PlayerInfo info = get(player);
+            if (info == null) return;
 
             event.setRespawnLocation(info.getLocation());
 

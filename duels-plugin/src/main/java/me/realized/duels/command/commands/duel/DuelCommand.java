@@ -1,12 +1,14 @@
 package me.realized.duels.command.commands.duel;
 
-import java.util.List;
+import com.google.common.collect.Iterables;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.Permissions;
 import me.realized.duels.command.BaseCommand;
 import me.realized.duels.command.commands.duel.subcommands.AcceptCommand;
 import me.realized.duels.command.commands.duel.subcommands.DenyCommand;
+import me.realized.duels.command.commands.duel.subcommands.IgnoreCommand;
 import me.realized.duels.command.commands.duel.subcommands.InventoryCommand;
+import me.realized.duels.command.commands.duel.subcommands.SpectateCommand;
 import me.realized.duels.command.commands.duel.subcommands.StatsCommand;
 import me.realized.duels.command.commands.duel.subcommands.ToggleCommand;
 import me.realized.duels.command.commands.duel.subcommands.TopCommand;
@@ -28,6 +30,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DuelCommand extends BaseCommand {
 
     private final CombatTagPlusHook combatTagPlus;
@@ -39,13 +44,15 @@ public class DuelCommand extends BaseCommand {
     public DuelCommand(final DuelsPlugin plugin) {
         super(plugin, "duel", Permissions.DUEL, true);
         child(
-            new AcceptCommand(plugin),
-            new DenyCommand(plugin),
-            new StatsCommand(plugin),
-            new ToggleCommand(plugin),
-            new TopCommand(plugin),
-            new InventoryCommand(plugin),
-            new VersionCommand(plugin)
+                new AcceptCommand(plugin),
+                new DenyCommand(plugin),
+                new IgnoreCommand(plugin),
+                new StatsCommand(plugin),
+                new ToggleCommand(plugin),
+                new TopCommand(plugin),
+                new InventoryCommand(plugin),
+                new VersionCommand(plugin),
+                new SpectateCommand(plugin)
         );
         this.combatTagPlus = hookManager.getHook(CombatTagPlusHook.class);
         this.pvpManager = hookManager.getHook(PvPManagerHook.class);
@@ -77,6 +84,11 @@ public class DuelCommand extends BaseCommand {
             return true;
         }
 
+        if (config.isRequiresNoElytra() && InventoryUtil.wearingElytra(player)) {
+            lang.sendMessage(sender, "ERROR.duel.wearing-elytra");
+            return true;
+        }
+
         if (config.isPreventCreativeMode() && player.getGameMode() == GameMode.CREATIVE) {
             lang.sendMessage(sender, "ERROR.duel.in-creative-mode");
             return true;
@@ -87,9 +99,9 @@ public class DuelCommand extends BaseCommand {
             return true;
         }
 
-        if ((combatTagPlus != null && combatTagPlus.isTagged(player))
-            || (pvpManager != null && pvpManager.isTagged(player))
-            || (combatLogX != null && combatLogX.isTagged(player))) {
+        if ((combatLogX != null && combatLogX.isTagged(player))
+                || (pvpManager != null && pvpManager.isTagged(player))
+                || (combatTagPlus != null && combatTagPlus.isTagged(player))) {
             lang.sendMessage(sender, "ERROR.duel.is-tagged");
             return true;
         }
@@ -135,6 +147,11 @@ public class DuelCommand extends BaseCommand {
             return true;
         }
 
+        if (user.isIgnoring(player.getUniqueId())) {
+            lang.sendMessage(sender, "ERROR.duel.player-ignoring", "name", target.getName());
+            return true;
+        }
+
         if (requestManager.has(player, target)) {
             lang.sendMessage(sender, "ERROR.duel.already-has-request", "name", target.getName());
             return true;
@@ -153,6 +170,7 @@ public class DuelCommand extends BaseCommand {
         final Settings settings = settingManager.getSafely(player);
         // Reset bet to prevent accidents
         settings.setBet(0);
+        settings.setMcmmoSkills(true);
         settings.setTarget(target);
         settings.setBaseLoc(player);
         settings.setDuelzone(player, duelzone);
@@ -170,6 +188,11 @@ public class DuelCommand extends BaseCommand {
 
                 if (vault == null || vault.getEconomy() == null) {
                     lang.sendMessage(sender, "ERROR.setting.disabled-option", "option", lang.getMessage("GENERAL.betting"));
+                    return true;
+                }
+
+                if (amount < config.getMoneyBettingMinAmount() || amount > config.getMoneyBettingMaxAmount()) {
+                    lang.sendMessage(sender, "ERROR.command.insufficient-amount", "min", config.getMoneyBettingMinAmount(), "max", config.getMoneyBettingMaxAmount());
                     return true;
                 }
 
@@ -251,11 +274,47 @@ public class DuelCommand extends BaseCommand {
     }
 
     @Override
-    protected void execute(final CommandSender sender, final String label, final String[] args) {}
+    protected void execute(final CommandSender sender, final String label, final String[] args) {
+    }
 
     // Disables default TabCompleter
     @Override
     public List<String> onTabComplete(final CommandSender sender, final Command command, final String alias, final String[] args) {
-        return null;
+        if (sender instanceof final Player player) {
+            final List<String> completions = new ArrayList<>();
+            final Iterable<String> players = Bukkit.getOnlinePlayers().stream()
+                    .filter(player::canSee)
+                    .filter(p -> p != player)
+                    .map(Player::getName)
+                    .toList();
+
+            if (args.length == 1) {
+                Iterable<String> stringIterable = new ArrayList<>(List.of("aceitar", "negar", "status", "alternar", "top", "spec", "ignorar"));
+                stringIterable = Iterables.concat(stringIterable, players);
+                org.bukkit.util.StringUtil.copyPartialMatches(args[0], stringIterable, completions);
+                return completions;
+            } else if (args.length == 2) {
+                switch (args[0]) {
+                    case "aceitar", "accept", "negar", "deny", "status", "stats", "spec", "spectate", "ignore", "ignorar" -> {
+                        org.bukkit.util.StringUtil.copyPartialMatches(args[1], players, completions);
+                        return completions;
+                    }
+                    case "top" -> {
+                        final Iterable<String> top = List.of("geral", "kit", "vitorias", "derrotas");
+                        org.bukkit.util.StringUtil.copyPartialMatches(args[1], top, completions);
+                        return completions;
+                    }
+                    default -> {
+                        final Iterable<String> amount = List.of("10000", "20000", "30000", "40000", "50000", "60000", "70000", "80000", "90000", "99000");
+                        org.bukkit.util.StringUtil.copyPartialMatches(args[1], amount, completions);
+                        return completions;
+                    }
+                }
+            } else {
+                return List.of();
+            }
+        } else {
+            return List.of();
+        }
     }
 }
