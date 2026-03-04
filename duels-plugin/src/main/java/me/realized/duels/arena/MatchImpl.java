@@ -60,25 +60,25 @@ public class MatchImpl implements Match {
 
     Set<Player> getAlivePlayers() {
         return players.entrySet().stream()
-                .filter(entry -> !entry.getValue().isDead)
+                .filter(entry -> !entry.getValue().isDead())
                 .map(Entry::getKey)
                 .collect(Collectors.toSet());
     }
 
-    public void addDamageToPlayer(Player player, double damage) {
-        PlayerStatus status = players.get(player);
-        status.damageCount += damage;
-        status.hits++;
+    public void addDamageToPlayer(final Player player, final double damage) {
+        final PlayerStatus status = players.get(player);
+        status.addDamage(damage);
+        status.addHit();
     }
 
-    public int getHits(Player player) {
-        return players.get(player).hits;
+    public int getHits(final Player player) {
+        return players.get(player).getHits();
     }
 
     public Player getWinnerOfDamage() {
         return players.entrySet()
                 .stream()
-                .max(Comparator.comparingDouble(entry -> entry.getValue().damageCount))
+                .max(Comparator.comparingDouble(entry -> entry.getValue().getDamageCount()))
                 .map(Entry::getKey)
                 .orElse(null);
     }
@@ -86,7 +86,7 @@ public class MatchImpl implements Match {
     public Player getLooserOfDamage() {
         return players.entrySet()
                 .stream()
-                .min(Comparator.comparingDouble(entry -> entry.getValue().damageCount))
+                .min(Comparator.comparingDouble(entry -> entry.getValue().getDamageCount()))
                 .map(Entry::getKey)
                 .orElse(null);
     }
@@ -96,7 +96,7 @@ public class MatchImpl implements Match {
     }
 
     public boolean isDead(final Player player) {
-        return players.getOrDefault(player, new PlayerStatus(true)).isDead;
+        return players.getOrDefault(player, new PlayerStatus(true)).isDead();
     }
 
     public boolean isFromQueue() {
@@ -144,6 +144,7 @@ public class MatchImpl implements Match {
         return Collections.unmodifiableSet(getAllPlayers());
     }
 
+    @Getter
     public static class PlayerStatus {
 
         // Player is dead value
@@ -152,8 +153,16 @@ public class MatchImpl implements Match {
         public double damageCount;
         public int hits;
 
-        public PlayerStatus(boolean isDead) {
+        public PlayerStatus(final boolean isDead) {
             this.isDead = isDead;
+        }
+
+        public void addDamage(final double damage) {
+            this.damageCount += damage;
+        }
+
+        public void addHit() {
+            this.hits++;
         }
 
     }

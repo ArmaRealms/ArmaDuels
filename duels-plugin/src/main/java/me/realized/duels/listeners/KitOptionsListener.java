@@ -8,14 +8,19 @@ import me.realized.duels.arena.ArenaManagerImpl;
 import me.realized.duels.arena.MatchImpl;
 import me.realized.duels.config.Config;
 import me.realized.duels.kit.KitImpl.Characteristic;
+import me.realized.duels.util.EventUtil;
 import me.realized.duels.util.PlayerUtil;
 import me.realized.duels.util.compat.CompatUtil;
 import me.realized.duels.util.compat.Items;
 import me.realized.duels.util.metadata.MetadataUtil;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.damage.DamageSource;
+import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
@@ -24,10 +29,14 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
 
 /**
  * Applies kit characteristics (options) to duels.
@@ -35,6 +44,7 @@ import org.bukkit.inventory.ItemStack;
 public class KitOptionsListener implements Listener {
 
     private static final String METADATA_KEY = "Duels-MaxNoDamageTicks";
+    private static final int BOXING_WIN_HITS = 100;
 
     private final DuelsPlugin plugin;
     private final Config config;
@@ -56,11 +66,10 @@ public class KitOptionsListener implements Listener {
 
     @EventHandler
     public void on(final EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
+        if (!(event.getEntity() instanceof final Player player)) {
             return;
         }
 
-        final Player player = (Player) event.getEntity();
         final ArenaImpl arena = arenaManager.get(player);
 
         if (arena == null || !isEnabled(arena, Characteristic.SUMO) && !isEnabled(arena, Characteristic.BOXING)) {
@@ -71,11 +80,68 @@ public class KitOptionsListener implements Listener {
     }
 
     @EventHandler
+    public void on(final EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof final Player player)) {
+            return;
+        }
+
+        final ArenaImpl arena = arenaManager.get(player);
+
+        if (arena == null || !isEnabled(arena, Characteristic.BOXING) || arena.isEndGame()) {
+            return;
+        }
+
+        final Player damager = EventUtil.getDamager(event);
+
+        if (damager == null || !arenaManager.isInMatch(damager)) {
+            return;
+        }
+
+        final MatchImpl match = arena.getMatch();
+        if (match == null) {
+            return;
+        }
+        match.addDamageToPlayer(damager, event.getFinalDamage());
+
+        final int damagerHits = match.getHits(damager);
+        final int playerHits = match.getHits(player);
+
+        sendBoxingActionBar(damager, damagerHits, playerHits);
+        sendBoxingActionBar(player, playerHits, damagerHits);
+
+        event.setDamage(0);
+
+        if (damagerHits >= BOXING_WIN_HITS) {
+            player.getInventory().clear();
+            final PlayerDeathEvent customEvent = new PlayerDeathEvent(player,
+                    DamageSource.builder(DamageType.GENERIC).withCausingEntity(damager).withDirectEntity(damager).build(),
+                    new ArrayList<>(), 0, "Morreu para " + damager.getName() + " numa luta de boxe!");
+            PlayerUtil.reset(player);
+            Bukkit.getPluginManager().callEvent(customEvent);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void on(final FoodLevelChangeEvent event) {
+        if (!(event.getEntity() instanceof final Player player)) {
+            return;
+        }
+
+        final ArenaImpl arena = arenaManager.get(player);
+
+        if (arena == null || !isEnabled(arena, Characteristic.BOXING)) {
+            return;
+        }
+
+        event.setCancelled(true);
+    }
+
+    @EventHandler
     public void on(final PlayerMoveEvent event) {
         final Player player = event.getPlayer();
         final ArenaImpl arena = arenaManager.get(player);
 
-        if (player.isDead() || arena == null || !isEnabled(arena, Characteristic.SUMO) || arena.isEndGame()) {
+        if (player.isDead() || arena == null || !isEnabled(arena, Characteristic.SUMO) || arena.isEndGame() || arena.getMatch() == null) {
             return;
         }
 
@@ -143,11 +209,10 @@ public class KitOptionsListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void on(final EntityRegainHealthEvent event) {
-        if (!(event.getEntity() instanceof Player) || !(event.getRegainReason() == RegainReason.SATIATED || event.getRegainReason() == RegainReason.REGEN)) {
+        if (!(event.getEntity() instanceof final Player player) || !(event.getRegainReason() == RegainReason.SATIATED || event.getRegainReason() == RegainReason.REGEN)) {
             return;
         }
 
-        final Player player = (Player) event.getEntity();
         final ArenaImpl arena = arenaManager.get(player);
 
         if (arena == null || !isEnabled(arena, Characteristic.UHC)) {
@@ -155,6 +220,13 @@ public class KitOptionsListener implements Listener {
         }
 
         event.setCancelled(true);
+    }
+
+    private void sendBoxingActionBar(final Player player, final int ownHits, final int opponentHits) {
+        player.sendActionBar(Component.text("Seus golpes: ").color(NamedTextColor.GREEN)
+                .append(Component.text(ownHits).color(NamedTextColor.WHITE))
+                .append(Component.text(" | Adversário: ").color(NamedTextColor.GRAY))
+                .append(Component.text(opponentHits).color(NamedTextColor.RED)));
     }
 
     private class ComboPre1_14Listener implements Listener {
@@ -203,11 +275,10 @@ public class KitOptionsListener implements Listener {
 
         @EventHandler
         public void on(final EntityDamageByEntityEvent event) {
-            if (!(event.getEntity() instanceof Player)) {
+            if (!(event.getEntity() instanceof final Player player)) {
                 return;
             }
 
-            final Player player = (Player) event.getEntity();
             final ArenaImpl arena = arenaManager.get(player);
 
             if (arena == null || !isEnabled(arena, Characteristic.COMBO)) {
