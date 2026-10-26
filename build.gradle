@@ -9,6 +9,15 @@ allprojects {
 }
 
 subprojects {
+    plugins.withId('java') {
+        java {
+            toolchain.languageVersion = JavaLanguageVersion.of(25)
+        }
+        tasks.withType(JavaCompile).configureEach {
+            options.release = 25
+            options.encoding = 'UTF-8'
+        }
+    }
 
     repositories {
         mavenCentral()
