@@ -18,7 +18,7 @@ ArmaDuels targets **Paper 26.2** and **Java 25**. Older Minecraft versions are n
 ### Building
 
 Install JDK 25 and run `./gradlew clean build`. The Gradle 9.8.2 wrapper is included.
-The shaded plugin is written to `out/Duels-3.5.5-SNAPSHOT.jar`.
+The shaded plugin is written to `out/Duels-4.0.0.jar`.
 All modules compile against Paper 26.2; optional plugin integrations still require
 compatible versions installed on the server. Before deployment, validate startup,
 kits, paginated menus, queues, duels and the enabled integrations on Paper 26.2.
