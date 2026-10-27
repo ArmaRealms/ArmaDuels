@@ -2,7 +2,7 @@
 
 [![](https://jitpack.io/v/Realizedd/Duels.svg)](https://jitpack.io/#Realizedd/Duels)
 
-A duel plugin for spigot. <a href="https://www.spigotmc.org/resources/duels.20171/">Spigot Project Page</a>
+ArmaDuels targets **Paper 26.2** and **Java 25**. Older Minecraft versions are no longer supported by this build. <a href="https://www.spigotmc.org/resources/duels.20171/">Spigot Project Page</a>
 
 ---
 
@@ -14,6 +14,14 @@ A duel plugin for spigot. <a href="https://www.spigotmc.org/resources/duels.2017
 * **[config.yml](https://github.com/Realizedd/Duels/blob/master/duels-plugin/src/main/resources/config.yml)**
 * **[lang.yml](https://github.com/Realizedd/Duels/blob/master/duels-plugin/src/main/resources/lang.yml)**
 * **[Support Discord](https://discord.gg/RNy45sg)**
+
+### Building
+
+Install JDK 25 and run `./gradlew clean build`. The Gradle 9.8.2 wrapper is included.
+The shaded plugin is written to `out/Duels-4.0.0.jar`.
+All modules compile against Paper 26.2; optional plugin integrations still require
+compatible versions installed on the server. Before deployment, validate startup,
+kits, paginated menus, queues, duels and the enabled integrations on Paper 26.2.
 
 ### Getting the dependency
 

@@ -17,8 +17,7 @@ public final class ReflectionUtil {
         final String packageName = Bukkit.getServer().getClass().getPackage().getName();
         PACKAGE_VERSION = packageName.substring(packageName.lastIndexOf('.') + 1);
         if (PACKAGE_VERSION.equalsIgnoreCase("craftbukkit")) {
-            String bukkitVersion = Bukkit.getBukkitVersion();
-            MAJOR_VERSION = NumberUtil.parseInt(bukkitVersion.split("-")[0].split("\\.")[1]).orElse(0);
+            MAJOR_VERSION = MinecraftVersion.featureVersion(Bukkit.getMinecraftVersion());
         } else {
             MAJOR_VERSION = NumberUtil.parseInt(PACKAGE_VERSION.split("_")[1]).orElse(0);
         }
