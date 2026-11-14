@@ -315,6 +315,7 @@ DUEL:
     arena-in-use: '{FAIL_PREFIX} That arena is already in use. Please select a different arena.'
     arena-not-applicable: '{FAIL_PREFIX} You cannot use kit %kit% on this arena.'
     not-enough-money: '{FAIL_PREFIX} You or your opponent does not have $%bet_amount%.'
+    teleport-failed: '{FAIL_PREFIX} Could not move both players into the arena. Duel was not started.'
   prevent:
     item-drop: '&cYou cannot drop items while in a duel.'
     command: '&cYou cannot use ''%command%'' while in a duel.'
