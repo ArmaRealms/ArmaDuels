@@ -77,6 +77,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.BiPredicate;
 
 public class DuelManager implements Loadable {
 
@@ -391,11 +392,38 @@ public class DuelManager implements Loadable {
                 return;
             }
 
+        }
+
+        // Save both players before any teleport. No bets or kit changes until both arrive.
+        final boolean excludeInventory = kit == null && config.isOwnInventoryDropInventoryItems();
+        playerManager.create(first, excludeInventory);
+        playerManager.create(second, excludeInventory);
+        final Location firstOriginal = first.getLocation().clone();
+        final ArenaTeleportResult result = teleportParticipants(first, second, arena.getPosition(1), arena.getPosition(2),
+                teleport::tryTeleport);
+
+        if (result != ArenaTeleportResult.SUCCESS) {
+            playerManager.remove(first);
+            playerManager.remove(second);
+            if (result == ArenaTeleportResult.ROLLBACK_FAILED) {
+                // Retry once after other teleport listeners finish, without disrupting a new match.
+                plugin.doSyncAfter(() -> {
+                    if (first.isOnline() && !arenaManager.isInMatch(first)) {
+                        teleport.tryTeleport(first, firstOriginal);
+                    }
+                }, 1L);
+            }
+            lang.sendMessage(Arrays.asList(first, second), "DUEL.start-failure.teleport-failed");
+            refundItems(items, first, second);
+            return;
+        }
+
+        if (bet > 0 && vault != null && vault.getEconomy() != null) {
             vault.remove(bet, first, second);
         }
 
         final MatchImpl match = arena.startMatch(kit, items, settings.getBet(), settings.isMcmmoSkills(), source);
-        addPlayers(match, arena, kit, arena.getPositions(), first, second);
+        addPlayers(match, arena, kit, first, second);
 
         if (config.isStartCommandsEnabled() && !(match.getSource() == null && config.isStartCommandsQueueOnly())) {
             try {
@@ -419,6 +447,26 @@ public class DuelManager implements Loadable {
 
         final MatchStartEvent event = new MatchStartEvent(match, first, second);
         Bukkit.getPluginManager().callEvent(event);
+    }
+
+    enum ArenaTeleportResult {
+        SUCCESS, REJECTED, ROLLBACK_FAILED
+    }
+
+    static ArenaTeleportResult teleportParticipants(final Player first, final Player second,
+                                                     final Location firstDestination, final Location secondDestination,
+                                                     final BiPredicate<Player, Location> attempt) {
+        final Location firstOriginal = first.getLocation().clone();
+
+        if (!attempt.test(first, firstDestination)) {
+            return ArenaTeleportResult.REJECTED;
+        }
+
+        if (attempt.test(second, secondDestination)) {
+            return ArenaTeleportResult.SUCCESS;
+        }
+
+        return attempt.test(first, firstOriginal) ? ArenaTeleportResult.REJECTED : ArenaTeleportResult.ROLLBACK_FAILED;
     }
 
     private void refundItems(final Map<UUID, List<ItemStack>> items, final Player... players) {
@@ -457,9 +505,7 @@ public class DuelManager implements Loadable {
         return user != null ? user.getRating(kit) : config.getDefaultRating();
     }
 
-    private void addPlayers(final MatchImpl match, final ArenaImpl arena, final KitImpl kit, final Map<Integer, Location> locations, final Player... players) {
-        int position = 0;
-
+    private void addPlayers(final MatchImpl match, final ArenaImpl arena, final KitImpl kit, final Player... players) {
         for (final Player player : players) {
             if (match.getSource() == null) {
                 queueManager.remove(player);
@@ -471,8 +517,6 @@ public class DuelManager implements Loadable {
             }
 
             player.closeInventory();
-            playerManager.create(player, match.isOwnInventory() && config.isOwnInventoryDropInventoryItems());
-            teleport.tryTeleport(player, locations.get(++position));
 
             if (kit != null) {
                 PlayerUtil.reset(player);
