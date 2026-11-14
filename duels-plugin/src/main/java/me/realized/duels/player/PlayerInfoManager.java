@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Charsets;
 import lombok.Getter;
 import me.realized.duels.DuelsPlugin;
-import me.realized.duels.arena.ArenaImpl;
 import me.realized.duels.config.Config;
 import me.realized.duels.data.LocationData;
 import me.realized.duels.data.PlayerData;
@@ -216,9 +215,7 @@ public class PlayerInfoManager implements Loadable {
             final PlayerInfo info = remove(player);
             if (info == null) return;
 
-            final ArenaImpl arena = DuelsPlugin.getInstance().getArenaManager().get(player);
-            if (arena == null) return;
-
+            // Restore cached state even when the previous duel arena no longer exists.
             teleport.tryTeleport(player, info.getLocation());
             info.restore(player);
         }
