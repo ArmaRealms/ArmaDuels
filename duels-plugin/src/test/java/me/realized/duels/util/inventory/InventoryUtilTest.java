@@ -3,7 +3,10 @@ package me.realized.duels.util.inventory;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockbukkit.mockbukkit.MockBukkit;
 
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
@@ -14,6 +17,16 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class InventoryUtilTest {
+
+    @Before
+    public void setUp() {
+        MockBukkit.mock();
+    }
+
+    @After
+    public void tearDown() {
+        MockBukkit.unmock();
+    }
 
     @Test
     public void reconnectSnapshotRemovesResidualKitItemsFromEmptySlots() {
