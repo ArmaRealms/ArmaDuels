@@ -6,6 +6,7 @@ import me.realized.duels.util.Loadable;
 import me.realized.duels.util.Log;
 import me.realized.duels.util.metadata.MetadataUtil;
 import org.bukkit.Location;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -62,18 +63,21 @@ public final class Teleport implements Loadable, Listener {
             return false;
         }
 
+        if (!teleportWithMetadata(plugin, player, location)) {
+            Log.warn(this, "Could not teleport " + player.getName() + "! Teleport was rejected");
+            return false;
+        }
+
+        if (essentials != null) {
+            essentials.setBackLocation(player, location);
+        }
+        return true;
+    }
+
+    static boolean teleportWithMetadata(final Plugin plugin, final Player player, final Location location) {
         MetadataUtil.put(plugin, player, METADATA_KEY, location.clone());
-
         try {
-            if (!player.teleport(location)) {
-                Log.warn(this, "Could not teleport " + player.getName() + "! Teleport was rejected");
-                return false;
-            }
-
-            if (essentials != null) {
-                essentials.setBackLocation(player, location);
-            }
-            return true;
+            return player.teleport(location);
         } finally {
             MetadataUtil.remove(plugin, player, METADATA_KEY);
         }
