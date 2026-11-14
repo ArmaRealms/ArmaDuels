@@ -21,6 +21,7 @@ processResources {
 
 dependencies {
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockbukkit.mockbukkit:mockbukkit-v26.2:4.117.0'
     testImplementation 'io.papermc.paper:paper-api:26.2.build.+'
 
     compileOnly 'io.papermc.paper:paper-api:26.2.build.+'
