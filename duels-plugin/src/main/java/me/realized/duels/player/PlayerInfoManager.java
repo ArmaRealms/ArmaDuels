@@ -212,13 +212,18 @@ public class PlayerInfoManager implements Loadable {
 
             if (player.isDead()) return;
 
-            final PlayerInfo info = get(player);
+            final PlayerInfo info = remove(player);
             if (info == null) return;
 
-            // Keep recovery data until the saved location can be reached.
-            if (!teleport.tryTeleport(player, info.getLocation())) return;
-
-            remove(player);
+            // Always restore inventory first, even when the return teleport is rejected.
+            // A retry must not restore the same items or rewards a second time.
+            if (!teleport.tryTeleport(player, info.getLocation())) {
+                plugin.doSyncAfter(() -> {
+                    if (player.isOnline() && !player.isDead() && !plugin.getArenaManager().isInMatch(player)) {
+                        teleport.tryTeleport(player, info.getLocation());
+                    }
+                }, 1L);
+            }
             info.restore(player);
         }
 
