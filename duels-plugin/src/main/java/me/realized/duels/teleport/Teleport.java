@@ -42,7 +42,7 @@ public final class Teleport implements Loadable, Listener {
     /**
      * Attempts to force-teleport a player by storing a metadata value in the player before teleportation
      * and uncancelling the teleport by the player in a MONITOR-priority listener if cancelled by other plugins.
- * Dead players are restored on respawn; riders and passengers are dismounted before teleporting.
+     * Dead players are restored on respawn; riders and passengers are dismounted before teleporting.
      *
      * @param player   Player to force-teleport to a location
      * @param location Location to force-teleport the player
