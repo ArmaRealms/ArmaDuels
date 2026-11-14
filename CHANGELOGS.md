@@ -32,7 +32,7 @@ o versionamento, não um formato obrigatório de changelog.
   A versão `26.2` deixava de ser identificada corretamente e era interpretada como `2`,
   ativando caminhos legados de compatibilidade para itens, kits e reflexão.
 
-- Evitar teleporte direto durante a morte no duelo; preservar o destino salvo para o respawn, desmontar jogadores e ejetar passageiros antes do teleporte e limpar metadados após falhas.
+- Corrigir o retorno após morte, empate e reconexão, preservando o destino salvo para o respawn; desmontar jogadores e ejetar passageiros antes do teleporte e limpar metadados após tentativas.
 
 ### Adicionado
 
