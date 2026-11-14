@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Charsets;
 import lombok.Getter;
 import me.realized.duels.DuelsPlugin;
-import me.realized.duels.arena.ArenaImpl;
 import me.realized.duels.config.Config;
 import me.realized.duels.data.LocationData;
 import me.realized.duels.data.PlayerData;
@@ -216,10 +215,15 @@ public class PlayerInfoManager implements Loadable {
             final PlayerInfo info = remove(player);
             if (info == null) return;
 
-            final ArenaImpl arena = DuelsPlugin.getInstance().getArenaManager().get(player);
-            if (arena == null) return;
-
-            teleport.tryTeleport(player, info.getLocation());
+            // Always restore inventory first, even when the return teleport is rejected.
+            // A retry must not restore the same items or rewards a second time.
+            if (!teleport.tryTeleport(player, info.getLocation())) {
+                plugin.doSyncAfter(() -> {
+                    if (player.isOnline() && !player.isDead() && !plugin.getArenaManager().isInMatch(player)) {
+                        teleport.tryTeleport(player, info.getLocation());
+                    }
+                }, 1L);
+            }
             info.restore(player);
         }
 
@@ -239,6 +243,10 @@ public class PlayerInfoManager implements Loadable {
             plugin.doSyncAfter(() -> {
                 // Do not remove cached data if player left while respawning.
                 if (!player.isOnline()) {
+                    return;
+                }
+
+                if (get(player) != info) {
                     return;
                 }
 

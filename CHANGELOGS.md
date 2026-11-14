@@ -32,6 +32,10 @@ o versionamento, não um formato obrigatório de changelog.
   A versão `26.2` deixava de ser identificada corretamente e era interpretada como `2`,
   ativando caminhos legados de compatibilidade para itens, kits e reflexão.
 
+- Corrigir o retorno após morte, empate e reconexão, preservando o destino salvo para o respawn; desmontar jogadores e ejetar passageiros antes do teleporte e limpar metadados após tentativas.
+- Abortar início de duelo e devolver jogadores quando um teleporte falha, sem cobrar aposta; restaurar snapshots completos de inventário sem itens de kit residuais.
+- Restaurar o inventário uma única vez na reconexão, mesmo se o teleporte falhar, com nova tentativa limitada para a localização salva; adicionar mensagem configurável de falha de entrada na arena (`lang.yml`, versão 12).
+
 ### Adicionado
 
 - Testes de regressão para versões tradicionais `1.x` e anuais `26.x`/`27.x`.

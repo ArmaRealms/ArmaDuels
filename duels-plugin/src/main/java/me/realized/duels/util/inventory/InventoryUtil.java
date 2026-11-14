@@ -52,6 +52,8 @@ public final class InventoryUtil {
         final Map<Integer, ItemStack> inventoryItems = items.get(INVENTORY_IDENTIFIER);
 
         if (inventoryItems != null) {
+            // A snapshot must replace the full inventory, including slots that were empty.
+            inventory.clear();
             for (final Map.Entry<Integer, ItemStack> entry : inventoryItems.entrySet()) {
                 inventory.setItem(entry.getKey(), entry.getValue().clone());
             }

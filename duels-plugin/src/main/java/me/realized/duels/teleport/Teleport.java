@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Handles force teleporting of players.
@@ -42,25 +43,72 @@ public final class Teleport implements Loadable, Listener {
     /**
      * Attempts to force-teleport a player by storing a metadata value in the player before teleportation
      * and uncancelling the teleport by the player in a MONITOR-priority listener if cancelled by other plugins.
+     * Dead players are restored on respawn; riders and passengers are dismounted before teleporting.
      *
      * @param player   Player to force-teleport to a location
      * @param location Location to force-teleport the player
+     * @return true when the teleport succeeded
      */
-    public void tryTeleport(final Player player, final Location location) {
+    public boolean tryTeleport(final Player player, final Location location) {
         if (location == null || location.getWorld() == null) {
             Log.warn(this, "Could not teleport " + player.getName() + "! Location is null");
-            return;
+            return false;
+        }
+
+        if (!preparePlayer(player)) {
+            // Duel participants who died are returned to their saved location on respawn.
+            if (!player.isDead()) {
+                Log.warn(this, "Could not teleport " + player.getName() + "! Player is still riding or has passengers");
+            }
+            return false;
+        }
+
+        final boolean success;
+        try {
+            success = teleportWithMetadata(plugin, player, location);
+        } catch (RuntimeException exception) {
+            Log.error(this, "Could not teleport " + player.getName() + "!", exception);
+            return false;
+        }
+
+        if (!success) {
+            Log.warn(this, "Could not teleport " + player.getName() + "! Teleport was rejected");
+            return false;
         }
 
         if (essentials != null) {
-            essentials.setBackLocation(player, location);
+            try {
+                essentials.setBackLocation(player, location);
+            } catch (RuntimeException exception) {
+                Log.error(this, "Could not update Essentials last location for " + player.getName() + "!", exception);
+            }
         }
+        return true;
+    }
 
+    static boolean teleportWithMetadata(final Plugin plugin, final Player player, final Location location) {
         MetadataUtil.put(plugin, player, METADATA_KEY, location.clone());
-
-        if (!player.teleport(location)) {
-            Log.warn(this, "Could not teleport " + player.getName() + "! Player is dead or is vehicle");
+        try {
+            return player.teleport(location);
+        } finally {
+            MetadataUtil.remove(plugin, player, METADATA_KEY);
         }
+    }
+
+    static boolean preparePlayer(final Player player) {
+        if (player.isDead()) {
+            return false;
+        }
+
+        if (player.isInsideVehicle()) {
+            player.leaveVehicle();
+        }
+
+        if (!player.isEmpty()) {
+            player.eject();
+        }
+
+        return !player.isInsideVehicle() && player.isEmpty();
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
