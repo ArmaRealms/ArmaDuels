@@ -63,13 +63,25 @@ public final class Teleport implements Loadable, Listener {
             return false;
         }
 
-        if (!teleportWithMetadata(plugin, player, location)) {
+        final boolean success;
+        try {
+            success = teleportWithMetadata(plugin, player, location);
+        } catch (RuntimeException exception) {
+            Log.error(this, "Could not teleport " + player.getName() + "!", exception);
+            return false;
+        }
+
+        if (!success) {
             Log.warn(this, "Could not teleport " + player.getName() + "! Teleport was rejected");
             return false;
         }
 
         if (essentials != null) {
-            essentials.setBackLocation(player, location);
+            try {
+                essentials.setBackLocation(player, location);
+            } catch (RuntimeException exception) {
+                Log.error(this, "Could not update Essentials last location for " + player.getName() + "!", exception);
+            }
         }
         return true;
     }
