@@ -21,6 +21,7 @@ processResources {
 
 dependencies {
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'io.papermc.paper:paper-api:26.2.build.+'
 
     compileOnly 'io.papermc.paper:paper-api:26.2.build.+'
 
