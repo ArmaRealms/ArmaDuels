@@ -292,10 +292,8 @@ public class DuelManager implements Loadable {
             mcMMO.enableSkills(player);
         }
 
-        if (opponent != null) {
-            teleport.tryTeleport(opponent, playerManager.getLobby());
-        }
-
+        // The defeated player returns through PlayerInfoManager on respawn.
+        // Do not override that destination if they have already respawned.
         final PlayerInfo info = playerManager.get(player);
         final List<ItemStack> items = match.getItems();
 
