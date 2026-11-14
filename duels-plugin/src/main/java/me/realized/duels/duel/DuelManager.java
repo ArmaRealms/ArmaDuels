@@ -238,7 +238,7 @@ public class DuelManager implements Loadable {
         final PlayerInfo info = playerManager.get(player);
         final List<ItemStack> items = match.getItems(player);
 
-        if (alive) {
+        if (alive && !player.isDead()) {
             playerManager.remove(player);
 
             if (!(match.isOwnInventory() && config.isOwnInventoryDropInventoryItems())) {
