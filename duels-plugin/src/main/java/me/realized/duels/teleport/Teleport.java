@@ -46,11 +46,12 @@ public final class Teleport implements Loadable, Listener {
      *
      * @param player   Player to force-teleport to a location
      * @param location Location to force-teleport the player
+     * @return true when the teleport succeeded
      */
-    public void tryTeleport(final Player player, final Location location) {
+    public boolean tryTeleport(final Player player, final Location location) {
         if (location == null || location.getWorld() == null) {
             Log.warn(this, "Could not teleport " + player.getName() + "! Location is null");
-            return;
+            return false;
         }
 
         if (!preparePlayer(player)) {
@@ -58,11 +59,7 @@ public final class Teleport implements Loadable, Listener {
             if (!player.isDead()) {
                 Log.warn(this, "Could not teleport " + player.getName() + "! Player is still riding or has passengers");
             }
-            return;
-        }
-
-        if (essentials != null) {
-            essentials.setBackLocation(player, location);
+            return false;
         }
 
         MetadataUtil.put(plugin, player, METADATA_KEY, location.clone());
@@ -70,7 +67,13 @@ public final class Teleport implements Loadable, Listener {
         try {
             if (!player.teleport(location)) {
                 Log.warn(this, "Could not teleport " + player.getName() + "! Teleport was rejected");
+                return false;
             }
+
+            if (essentials != null) {
+                essentials.setBackLocation(player, location);
+            }
+            return true;
         } finally {
             MetadataUtil.remove(plugin, player, METADATA_KEY);
         }
