@@ -33,6 +33,8 @@ o versionamento, não um formato obrigatório de changelog.
   ativando caminhos legados de compatibilidade para itens, kits e reflexão.
 
 - Corrigir o retorno após morte, empate e reconexão, preservando o destino salvo para o respawn; desmontar jogadores e ejetar passageiros antes do teleporte e limpar metadados após tentativas.
+- Abortar início de duelo e devolver jogadores quando um teleporte falha, sem cobrar aposta; restaurar snapshots completos de inventário sem itens de kit residuais.
+- Preservar cache de retorno caso o teleporte na reconexão falhe e adicionar mensagem configurável de falha de entrada na arena (`lang.yml`, versão 12).
 
 ### Adicionado
 
