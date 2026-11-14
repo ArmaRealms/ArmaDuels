@@ -212,11 +212,13 @@ public class PlayerInfoManager implements Loadable {
 
             if (player.isDead()) return;
 
-            final PlayerInfo info = remove(player);
+            final PlayerInfo info = get(player);
             if (info == null) return;
 
-            // Restore cached state even when the previous duel arena no longer exists.
-            teleport.tryTeleport(player, info.getLocation());
+            // Keep recovery data until the saved location can be reached.
+            if (!teleport.tryTeleport(player, info.getLocation())) return;
+
+            remove(player);
             info.restore(player);
         }
 
@@ -236,6 +238,10 @@ public class PlayerInfoManager implements Loadable {
             plugin.doSyncAfter(() -> {
                 // Do not remove cached data if player left while respawning.
                 if (!player.isOnline()) {
+                    return;
+                }
+
+                if (get(player) != info) {
                     return;
                 }
 
