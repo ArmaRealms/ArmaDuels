@@ -391,7 +391,6 @@ public class DuelManager implements Loadable {
                 refundItems(items, first, second);
                 return;
             }
-
         }
 
         // Save both players before any teleport. No bets or kit changes until both arrive.
