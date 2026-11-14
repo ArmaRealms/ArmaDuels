@@ -52,15 +52,41 @@ public final class Teleport implements Loadable, Listener {
             return;
         }
 
+        // Duel participants who died are returned to their saved location on respawn.
+        if (player.isDead()) {
+            return;
+        }
+
+        if (!releaseVehicle(player)) {
+            Log.warn(this, "Could not teleport " + player.getName() + "! Player is still riding or has passengers");
+            return;
+        }
+
         if (essentials != null) {
             essentials.setBackLocation(player, location);
         }
 
         MetadataUtil.put(plugin, player, METADATA_KEY, location.clone());
 
-        if (!player.teleport(location)) {
-            Log.warn(this, "Could not teleport " + player.getName() + "! Player is dead or is vehicle");
+        try {
+            if (!player.teleport(location)) {
+                Log.warn(this, "Could not teleport " + player.getName() + "! Teleport was rejected");
+            }
+        } finally {
+            MetadataUtil.remove(plugin, player, METADATA_KEY);
         }
+    }
+
+    static boolean releaseVehicle(final Player player) {
+        if (player.isInsideVehicle()) {
+            player.leaveVehicle();
+        }
+
+        if (!player.isEmpty()) {
+            player.eject();
+        }
+
+        return !player.isInsideVehicle() && player.isEmpty();
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
