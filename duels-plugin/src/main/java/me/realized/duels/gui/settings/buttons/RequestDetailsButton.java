@@ -5,7 +5,6 @@ import me.realized.duels.gui.BaseButton;
 import me.realized.duels.setting.Settings;
 import me.realized.duels.util.compat.Items;
 import me.realized.duels.util.inventory.ItemBuilder;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class RequestDetailsButton extends BaseButton {
@@ -17,12 +16,9 @@ public class RequestDetailsButton extends BaseButton {
     @Override
     public void update(final Player player) {
         final Settings settings = settingManager.getSafely(player);
-        final Player target = Bukkit.getPlayer(settings.getTarget());
+        final Player target = settings.getOnlineTarget();
 
         if (target == null) {
-            settings.reset();
-            player.closeInventory();
-            lang.sendMessage(player, "ERROR.player.no-longer-online");
             return;
         }
 
