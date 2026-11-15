@@ -28,6 +28,7 @@ o versionamento, não um formato obrigatório de changelog.
 
 ### Corrigido
 
+- Fechar o seletor de arena com aviso quando o adversário estiver indisponível, sem abrir configurações de um pedido inválido.
 - Reconhecer o esquema de versões anuais por meio de `Bukkit.getMinecraftVersion()`.
   A versão `26.2` deixava de ser identificada corretamente e era interpretada como `2`,
   ativando caminhos legados de compatibilidade para itens, kits e reflexão.

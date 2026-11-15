@@ -6,8 +6,10 @@ import me.realized.duels.DuelsPlugin;
 import me.realized.duels.arena.ArenaImpl;
 import me.realized.duels.gui.settings.SettingsGui;
 import me.realized.duels.kit.KitImpl;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,14 +70,35 @@ public class Settings {
         this.target = target.getUniqueId();
     }
 
+    @Nullable
+    public Player getOnlineTarget() {
+        return target != null ? Bukkit.getPlayer(target) : null;
+    }
+
     public void updateGui(final Player player) {
-        if (gui != null) {
+        if (canShowGui(player)) {
             gui.update(player);
         }
     }
 
     public void openGui(final Player player) {
-        gui.open(player);
+        if (canShowGui(player)) {
+            gui.open(player);
+        }
+    }
+
+    private boolean canShowGui(final Player player) {
+        if (gui == null) {
+            return false;
+        }
+        if (getOnlineTarget() != null) {
+            return true;
+        }
+
+        reset();
+        player.closeInventory();
+        plugin.getLang().sendMessage(player, "ERROR.player.no-longer-online");
+        return false;
     }
 
     public void setBaseLoc(final Player player) {
